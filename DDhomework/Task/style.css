@@ -1,5 +1,4 @@
 @import '../Nav/style.css';
-
 .task__head {
   display: flex;
   flex-direction: row;
@@ -7,7 +6,6 @@
   padding: 0px;
   gap: 16px;
   justify-content: space-between;
-
   min-width: 884px;
   width: 100%;
   height: 24px;
@@ -33,7 +31,6 @@
   padding: 0;
 }
 
-
 .task__content {
   margin: 0;
   margin-left: 16px;
@@ -54,7 +51,6 @@
 .task__state {
   margin: 0 16px;
   padding: 0px 8px;
-
   background: var(--background-color-bronze);
   border-radius: 4px;
   color: var(--font-color-secondary);
@@ -69,3 +65,5 @@
   margin: 0 16px;
   color: var(--font-color-disabled);
 }
+
+/*# sourceMappingURL=style.css.map */
