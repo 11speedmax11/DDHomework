@@ -1,25 +1,12 @@
-import { createNavigationBlock } from "../blocks/nav";
-import { createEmptyListBlock } from "../blocks/plug";
-import { createCardBlock } from "../blocks/task";
+import { createNavigationBlock } from "@/blocks/nav";
+import { createEmptyListBlock } from "@/blocks/plug";
+import { createCardBlock } from "@/blocks/task";
+import { createBlock } from '@/js/createBlocks';
+
 const app = document.querySelector("#app");
-const create = document.createElement.bind(document);
-
-const ctreateDiv = (name, isActive = false) => {
-    const div = create("div");
-    div.className = name;
-    if (isActive)
-        div.classList.add('active');
-    return div;
-};
-
-const ctreateBlock = (name, type) => {
-    const block = create(type);
-    block.className = name;
-    return block;
-};
 
 export const ctreateMain = () => {
-    const taskList = create("main");
+    const taskList = document.createElement("main");
     app.append(taskList);
 };
 
@@ -31,15 +18,17 @@ export const createNavigation = () => {
 export const createPlug = () => {
     let main = document.querySelector("main");
     const plugItem = createEmptyListBlock("Нет ни одного пользователя", "Добавить");
-    let div = ctreateDiv("user");
+    let div = createBlock('div', "user");
     div.append(plugItem);
     main.append(div);
 };
 
 export const createTask = () => {
-    let main = document.querySelector("main");
-    let section = ctreateBlock("card", "section")
-    let ul = ctreateBlock("card__list", "ul")
+    let main = document.querySelector('main');
+    let section = createBlock('section', 'card');
+    let ul = createBlock('ul', 'card__list');
+    let div = createBlock('div', 'task');
+
     const taskItem = createCardBlock('НазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазвНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазвНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазвНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазвание',
         '#1',
         'Иванов И.И.',
@@ -50,6 +39,7 @@ export const createTask = () => {
         '../img/profilPicture.png',
         'Черновик');
     ul.append(taskItem);
+
     const taskItemTwo = createCardBlock('звНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНиеНаззваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазвание',
         '#1',
         'Иванов И.И.',
@@ -60,8 +50,8 @@ export const createTask = () => {
         '../img/profilPicture.png',
         'Черновик');
     ul.append(taskItemTwo);
+
     section.append(ul);
-    let div = ctreateDiv("task");
     div.append(section);
     main.append(div);
 };
@@ -69,8 +59,10 @@ export const createTask = () => {
 
 export const createProject = () => {
     let main = document.querySelector("main");
-    let section = ctreateBlock("card", "section")
-    let ul = ctreateBlock("card__list", "ul")
+    let section = createBlock("section", "card")
+    let ul = createBlock("ul", "card__list")
+    let div = createBlock('div', 'project', '', true);
+
     const projectItem = createCardBlock('Название',
         '#1',
         'Иванов И.И.',
@@ -79,6 +71,7 @@ export const createProject = () => {
         '1 минуту',
         false);
     ul.append(projectItem);
+
     const projectItemTwo = createCardBlock('Название',
         '#1',
         'Иванов И.И.',
@@ -87,8 +80,8 @@ export const createProject = () => {
         '1 минуту',
         false);
     ul.append(projectItemTwo);
+
     section.append(ul);
-    let div = ctreateDiv("project", true);
     div.append(section);
     main.append(div);
 };

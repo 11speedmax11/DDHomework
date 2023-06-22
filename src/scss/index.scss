@@ -1,19 +1,23 @@
 @font-face {
-    font-family: "Open Sans", sans-serif;
-    src: url("@/assets/fonts/OpenSans-Italic-VariableFont_wdth.ttf") format("ttf"),
-      url("@/assets/fonts/OpenSans-VariableFont_wdth.ttf") format("ttf");
-    font-weight: 600;
-    font-style: normal;
-  }
-  
-  * {
-    font-family: "Open Sans", sans-serif;
-    font-style: normal;
-    font-size: 14px;
-  }
+  font-family: "Open Sans", sans-serif;
+  src: url("@/assets/fonts/OpenSans-Italic-VariableFont_wdth.ttf") format("ttf"),
+    url("@/assets/fonts/OpenSans-VariableFont_wdth.ttf") format("ttf");
+  font-weight: 600;
+  font-style: normal;
+}
+
+* {
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-size: 14px;
+}
 
 body {
   margin: 0;
+}
+
+main {
+  height: calc(100vh - 124px);
 }
 
 $background-color-primary: #1F75CB;
@@ -37,14 +41,14 @@ $border-color-rgba: rgba(0, 0, 0, 0.15);
 $border-shadow-color-rgba: rgba(0, 0, 0, 0.25);
 
 * {
-    font-family: 'Roboto';
-    font-style: normal;
+  font-family: 'Roboto';
+  font-style: normal;
 }
 
 main>div {
-    display: none;
+  display: none;
 }
 
 main>div.active {
-    display: block;
+  display: block;
 }

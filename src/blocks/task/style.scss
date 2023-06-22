@@ -1,5 +1,5 @@
-// @import '../Nav/style.scss';
 @import "@/scss/index.scss";
+
 .card__head {
   display: flex;
   flex-direction: row;
@@ -32,7 +32,6 @@
 
 .card__base {
   width: 100%;
-  transition: width 0.15s ease-in-out;
 }
 
 .card__img {

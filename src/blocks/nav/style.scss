@@ -1,23 +1,18 @@
-// @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
 @import "@/scss/index.scss";
 
-// body {
-//   margin: 0;
-//   font-family: 'Open Sans';
-//   font-size: 14px;
-// }
 
 .header {
   display: flex;
   align-items: center;
   padding: 24px;
   width: calc(100% - 48px);
-  min-width: 1024px;
+  min-width: 976px;
   height: 52px;
   background: $background-color-primary;
 }
 
 .navigation {
+  margin: 0;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -71,7 +66,9 @@
 
 .header__svg {
   width: 13px;
+  height: 8px;
   color: $font-color-secondary;
+  transition: transform 0.3s ease;
 }
 
 
@@ -130,8 +127,8 @@
   height: 35px
 }
 
-.header__profile p,
-.header__exit p {
+.header__profile .header__text,
+.header__exit .header__text {
   margin-left: 16px;
 }
 

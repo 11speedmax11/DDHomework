@@ -39,7 +39,7 @@ function clickItemNavigation(e) {
 function clickButtonNavigation(e) {
   let headerItem = e.target.closest('.header__button');
   if (headerItem) {
-    if (!e.target.closest('.header__dropdownMenu')){
+    if (!e.target.closest('.header__dropdownMenu')) {
       headerItem.classList.toggle("active");
     }
   } else {
@@ -65,7 +65,7 @@ function clickCardMenu(e) {
   }
 }
 
-function mouseLeaveEvent(){
+function mouseLeaveEvent() {
   let cardItem = document.querySelectorAll(".card__item");
   for (let element of cardItem) {
     element.addEventListener('mouseleave', function (e) {
