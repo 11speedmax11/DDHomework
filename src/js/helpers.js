@@ -29,6 +29,53 @@ export const createTask = () => {
     let ul = createBlock('ul', 'card__list');
     let div = createBlock('div', 'task');
 
+    div.insertAdjacentHTML("afterbegin", `<div class="requests">
+    <div class="requests__create">
+      <div class="request__button create__XML">
+        Создать с XML
+      </div>
+      <div class="request__button create__Fetch">
+        Создать с Fetch
+      </div>
+      <div class="request__button create__Axios">
+        Создать с Axios
+      </div>
+    </div>
+    <div class="requests__get">
+      <div class="request__button get__XML">
+        Получить  с XML
+      </div>
+      <div class="request__button get__Fetch">
+        Получить  с Fetch
+      </div>
+      <div class="request__button get__Axios">
+        Получить  с Axios
+      </div>
+    </div>
+    <div class="requests__edit">
+      <div class="request__button edit__XML">
+        Редактировать  с XML
+      </div>
+      <div class="request__button edit__Fetch">
+        Редактировать  с Fetch
+      </div>
+      <div class="request__button edit__Axios">
+        Редактировать  с Axios
+      </div>
+    </div>
+    <div class="requests__delete">
+      <div class="request__button delet__XML">
+        Удалить  с XML
+      </div>
+      <div class="request__button delet__Fetch">
+        Удалить  с Fetch
+      </div>
+      <div class="request__button delet__Axios">
+        Удалить  с Axios
+      </div>
+    </div>
+  </div>`)
+
     const taskItem = createCardBlock('НазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазвНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазвНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазвНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазвание',
         '#1',
         'Иванов И.И.',
@@ -62,6 +109,53 @@ export const createProject = () => {
     let section = createBlock("section", "card")
     let ul = createBlock("ul", "card__list")
     let div = createBlock('div', 'project', '', true);
+
+    div.insertAdjacentHTML("afterbegin", `<div class="requests">
+    <div class="requests__create">
+      <div class="request__button create__XML">
+        Создать с XML
+      </div>
+      <div class="request__button create__Fetch">
+        Создать с Fetch
+      </div>
+      <div class="request__button create__Axios">
+        Создать с Axios
+      </div>
+    </div>
+    <div class="requests__get">
+      <div class="request__button get__XML">
+        Получить  с XML
+      </div>
+      <div class="request__button get__Fetch">
+        Получить  с Fetch
+      </div>
+      <div class="request__button get__Axios">
+        Получить  с Axios
+      </div>
+    </div>
+    <div class="requests__edit">
+      <div class="request__button edit__XML">
+        Редактировать  с XML
+      </div>
+      <div class="request__button edit__Fetch">
+        Редактировать  с Fetch
+      </div>
+      <div class="request__button edit__Axios">
+        Редактировать  с Axios
+      </div>
+    </div>
+    <div class="requests__delete">
+      <div class="request__button delet__XML">
+        Удалить  с XML
+      </div>
+      <div class="request__button delet__Fetch">
+        Удалить  с Fetch
+      </div>
+      <div class="request__button delet__Axios">
+        Удалить  с Axios
+      </div>
+    </div>
+  </div>`)
 
     const projectItem = createCardBlock('Название',
         '#1',
