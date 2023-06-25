@@ -1,6 +1,6 @@
 const app = document.querySelector("#app");
 const urlPart = "http://45.12.239.156:8081/api/";
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0OGFmMjRkNzI4Nzk3MmNlODY3NmYzNiIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNjg3NTEyMTQ0LCJleHAiOjE2ODc1OTg1NDR9.O_Ov_uaLNit32vNjB-uVWiLexbwqUGZhWaGMBxltljE"
+let token = "";
 let _id = "";
 let _idTask = "";
 let author = "";
@@ -12,6 +12,8 @@ export const installEvent = () => {
     clickItemNavigation(e);
     clickButtonNavigation(e);
     clickCardMenu(e);
+
+    getToken(e);
 
     createProjectXML("проект 1", "1", e);
     getProjectXML(e);
@@ -114,7 +116,31 @@ function mouseLeaveEvent() {
   }
 }
 
+function getToken(e) {
+  let navigationItem = e.target.closest('.get__token');
+  if (navigationItem) {
+    const url = urlPart + `login`;
+    const data = {
+      "login": "galanov.m",
+      "password": "jc63fk"
+    };
 
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = "json";
+    xhr.open("POST", url);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(data));
+    xhr.onload = () => {
+
+      if (xhr.status >= 200 && xhr.status < 300) {
+        token = xhr.response.token;
+        console.log(xhr.response);
+      } else {
+        console.log(`Error ${xhr.status}: ${xhr.statusText}`);
+      }
+    };
+  }
+}
 
 function getProjectXML(e) {
   let navigationItem = e.target.closest('.project .get__XML');
@@ -143,29 +169,33 @@ function getProjectXML(e) {
 function createProjectXML(name, code, e) {
   let navigationItem = e.target.closest('.project .create__XML');
   if (navigationItem) {
-    const url = urlPart + `projects`;
-    const value = {
-      "name": name,
-      "code": code
-    }
-
-    const xhr = new XMLHttpRequest();
-    xhr.responseType = "json";
-    xhr.open("POST", url);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader("Authorization", `Bearer ${token}`);
-    xhr.send(JSON.stringify(value));
-    xhr.onload = () => {
-
-      if (xhr.status >= 200 && xhr.status < 300) {
-        const project = xhr.response;
-        author = project.author;
-        _id = project._id
-        console.log(project);
-      } else {
-        console.log(`Error ${xhr.status}: ${xhr.statusText}`);
+    if (token.length > 0) {
+      const url = urlPart + `projects`;
+      const value = {
+        "name": name,
+        "code": code
       }
-    };
+
+      const xhr = new XMLHttpRequest();
+      xhr.responseType = "json";
+      xhr.open("POST", url);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+      xhr.send(JSON.stringify(value));
+      xhr.onload = () => {
+
+        if (xhr.status >= 200 && xhr.status < 300) {
+          const project = xhr.response;
+          author = project.author;
+          _id = project._id
+          console.log(project);
+        } else {
+          console.log(`Error ${xhr.status}: ${xhr.statusText}`);
+        }
+      };
+    } else {
+      console.log("Получите токен");
+    }
   }
 }
 
@@ -229,28 +259,32 @@ function updateProjectXML(name, code, e) {
 function createProjectFetch(name, code, e) {
   let navigationItem = e.target.closest('.project .create__Fetch');
   if (navigationItem) {
-    const url = urlPart + `projects`;
-    const options = {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ name, code })
-    };
+    if (token.length > 0) {
+      const url = urlPart + `projects`;
+      const options = {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, code })
+      };
 
-    fetch(url, options)
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
-        author = data.author;
-        _id = data._id;
-        console.log(data);
-      })
-      .catch(error => {
-        console.error('Возникла проблема:', error);
-      });
+      fetch(url, options)
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {
+          author = data.author;
+          _id = data._id;
+          console.log(data);
+        })
+        .catch(error => {
+          console.error('Возникла проблема:', error);
+        });
+    } else {
+      console.log("Получите токен");
+    }
   }
 }
 
@@ -342,23 +376,27 @@ function deleteProjectFetch(e) {
 function createProjectAxios(name, code, e) {
   let navigationItem = e.target.closest('.project .create__Axios');
   if (navigationItem) {
-    axios.post(urlPart + `projects`, {
-      name: name,
-      code: code
-    }, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => {
-        author = response.data.author;
-        _id = response.data._id;
-        console.log(response.data);
+    if (token.length > 0) {
+      axios.post(urlPart + `projects`, {
+        name: name,
+        code: code
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
       })
-      .catch(error => {
-        console.error('Возникла проблема:', error);
-      });
+        .then(response => {
+          author = response.data.author;
+          _id = response.data._id;
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.error('Возникла проблема:', error);
+        });
+    } else {
+      console.log("Получите токен");
+    }
   }
 }
 

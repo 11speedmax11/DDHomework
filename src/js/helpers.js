@@ -6,30 +6,33 @@ import { createBlock } from '@/js/createBlocks';
 const app = document.querySelector("#app");
 
 export const ctreateMain = () => {
-    const taskList = document.createElement("main");
-    app.append(taskList);
+  const taskList = document.createElement("main");
+  app.append(taskList);
 };
 
 export const createNavigation = () => {
-    const navItem = createNavigationBlock("Проекты", "Задачи", "Пользователи", "../assets/images/profilPicture.png");
-    app.append(navItem);
+  const navItem = createNavigationBlock("Проекты", "Задачи", "Пользователи", "../assets/images/profilPicture.png");
+  app.append(navItem);
 };
 
 export const createPlug = () => {
-    let main = document.querySelector("main");
-    const plugItem = createEmptyListBlock("Нет ни одного пользователя", "Добавить");
-    let div = createBlock('div', "user");
-    div.append(plugItem);
-    main.append(div);
+  let main = document.querySelector("main");
+  const plugItem = createEmptyListBlock("Нет ни одного пользователя", "Добавить");
+  let div = createBlock('div', "user");
+  div.append(plugItem);
+  main.append(div);
 };
 
 export const createTask = () => {
-    let main = document.querySelector('main');
-    let section = createBlock('section', 'card');
-    let ul = createBlock('ul', 'card__list');
-    let div = createBlock('div', 'task');
+  let main = document.querySelector('main');
+  let section = createBlock('section', 'card');
+  let ul = createBlock('ul', 'card__list');
+  let div = createBlock('div', 'task');
 
-    div.insertAdjacentHTML("afterbegin", `<div class="requests">
+  div.insertAdjacentHTML("afterbegin", `<div class="requests">
+    <div class="request__button get__token">
+        Пполучить токен
+      </div>
     <div class="requests__create">
       <div class="request__button create__XML">
         Создать с XML
@@ -76,41 +79,44 @@ export const createTask = () => {
     </div>
   </div>`)
 
-    const taskItem = createCardBlock('НазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазвНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазвНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазвНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазвание',
-        '#1',
-        'Иванов И.И.',
-        '1 час',
-        'Баранов В.В.',
-        '1 минуту',
-        true,
-        '../img/profilPicture.png',
-        'Черновик');
-    ul.append(taskItem);
+  const taskItem = createCardBlock('НазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазвНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазвНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазвНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазвание',
+    '#1',
+    'Иванов И.И.',
+    '1 час',
+    'Баранов В.В.',
+    '1 минуту',
+    true,
+    '../img/profilPicture.png',
+    'Черновик');
+  ul.append(taskItem);
 
-    const taskItemTwo = createCardBlock('звНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНиеНаззваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазвание',
-        '#1',
-        'Иванов И.И.',
-        '1 час',
-        'Баранов В.В.',
-        '1 минуту',
-        true,
-        '../img/profilPicture.png',
-        'Черновик');
-    ul.append(taskItemTwo);
+  const taskItemTwo = createCardBlock('звНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНиеНаззваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазваниеНазвание',
+    '#1',
+    'Иванов И.И.',
+    '1 час',
+    'Баранов В.В.',
+    '1 минуту',
+    true,
+    '../img/profilPicture.png',
+    'Черновик');
+  ul.append(taskItemTwo);
 
-    section.append(ul);
-    div.append(section);
-    main.append(div);
+  section.append(ul);
+  div.append(section);
+  main.append(div);
 };
 
 
 export const createProject = () => {
-    let main = document.querySelector("main");
-    let section = createBlock("section", "card")
-    let ul = createBlock("ul", "card__list")
-    let div = createBlock('div', 'project', '', true);
+  let main = document.querySelector("main");
+  let section = createBlock("section", "card")
+  let ul = createBlock("ul", "card__list")
+  let div = createBlock('div', 'project', '', true);
 
-    div.insertAdjacentHTML("afterbegin", `<div class="requests">
+  div.insertAdjacentHTML("afterbegin", `<div class="requests">
+    <div class="request__button get__token">
+    Пполучить токен
+  </div>
     <div class="requests__create">
       <div class="request__button create__XML">
         Создать с XML
@@ -157,25 +163,25 @@ export const createProject = () => {
     </div>
   </div>`)
 
-    const projectItem = createCardBlock('Название',
-        '#1',
-        'Иванов И.И.',
-        '1 час',
-        'Баранов В.В.',
-        '1 минуту',
-        false);
-    ul.append(projectItem);
+  const projectItem = createCardBlock('Название',
+    '#1',
+    'Иванов И.И.',
+    '1 час',
+    'Баранов В.В.',
+    '1 минуту',
+    false);
+  ul.append(projectItem);
 
-    const projectItemTwo = createCardBlock('Название',
-        '#1',
-        'Иванов И.И.',
-        '1 час',
-        'Баранов В.В.',
-        '1 минуту',
-        false);
-    ul.append(projectItemTwo);
+  const projectItemTwo = createCardBlock('Название',
+    '#1',
+    'Иванов И.И.',
+    '1 час',
+    'Баранов В.В.',
+    '1 минуту',
+    false);
+  ul.append(projectItemTwo);
 
-    section.append(ul);
-    div.append(section);
-    main.append(div);
+  section.append(ul);
+  div.append(section);
+  main.append(div);
 };
