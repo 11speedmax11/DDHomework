@@ -1,30 +1,30 @@
 <template>
   <div id="app">
     <NavigationMenu />
-    <UserList />
+    <!-- <UserList /> -->
     <ProjectList :projectList="projectList" />
-    <ProjectList/>
-    <TaskList :taskList="taskList" />
-    <TaskList/>
-    <UserProfile />
+    <!-- <ProjectList/> -->
+    <!-- <TaskList :taskList="taskList" /> -->
+    <!-- <TaskList/> -->
+    <!-- <UserProfile /> -->
   </div>
 </template>
 
 <script>
 import NavigationMenu from "./components/NavigationMenu/NavigationMenu.vue";
 import ProjectList from "./views/ProjectList/ProjectList.vue";
-import TaskList from "./views/TaskList/TaskList.vue";
-import UserProfile from "./views/UserProfile/UserProfile.vue";
-import UserList from "./views/UserList/UserList.vue";
+// import TaskList from "./views/TaskList/TaskList.vue";
+// import UserProfile from "./views/UserProfile/UserProfile.vue";
+// import UserList from "./views/UserList/UserList.vue";
 
 export default {
   name: "App",
   components: {
     NavigationMenu,
     ProjectList,
-    TaskList,
-    UserProfile,
-    UserList,
+    // TaskList,
+    // UserProfile,
+    // UserList,
   },
   data() {
     return {
