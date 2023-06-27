@@ -1,5 +1,5 @@
 <template>
-  <div class="input-wrapper control">
+  <div class="input-custom">
     <input
       class="input"
       :class="[{ 'erorr': isErorr }]"
