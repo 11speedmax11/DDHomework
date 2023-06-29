@@ -1,10 +1,9 @@
 <template>
-  <div class="input-wrapper control">
+  <div class="input-custom">
     <input
       class="input"
-      :class="[{ 'erorr': isErorr }]"
       :value="value"
-      :disabled="disabled"
+      :placeholder="placeholder"
       @input="$emit('input', $event.target.value)"
     />
   </div>
@@ -14,16 +13,9 @@
 export default {
   props: {
     value: String,
+    placeholder: String,
   },
-  computed: {
-    isErorr() {
-      console.log(this.value)
-      return this.value.length < 4;
-    },
-    disabled() {
-      return this.value.length > 10;
-    },
-  },
+  computed: {},
   methods: {},
 };
 </script>

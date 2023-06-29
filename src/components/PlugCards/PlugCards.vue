@@ -1,7 +1,9 @@
 <template>
   <section class="empty-list">
-    <p class="empty-list__text">Не создан ни один проект</p>
-    <CustomButton classButton="empty-list__button"> Добавить</CustomButton>
+    <p class="empty-list__text">{{ textPlug }}</p>
+    <CustomButton classButton="empty-list__button" @click="click">
+      Добавить</CustomButton
+    >
   </section>
 </template>
 
@@ -12,9 +14,15 @@ export default {
 
   props: {
     name: String,
+    textPlug: String,
   },
   components: {
     CustomButton,
+  },
+  methods: {
+    click() {
+      this.$emit('click');
+    },
   },
 };
 </script>

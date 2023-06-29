@@ -1,5 +1,5 @@
 <template>
-  <svg :class="svgClass" xmlns="http://www.w3.org/2000/svg">
+  <svg :class="svgClass" :style="styleSize" xmlns="http://www.w3.org/2000/svg">
     <use :xlink:href="iconPath" xmlns:xlink="http://www.w3.org/1999/xlink" />
   </svg>
 </template>
@@ -10,7 +10,15 @@ export default {
 
   props: {
     name: String,
-    svgClass: String
+    svgClass: String,
+    svgWidth: {
+      type: String,
+      default: "24px",
+    },
+    svgHeight: {
+      type: String,
+      default: "24px",
+    },
   },
 
   computed: {
@@ -21,6 +29,13 @@ export default {
       }
 
       return icon.url;
+    },
+    styleSize() {
+      let style = {};
+      style.width = this.svgWidth;
+      style.height = this.svgHeight;
+
+      return style;
     },
   },
 };

@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <InputField :value="searchText" @input="changeSearch" />
+    <InputField :placeholder="'Введите текст'" />
   </div>
 </template>
 <script>
@@ -10,19 +10,10 @@ export default {
   components: {
     InputField,
   },
-  data() {
-    return {
-      searchText: "nullwerwere",
-    };
-  },
-  methods: {
-    changeSearch(val) {
-      console.log(val);
-      this.searchText = val;
-    },
-  },
-  };
+  methods: {},
+};
 </script>
 
-<style lang="scss">
+<style lang="scss" >
+@import "./index.scss";
 </style>

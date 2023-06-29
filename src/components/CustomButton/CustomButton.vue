@@ -1,8 +1,19 @@
 <template>
-  <button :class="classButton" type="button" @click="$emit('click')" :disabled="disabled">
+  <button
+    :class="classButton"
+    type="button"
+    @click="$emit('click')"
+
+  >
     <slot></slot>
     <div class="header__icon">
-      <SvgIcon :name="icon" :svgClass="xClass" v-if="icon" />
+      <SvgIcon
+        :name="icon"
+        :svgClass="xClass"
+        v-if="icon"
+        :svgHeight="svgHeight"
+        :svgWidth="svgWidth"
+      />
     </div>
   </button>
 </template>
@@ -17,17 +28,15 @@ export default {
     xClass: String,
     classButton: {
       type: String,
-      default: "button"
+      default: "button",
     },
+    svgWidth: String,
+    svgHeight: String,
   },
   components: {
     SvgIcon,
   },
-  computed: {
-    disabled() {
-      return this.classButton == "navigation__item"
-    }
-  },
+
 };
 </script>
 

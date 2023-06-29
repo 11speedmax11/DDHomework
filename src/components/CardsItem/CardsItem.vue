@@ -18,6 +18,7 @@
               <span class="card__number">{{ item._id }}</span
               >{{ item.author }} создал {{ item.dateCreated }}
               <span class="card__state" v-if="item.code">{{ item.code }}</span>
+              <StatusTask :name="item.code" v-if="item.code"/>
             </p>
             <p class="card__chang">{{ item.dateEdited }}</p>
           </div>
@@ -39,6 +40,7 @@
 <script>
 import DropDownButton from "@/components/DropDownButton/DropDownButton.vue";
 import CustomButton from "@/components/CustomButton/CustomButton.vue";
+import StatusTask from "@/components/StatusTask/StatusTask.vue";
 
 export default {
   name: "CardsItem",
@@ -49,6 +51,7 @@ export default {
   components: {
     DropDownButton,
     CustomButton,
+    StatusTask,
   },
 };
 </script>

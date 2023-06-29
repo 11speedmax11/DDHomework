@@ -1,17 +1,19 @@
 <template>
   <header class="header">
     <nav class="navigation">
-      <CustomButton classButton="navigation__item"> Проекты </CustomButton>
-      <CustomButton classButton="navigation__item"> Задачи </CustomButton>
-      <CustomButton classButton="navigation__item"> Пользователи </CustomButton>
+      <CustomButton classButton="navigation__item" @click="selectTab('ProjectList')">Проекты</CustomButton>
+      <CustomButton classButton="navigation__item" @click="selectTab('TaskList')">Задачи</CustomButton>
+      <CustomButton classButton="navigation__item" @click="selectTab('UserList')">Пользователи</CustomButton>
     </nav>
     <DropDownButton
       :imgClass="'header__img'"
       :classButton="'header__button'"
       icon="vector"
+      :svgHeight="'8px'"
+      :svgWidth="'13px'"
       xClass="header__svg"
     >
-      <CustomButton classButton="header__profile">Профиль</CustomButton>
+      <CustomButton classButton="header__profile"  @click="selectTab('UserProfile')">Профиль</CustomButton>
       <CustomButton classButton="header__exit">Выход</CustomButton>
     </DropDownButton>
   </header>
@@ -26,6 +28,11 @@ export default {
   components: {
     CustomButton,
     DropDownButton,
+  },
+  methods: {
+    selectTab(tab) {
+      this.$emit("tabSelected", tab);
+    },
   },
 };
 </script>

@@ -1,9 +1,11 @@
 <template>
-  <div class="dropdown" :class="[{ 'disabled': disabled }]">
+  <div class="dropdown" :class="[{ disabled: disabled }, { active: isActive }]">
     <CustomButton
       :xClass="xClass"
       :icon="icon"
       :classButton="classButton"
+      :svgHeight="svgHeight"
+      :svgWidth="svgWidth"
       @click="toggle"
     >
       <span v-if="label"> {{ label }}</span>
@@ -41,6 +43,8 @@ export default {
     imgClass: String,
     classButton: String,
     xClass: String,
+    svgWidth: String,
+    svgHeight: String,
   },
   computed: {
     disabled() {

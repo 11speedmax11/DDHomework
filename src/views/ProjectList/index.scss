@@ -1,0 +1,10 @@
+.project__search {
+  display: flex;
+  justify-content: space-between;
+  margin: 24px;
+  height: 42px;
+}
+
+.empty-list {
+  height: calc(100vh - 148px);
+}

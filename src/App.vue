@@ -1,30 +1,34 @@
 <template>
   <div id="app">
-    <NavigationMenu />
+    <NavigationMenu @tabSelected="updateTab" />
     <!-- <UserList /> -->
-    <ProjectList :projectList="projectList" />
-    <!-- <ProjectList/> -->
+    <!-- <ProjectList :projectList="projectList" /> -->
+    <!-- <ProjectList /> -->
     <!-- <TaskList :taskList="taskList" /> -->
-    <!-- <TaskList/> -->
+    <!-- <TaskList /> -->
     <!-- <UserProfile /> -->
+    <!-- <Createask /> -->
+    <component :is="activeTab"></component>
   </div>
 </template>
 
 <script>
 import NavigationMenu from "./components/NavigationMenu/NavigationMenu.vue";
 import ProjectList from "./views/ProjectList/ProjectList.vue";
-// import TaskList from "./views/TaskList/TaskList.vue";
-// import UserProfile from "./views/UserProfile/UserProfile.vue";
-// import UserList from "./views/UserList/UserList.vue";
+import TaskList from "./views/TaskList/TaskList.vue";
+import UserProfile from "./views/UserProfile/UserProfile.vue";
+import UserList from "./views/UserList/UserList.vue";
+import Createask from "./components/CreateTask/CreateTask.vue";
 
 export default {
   name: "App",
   components: {
     NavigationMenu,
     ProjectList,
-    // TaskList,
-    // UserProfile,
-    // UserList,
+    TaskList,
+    UserProfile,
+    UserList,
+    Createask,
   },
   data() {
     return {
@@ -36,7 +40,7 @@ export default {
           dateEdited: "Баранов В.В. изменил 1 минуту назад",
           _id: "№1",
           name: "проект",
-          code: "черновик",
+          code: "Черновик",
         },
         {
           author: "Иванов И.И.",
@@ -45,7 +49,7 @@ export default {
           dateEdited: "Баранов В.В. изменил 1 минуту назад",
           _id: "id2",
           name: "name33333333",
-          code: "черновик",
+          code: "В работе",
         },
         {
           author: "пользователь",
@@ -54,7 +58,7 @@ export default {
           dateEdited: "Баранов В.В. изменил 10 минуту назад",
           _id: "№13",
           name: "проект",
-          code: "черновик",
+          code: "Завершена",
         },
         {
           author: "пользователь",
@@ -63,7 +67,7 @@ export default {
           dateEdited: "Баранов В.В. изменил 1 минуту назад",
           _id: "id4",
           name: "name123",
-          code: "черновик",
+          code: "Тестирование",
         },
         {
           author: "Галанов М.Э.",
@@ -72,7 +76,7 @@ export default {
           dateEdited: "Баранов В.В. изменил 10 минуту назад",
           _id: "id5",
           name: "name225151",
-          code: "черновик",
+          code: "Выполнена",
         },
       ],
       taskList: [
@@ -122,12 +126,18 @@ export default {
           code: null,
         },
       ],
+      activeTab: "ProjectList",
     };
+  },
+  methods: {
+    updateTab(tab) {
+      this.activeTab = tab;
+    },
   },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" >
 body {
   margin: 0;
 }

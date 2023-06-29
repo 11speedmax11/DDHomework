@@ -64,9 +64,7 @@ body {
   transition: border 0.5s ease, background-color 0.5s ease;
 }
 
-.header__button:hover {
-  border: 1px solid $border-color-default;
-}
+
 
 .header__button:active {
   background: $background-color-secondary;
@@ -139,4 +137,13 @@ body {
   background: $background-color-secondary;
   border: 1px solid $border-color-default;
   color: $font-color-disabled;
+}
+
+svg{
+  transition: transform 0.3s ease;
+}
+
+.dropdown.active .header__button svg{
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
 }
