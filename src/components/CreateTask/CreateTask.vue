@@ -37,7 +37,7 @@
           <div class="create-task__value">
             <CustomSelect
               class="create-task__project"
-              v-model="task.executor"
+              v-model="task.project"
               :options="['Проект 1', 'Проект 2']"
             >
             </CustomSelect>
