@@ -12,6 +12,7 @@
   "main": "babel.config.js",
   "dependencies": {
     "core-js": "^3.8.3",
+    "v-click-outside": "^3.2.0",
     "vue": "^2.6.14"
   },
   "devDependencies": {
@@ -22,6 +23,7 @@
     "@vue/cli-service": "~5.0.0",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
+    "mini-css-extract-plugin": "^2.7.6",
     "node-sass": "^9.0.0",
     "sass-loader": "^13.3.2",
     "svg-sprite-loader": "^6.0.11",

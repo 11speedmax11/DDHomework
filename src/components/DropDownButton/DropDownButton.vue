@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown" :class="[{ disabled: disabled }, { active: isActive }]">
+  <div class="dropdown" :class="[{ disabled: disabled }, { active: isActive }]"  v-click-outside="closeMenu">
     <CustomButton
       :xClass="xClass"
       :icon="icon"
@@ -56,6 +56,9 @@ export default {
     toggle() {
       this.isActive = !this.isActive;
     },
+    closeMenu(){
+      this.isActive = false;
+    }
   },
 };
 </script>

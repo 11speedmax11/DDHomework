@@ -1,5 +1,6 @@
 const path = require('path');
 const { defineConfig } = require('@vue/cli-service')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = defineConfig({
   pluginOptions: { // Это объект, который можно использовать для передачи произвольных параметров сторонним плагинам.
     svgSprite: {  // указываем название правила
@@ -10,6 +11,11 @@ module.exports = defineConfig({
       },
     } 
   }, 
+  configureWebpack: {
+    plugins: [
+      new MiniCssExtractPlugin(),
+    ],
+  },
   chainWebpack: config => { // позволяет модифицировать внутреннюю конфигурацию webpack
     config.module // обращаемся к опции хранящей настройки для загрузки (импорта) модулей
         .rule('svg-sprite') // название правила
