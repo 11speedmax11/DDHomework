@@ -23,3 +23,8 @@ $border-shadow-color-rgba: rgba(0, 0, 0, 0.25);
 body {
   margin: 0;
 }
+
+.main{
+  min-width: 1024px;
+  min-height: calc(100vh - 100px);
+}

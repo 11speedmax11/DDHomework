@@ -1,5 +1,7 @@
-@import "../../scssVars.scss";
-
+@import "@/scssVars.scss";
+.project{
+  height: calc(100vh - 100px);
+}
 .card__head {
   display: flex;
   flex-direction: row;
@@ -37,12 +39,14 @@
 
 .card__name {
   margin: 0 16px;
+  cursor: pointer
 }
 
 .card__list {
   list-style: none;
-  padding: 0;
-  margin: 20px;
+  padding: 20px;
+  padding-top: 0;
+  margin: 0;
 }
 
 
@@ -61,20 +65,6 @@
 .card__number {
   margin-right: 16px;
   color: $font-color-primary;
-}
-
-// .card__state {
-//   margin: 0 16px;
-//   padding: 0px 8px;
-
-//   background: $background-color-bronze;
-//   border-radius: 4px;
-//   color: $font-color-secondary;
-// }
-
-.card__creat {
-  margin: 0;
-  color: $font-color-disabled;
 }
 
 .card__chang {
@@ -107,46 +97,13 @@
   box-shadow: 0px 0px 4px $border-shadow-color-rgba;
 }
 
-.card__edit:hover,
-.card__delete:hover {
-  background: $background-color-secondary-hover;
-}
-
-.card__edit:active,
-.card__delete:active {
-  background: $background-color-primary-disabled;
-}
-
-
-.card__edit,
-.card__delete {
-  display: flex;
-  align-items: center;
-  height: 35px
-}
-
-.card__edit p,
-.card__delete p {
-  margin-left: 16px;
-}
 
 .card__icon {
   width: 42px;
   height: 42px;
-  background: $background-color-secondary;
-  border: 1px solid $border-color-rgba;
-  border-radius: 4px;
+  padding: 0;
 }
 
-.card__icon:hover {
-  background: $background-color-secondary-hover;
-  border: 1px solid $border-color-rgba-hover;
-}
-
-.card__icon:active {
-  background: $background-color-primary-disabled;
-  border: 1px solid $border-color-active;
-}
 
 .card__svg {
   height: 24px;
@@ -155,4 +112,8 @@
 
 .card__delete {
   color: $font-color-delete;
+}
+
+.card__status {
+  margin-left: 8px;
 }

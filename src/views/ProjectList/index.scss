@@ -1,8 +1,12 @@
 .project__search {
   display: flex;
   justify-content: space-between;
-  margin: 24px;
+  padding: 24px;
   height: 42px;
+
+  .input-custom {
+    width: 616px;
+  }
 }
 
 .empty-list {

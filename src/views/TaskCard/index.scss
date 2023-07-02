@@ -1,0 +1,111 @@
+@import "@/scssVars.scss";
+
+.task-card {
+  padding: 24px;
+  height: calc(100vh - 148px);
+}
+
+.task-card__back {
+  margin-bottom: 24px;
+}
+
+.task-card__back .button {
+  display: flex;
+  height: 42px;
+  align-items: center;
+  padding-left: 8px;
+
+  .header__start-icon{
+    padding-top: 8px;
+    transform: rotate(90deg);
+  }
+}
+
+.task-card__body {
+  border: 1px solid $border-color-rgba;
+  display: flex;
+}
+
+.task-card__project {
+  height: 42px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.project__information {
+  display: flex;
+}
+
+.project__code {
+  margin-left: 16px;
+}
+
+.task-card__name {
+  margin: 16px 0;
+}
+
+.task-card__information {
+  display: flex;
+}
+
+.task-card__current-status,
+.description__date {
+  display: flex;
+  align-items: center;
+}
+
+.task-card__current-status .card__status {
+  margin: 0;
+}
+
+.task-card__create-date {
+  display: flex;
+  margin: 0 16px;
+  align-items: center;
+}
+
+.description__information {
+  display: flex;
+}
+
+.task-card__header {
+  padding: 24px;
+  border-bottom: 1px solid $border-color-rgba;
+}
+
+.task-card__aside {
+  padding: 24px;
+  width: 252px;
+  border-left: 1px solid $border-color-rgba;
+}
+
+.task-card__main {
+  width: calc(100% - 300px);
+}
+
+.task-card__description {
+  padding: 24px;
+}
+
+.description__text {
+  margin-bottom: 16px;
+}
+
+.description__author {
+  padding: 8px 16px;
+}
+
+.custom-select {
+  width: 100%;
+  padding: 0;
+}
+
+.project__icon {
+  height: 42px;
+  width: 42px;
+  padding: 0;
+}
+
+.project__delete {
+  color: $font-color-delete;
+}

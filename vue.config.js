@@ -11,9 +11,13 @@ module.exports = defineConfig({
       },
     } 
   }, 
-  configureWebpack: {
-    plugins: [
-      new MiniCssExtractPlugin(),
+  plugins: [new MiniCssExtractPlugin()],
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
+      },
     ],
   },
   chainWebpack: config => { // позволяет модифицировать внутреннюю конфигурацию webpack

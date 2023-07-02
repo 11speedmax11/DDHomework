@@ -2,7 +2,7 @@
 
 .profile {
   display: flex;
-  margin: 24px;
+  padding: 24px;
 }
 
 .profile__image {
@@ -58,17 +58,15 @@
 .card__icon {
   width: 42px;
   height: 42px;
-  background: $background-color-secondary;
-  border: 1px solid $border-color-rgba;
-  border-radius: 4px;
+  padding: 0;
+
 }
 
-.card__icon:hover {
-  background: $background-color-secondary-hover;
-  border: 1px solid $border-color-rgba-hover;
-}
 
-.card__icon:active {
-  background: $background-color-primary-disabled;
-  border: 1px solid $border-color-active;
+
+.header__icon {
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

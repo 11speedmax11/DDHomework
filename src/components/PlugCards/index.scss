@@ -24,8 +24,8 @@
 
 .empty-list__button {
   padding: 12px 16px;
-  width: 98px;
-  height: 42px;
+  min-width: 98px;
+  min-height: 42px;
   background: $background-color-primary;
   border-radius: 4px;
   border: 0;

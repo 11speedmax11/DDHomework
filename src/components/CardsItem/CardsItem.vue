@@ -4,7 +4,9 @@
       <li class="card__item">
         <div class="card__base">
           <div class="card__head">
-            <p class="card__name">{{ item.name }}</p>
+            <p class="card__name" @click="openCard(item._id)">
+              {{ item.name }}
+            </p>
             <img
               :class="classImg"
               src="@/assets/images/profilPicture.png"
@@ -17,8 +19,7 @@
             <p class="card__content">
               <span class="card__number">{{ item._id }}</span
               >{{ item.author }} создал {{ item.dateCreated }}
-              <span class="card__state" v-if="item.code">{{ item.code }}</span>
-              <StatusTask :name="item.code" v-if="item.code"/>
+              <StatusTask :name="item.code" v-if="item.code" />
             </p>
             <p class="card__chang">{{ item.dateEdited }}</p>
           </div>
@@ -28,9 +29,21 @@
             :classButton="'card__icon'"
             icon="dots"
             xClass="card__svg"
+            :buttonsArr="[
+              {
+                buttonStyle: 'dropDown',
+                classButton: 'card__edit',
+                click: '',
+                title: 'Редактировать',
+              },
+              {
+                buttonStyle: 'dropDown',
+                classButton: 'card__delete',
+                click: '',
+                title: 'Удалить',
+              },
+            ]"
           >
-            <CustomButton classButton="card__edit">Редактировать</CustomButton>
-            <CustomButton classButton="card__delete">Удалить</CustomButton>
           </DropDownButton>
         </div>
       </li>
@@ -39,7 +52,6 @@
 </template>
 <script>
 import DropDownButton from "@/components/DropDownButton/DropDownButton.vue";
-import CustomButton from "@/components/CustomButton/CustomButton.vue";
 import StatusTask from "@/components/StatusTask/StatusTask.vue";
 
 export default {
@@ -50,8 +62,12 @@ export default {
   },
   components: {
     DropDownButton,
-    CustomButton,
     StatusTask,
+  },
+  methods: {
+    openCard(id) {
+      this.$router.push(`TaskList/${id}`);
+    },
   },
 };
 </script>

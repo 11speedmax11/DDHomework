@@ -1,5 +1,5 @@
 <template>
-  <svg :class="svgClass" :style="styleSize" xmlns="http://www.w3.org/2000/svg">
+  <svg :class="svgClass" :style="styleSize" xmlns="http://www.w3.org/2000/svg" @click="$emit('click')">
     <use :xlink:href="iconPath" xmlns:xlink="http://www.w3.org/1999/xlink" />
   </svg>
 </template>

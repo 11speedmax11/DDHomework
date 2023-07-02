@@ -1,18 +1,21 @@
 @import "@/scssVars.scss";
 
-.create-task {
+.create-task{
   padding: 24px;
+  height: calc(100vh - 150px);
 }
 
 .create-task__wrapper {
   padding: 24px;
   border: 1px solid $border-color-rgba;
+  height: calc(100% - 48px);
 }
 
 .create-task__header {
   font-size: 40px;
   font-weight: 600;
   margin: 10px;
+  margin-top: 0;
 }
 
 .create-task__body {
@@ -47,7 +50,7 @@
   margin: 0;
   padding: 10px;
   resize: none;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid $border-color-rgba;
   border-radius: 4px;
   outline: none;
 }
@@ -60,7 +63,7 @@
   margin: 24px 0;
   height: 1px;
   width: 100%;
-  background: rgba(0, 0, 0, 0.15);
+  background: $border-color-rgba;
 }
 
 .create-task__buttons {

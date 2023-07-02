@@ -1,7 +1,32 @@
-input{
-  width: calc(100% - 28px);
-  padding: 10px 12px;
+@import "@/scssVars.scss";
+
+input {
   margin: 0;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 0;
+  outline: none;
+  flex: 1;
+}
+
+.input-custom {
+  padding: 10px 12px;
+  border: 1px solid $border-color-rgba;
   border-radius: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.isSearch {
+  padding: 10px 8px 10px 12px;
+}
+
+.input-custom svg {
+  margin-left: 8px;
+}
+
+.input-custom .svgClear {
+  color: $border-color-rgba;
+}
+
+.input-custom .svgSearch {
+  color: $font-color-disabled;
 }

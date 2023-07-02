@@ -52,7 +52,9 @@
 .custom-select svg{
   color: $font-color-disabled;
 }
-
+.custom-select.active .selected-option{
+  border: 1px solid $border-color-active;
+}
 .custom-select.active svg{
   transform: rotate(180deg);
 }
@@ -60,4 +62,8 @@
 .custom-select ul {
   display: block;
   z-index: 3;
+}
+
+.selected-text.placeholder {
+  color: $font-color-disabled;
 }

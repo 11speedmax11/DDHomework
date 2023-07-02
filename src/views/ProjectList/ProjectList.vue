@@ -5,8 +5,8 @@
       v-if="this.projectList && this.projectList.length != 0"
     >
       <div class="project__search">
-        <InputField :placeholder="'Введите текст'" />
-        <CustomButton classButton="project__add">
+        <InputField placeholder='Поиск...' :isClear="true" :isSearch="true" />
+        <CustomButton buttonStyle="secondary" classButton="project__add">
           Добавить
         </CustomButton>
       </div>

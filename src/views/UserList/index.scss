@@ -1,0 +1,23 @@
+@import "@/scssVars.scss";
+
+.user-list{
+  padding: 24px;
+
+}
+
+.user-list__search {
+  display: flex;
+  justify-content: space-between;
+  height: 42px;
+
+  .input-custom{
+    width: 616px;
+  }
+}
+
+.user-list__item {
+  border-bottom: 1px solid  $border-color-active;
+  display: flex;
+  padding: 9px 16px 9px 0px;
+  align-items: center;
+}
