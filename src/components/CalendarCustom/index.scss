@@ -1,0 +1,92 @@
+.calendar {
+  width: 304px;
+  padding: 16px;
+  box-shadow: 0px 8px 32px 0px rgba(64, 64, 122, 0.12);
+  background-color: #ffffff;
+  z-index: 3;
+}
+
+.calendar__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.calendar__table {
+  border-spacing: 4px 0px;
+}
+
+.calendar__table-header,
+.calendar__table-cell {
+  padding: 9px;
+  text-align: center;
+  height: 20px;
+  width: 20px;
+  border: 1px solid #fff;
+  border-radius: 50%;
+}
+
+.calendar__table-cell p {
+  margin: 0;
+  height: 20px;
+  width: 20px;
+}
+
+.calendar__table-header {
+  color: #ccc;
+  font-weight: normal;
+}
+
+.calendar__table-cell.today {
+  border: 1px solid #1F75CB;
+}
+
+.calendar__table-cell.selected {
+  background-color: #1F75CB;
+  color: #ffffff;
+}
+
+.calendar__table-cell.grayed {
+  color: #ccc;
+}
+
+.calendar__table tr > * {
+  margin-right: 4px;
+}
+.calendar__line{
+  width: calc(100% * 7 + 6 * 4px);
+  border-bottom: 1px solid #ccc;
+}
+
+.calendar__header .button{
+  padding: 0;
+  min-height: 24px;
+  color: #ccc;
+  border: 0;
+  background: #fff;
+}
+.calendar__header .button:hover{
+  border: 0;
+  background: #fff;
+}
+
+.calendar__header .button:active{
+  border: 0;
+  background: #fff;
+}
+.calendar__back-btn{
+  transform: rotate(90deg);
+}
+
+.calendar__next-btn{
+  transform: rotate(270deg);
+}
+
+.calendar__year .selected-option{
+  width: 78px;
+}
+
+.calendar__month .selected-option{
+  width: 108px;
+}

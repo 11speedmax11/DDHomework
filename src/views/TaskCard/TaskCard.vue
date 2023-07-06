@@ -102,7 +102,6 @@
 </template> 
 <script>
 import CustomButton from "@/components/CustomButton/CustomButton.vue";
-// import InputField from "@/components/InputField/InputField.vue";
 import CustomSelect from "@/components/CustomSelect/CustomSelect.vue";
 import DropDownButton from "@/components/DropDownButton/DropDownButton.vue";
 import StatusTask from "@/components/StatusTask/StatusTask.vue";

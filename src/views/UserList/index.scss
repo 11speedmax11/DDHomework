@@ -1,6 +1,6 @@
 @import "@/scssVars.scss";
 
-.user-list{
+.user-list {
   padding: 24px;
 
 }
@@ -9,15 +9,26 @@
   display: flex;
   justify-content: space-between;
   height: 42px;
+  gap: 24px;
 
-  .input-custom{
-    width: 616px;
+
+  .button {
+    padding: 9px;
+  }
+
+  .input-custom {
+    width: 100%;
   }
 }
 
 .user-list__item {
-  border-bottom: 1px solid  $border-color-active;
+  border-bottom: 1px solid $border-color-active;
   display: flex;
   padding: 9px 16px 9px 0px;
   align-items: center;
+}
+
+.user-list__search .isTurn svg {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
 }

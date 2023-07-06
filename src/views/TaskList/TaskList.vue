@@ -2,7 +2,25 @@
   <div class="main">
     <div class="task__list" v-if="this.taskList && this.taskList.length != 0">
       <div class="task__search">
-        <InputField placeholder='Поиск...' :isClear="true" :isSearch="true" />
+        <InputField
+          @search="setValueSearch"
+          placeholder="Поиск..."
+          :value="this.searchText"
+          :isClear="true"
+          :isSearch="true"
+        />
+
+        <FilterValues :filter="filterValue" @applyFilter="applyFilter" />
+        <CustomSelect
+          class="task__select"
+          :options="['По названию', 'По автору', 'По статусу', 'По исполнителю', 'По дате создания', 'По дате обновления ']"
+          :selectedOption="sortingText"
+          :isSearch="true"
+          :isTurn="sortOrderValue"
+          @input="sortOrder"
+          @turnIcon="turnIcon"
+        >
+        </CustomSelect>
         <CustomButton
           buttonStyle="secondary"
           classButton="task__add"
@@ -21,19 +39,20 @@ import CardsItem from "@/components/CardsItem/CardsItem.vue";
 import PlugCards from "@/components/PlugCards/PlugCards.vue";
 import InputField from "@/components/InputField/InputField.vue";
 import CustomButton from "@/components/CustomButton/CustomButton.vue";
-// import CreateTask from "@/components/CreateTask/CreateTask.vue";
+import CustomSelect from "@/components/CustomSelect/CustomSelect.vue";
+import FilterValues from "@/components/FilterValues/FilterValues.vue";
+
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-  name: "TaskList",
-  props: {
-    // taskList: Array,
-  },
+  props: {},
   components: {
     CardsItem,
     PlugCards,
     InputField,
     CustomButton,
-    // CreateTask,
+    CustomSelect,
+    FilterValues,
   },
   data() {
     return {
@@ -86,15 +105,47 @@ export default {
       ],
     };
   },
-  methods: {
-    click() {
-      this.$router.push(`CreateTask`);
+  computed: {
+    ...mapGetters("task", ["filter", "search", "sorting", "sortOrderValues"]),
+    filterValue() {
+      return this.filter;
+    },
+    searchText() {
+      return this.search;
+    },
+    sortingText() {
+      return this.sorting;
+    },
+    sortOrderValue() {
+      return this.sortOrderValues;
     },
   },
-  computed: {},
+  methods: {
+    ...mapActions("task", [
+      "setFilter",
+      "setSearch",
+      "setOrder",
+      "setSortOrderValues",
+    ]),
+    click() {
+      this.$router.push(`TaskList/CreateTask`);
+    },
+    setValueSearch(value) {
+      this.setSearch(value);
+    },
+    sortOrder(value) {
+      this.setOrder(value);
+    },
+    applyFilter(value) {
+      this.setFilter(value);
+    },
+    turnIcon(value) {
+      this.setSortOrderValues(value);
+    },
+  },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "./index.scss";
 </style>

@@ -4,10 +4,14 @@
     :class="[{ active: isDropdownOpen }, xClass]"
     v-click-outside="closeSelect"
   >
-    <div class="custom-select__wrapper" :class="[{ search: isSearch }, {turn: isTurn }]">
+    <div class="custom-select__wrapper" :class="{ search: isSearch }">
       <div class="selected-option" @click="toggleDropdown">
-        <div class="selected-text" :class="{ placeholder: !selectedOption }">
-          {{ selectedOption || placeholder }}
+        <div
+          class="selected-text"
+          :class="{ placeholder: !selectedOption.length }"
+        >
+          <span v-if="selectedOption.length">Выбрано: </span>
+          {{ selectedOption.length || placeholder }}
         </div>
         <div class="custom-select__svg">
           <SvgIcon :name="'vector'" svgClass="svg__select" />
@@ -19,12 +23,26 @@
         icon="sort-up"
         buttonStyle="secondary"
         v-if="isSearch"
-        @click="turnIcon"
       />
     </div>
     <ul class="options" v-show="isDropdownOpen">
-      <li v-for="option in options" :key="option" @click="selectOption(option)">
-        {{ option }}
+      <li
+        v-for="option in options"
+        :key="option"
+        @click="selectOption(option)"
+        :class="{ search: isActive(option) }"
+      >
+        <div class="options__check">
+          <SvgIcon
+            :name="'check'"
+            svgClass="options__svg"
+            v-if="!isActive(option)"
+          />
+          <SvgIcon :name="'check_active'" svgClass="options__svg" v-else />
+        </div>
+        <div class="options__value">
+          {{ option }}
+        </div>
       </li>
     </ul>
   </div>
@@ -49,28 +67,32 @@ export default {
     placeholder: String,
     isSearch: Boolean,
     selectedOption: {
-      type: String,
-      default: null,
-    },
-    isTurn: {
-      type: Boolean,
-      default: false,
+      type: Array,
+      default: () => [],
     },
   },
+  computed: {},
   methods: {
     toggleDropdown() {
       this.isDropdownOpen = !this.isDropdownOpen;
     },
     selectOption(option) {
-      this.isDropdownOpen = false;
-      this.$emit("input", option);
+      const arrOption = [...this.selectedOption];
+      if (this.selectedOption.includes(option)) {
+        this.$emit(
+          "optionSelected",
+          arrOption.filter((x) => x != option)
+        );
+      } else {
+        arrOption.push(option);
+        this.$emit("optionSelected", arrOption);
+      }
     },
     closeSelect() {
       this.isDropdownOpen = false;
     },
-    turnIcon() {
-      // this.isTurn = !this.isTurn;
-      this.$emit("turnIcon", !this.isTurn);
+    isActive(option) {
+      return this.selectedOption.includes(option);
     },
   },
 };

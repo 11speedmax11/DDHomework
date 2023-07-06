@@ -14,7 +14,7 @@
       v-if="isFill"
       @click="click"
     />
-    <SvgIcon name="search" svgClass="svgSearch" v-if="isSearch" />
+    <SvgIcon @click="search" name="search" svgClass="svgSearch" v-if="isSearch" />
   </div>
 </template>
 
@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      isFill: this.value.length > 0 && this.isClear,
+      isFill: this.value && this.isClear,
       valueNow: this.value,
     };
   },
@@ -49,7 +49,11 @@ export default {
     click() {
       this.isFill = false;
       this.valueNow = "";
+      this.$emit("search", "");
     },
+    search(){
+      this.$emit("search", this.valueNow);
+    }
   },
 };
 </script>

@@ -3,18 +3,21 @@
     <header class="header">
       <nav class="navigation">
         <CustomButton
+          :class="{ active: isActive('ProjectList') }"
           buttonStyle="navigation"
           classButton="navigation__item"
           @click="selectTab('ProjectList')"
           >Проекты</CustomButton
         >
         <CustomButton
+          :class="{ active: isActive('TaskList') }"
           buttonStyle="navigation"
           classButton="navigation__item"
           @click="selectTab('TaskList')"
           >Задачи</CustomButton
         >
         <CustomButton
+          :class="{ active: isActive('UserList') }"
           buttonStyle="navigation"
           classButton="navigation__item"
           @click="selectTab('UserList')"
@@ -22,6 +25,7 @@
         >
       </nav>
       <DropDownButton
+        :class="{ active: isActive('UserProfile') }"
         :imgClass="'header__img'"
         :classButton="'header__button'"
         icon="vector"
@@ -59,6 +63,7 @@ export default {
     CustomButton,
     DropDownButton,
   },
+  computed: {},
   methods: {
     selectTab(tab) {
       this.$emit("tabSelected", tab);
@@ -67,6 +72,9 @@ export default {
     openAuthorization() {
       localStorage.setItem("isAuthorized", false);
       this.$router.push(`/AuthPage`);
+    },
+    isActive(routerString) {
+      return this.$route.path.split('/')[1] == `${routerString}`
     },
   },
 };

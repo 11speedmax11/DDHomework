@@ -4,7 +4,13 @@
   position: relative;
 }
 
-.dropdown__menu{
+.dropdown.active .header__button, .dropdown.activeMenu .header__button{
+  background: #FFFFFF;
+  border: 1px solid #FFFFFF;
+  color: #8E8E8E;
+}
+
+.dropdown__menu {
   z-index: 2;
   display: flex;
   background-color: $background-color-secondary;
@@ -16,12 +22,12 @@
   box-shadow: 0px 0px 4px $border-shadow-color-rgba;
 }
 
-.dropdown__text{
+.dropdown__text {
   display: flex;
   align-items: center;
   height: 35px
 }
 
-.drop-down-menu__buttons{
+.drop-down-menu__buttons {
   margin: 8px 0;
 }

@@ -1,7 +1,7 @@
 <template>
   <div
     class="dropdown"
-    :class="[{ disabled: disabled }, { active: isActive }]"
+    :class="[{ disabled: disabled }, { activeMenu: isActive }]"
     v-click-outside="closeMenu"
   >
     <CustomButton
