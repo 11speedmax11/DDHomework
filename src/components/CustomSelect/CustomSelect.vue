@@ -4,10 +4,13 @@
     :class="[{ active: isDropdownOpen }, xClass]"
     v-click-outside="closeSelect"
   >
-    <div class="custom-select__wrapper" :class="[{ search: isSearch }, {turn: isTurn }]">
+    <div
+      class="custom-select__wrapper"
+      :class="[{ search: isSearch }, { turn: isTurn }]"
+    >
       <div class="selected-option" @click="toggleDropdown">
-        <div class="selected-text" :class="{ placeholder: !selectedOption }">
-          {{ selectedOption || placeholder }}
+        <div class="selected-text" :class="{ placeholder: !selectedOptionValue  }">
+          {{ (selectedOptionValue && selectedOptionValue.name) || placeholder }}
         </div>
         <div class="custom-select__svg">
           <SvgIcon :name="'vector'" svgClass="svg__select" />
@@ -23,8 +26,12 @@
       />
     </div>
     <ul class="options" v-show="isDropdownOpen">
-      <li v-for="option in options" :key="option" @click="selectOption(option)">
-        {{ option }}
+      <li
+        v-for="option in options"
+        :key="option[keyName]"
+        @click="selectOption(option)"
+      >
+        {{ option.name }}
       </li>
     </ul>
   </div>
@@ -48,13 +55,22 @@ export default {
     options: Array,
     placeholder: String,
     isSearch: Boolean,
+    keyName:{
+      type: String,
+      default: 'key'
+    },
     selectedOption: {
       type: String,
-      default: null,
+      default: () => null,
     },
     isTurn: {
       type: Boolean,
       default: false,
+    },
+  },
+  computed: {
+    selectedOptionValue() {
+     return (this.options || []).find((x) => x[this.keyName] == this.selectedOption);
     },
   },
   methods: {
@@ -63,13 +79,12 @@ export default {
     },
     selectOption(option) {
       this.isDropdownOpen = false;
-      this.$emit("input", option);
+      this.$emit("input", option[this.keyName]);
     },
     closeSelect() {
       this.isDropdownOpen = false;
     },
     turnIcon() {
-      // this.isTurn = !this.isTurn;
       this.$emit("turnIcon", !this.isTurn);
     },
   },

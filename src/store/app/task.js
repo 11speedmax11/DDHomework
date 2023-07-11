@@ -2,37 +2,63 @@ export default {
   namespaced: true,
   state: {
     filter: {
-      status: [],
+      name: null,
+      status: null,
       author: null,
       executor: null,
+      projectId: null,
       dateStart: null,
       dateEnd: null
     },
-    search: null,
-    sorting: null,
-    sortOrderValues: false,
+    sort:{
+      sorting: 'name',
+      sortOrderValues: 'asc',
+    },
+    page: 1,
+  },
+
+  getters: {
+    filter(state) {
+      return state.filter;
+    },
+    name(state) {
+      return state.filter.name;
+    },
+    sorting(state) {
+      return state.sort.sorting;
+    },
+    sortOrderValues(state) {
+      return state.sort.sortOrderValues;
+    },
+    page(state) {
+      return state.page;
+    }
   },
 
   mutations: {
     updateFilter(state, payload) {
       state.filter = payload;
     },
-    updateSearch(state, payload) {
-      state.search = payload;
+    updateName(state, payload) {
+      state.filter.name = payload;
     },
     updateOrder(state, payload) {
-      state.sorting = payload;
+      state.sort.sorting = payload;
     },
     updatesortOrderValues(state, payload) {
-      state.sortOrderValues = payload;
+      state.sort.sortOrderValues = payload;
+    },
+    updatePage(state, payload) {
+      state.page = payload;
     },
   },
+  
   actions: {
     setFilter({ commit }, payload) {
       commit('updateFilter', payload);
     },
-    setSearch({ commit }, payload) {
-      commit('updateSearch', payload);
+    setName({ commit }, payload) {
+      commit('updateName', payload);
     },
     setOrder({ commit }, payload) {
       commit('updateOrder', payload);
@@ -40,19 +66,8 @@ export default {
     setSortOrderValues({ commit }, payload) {
       commit('updatesortOrderValues', payload);
     },
-  },
-  getters: {
-    filter(state) {
-      return state.filter;
-    },
-    search(state) {
-      return state.search;
-    },
-    sorting(state) {
-      return state.sorting;
-    },
-    sortOrderValues(state) {
-      return state.sortOrderValues;
+    setPage({ commit }, payload) {
+      commit('updatePage', payload);
     },
   },
 }

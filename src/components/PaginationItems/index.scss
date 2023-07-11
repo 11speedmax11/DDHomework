@@ -1,0 +1,16 @@
+.pagination {
+
+  padding: 20px;
+
+  .pagination__pages {
+
+    display: flex;
+    gap: 8px;
+
+    .button {
+      height: 42px;
+      width: 42px;
+      padding: 0;
+    }
+  }
+}

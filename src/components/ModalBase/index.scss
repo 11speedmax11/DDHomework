@@ -1,0 +1,19 @@
+.modal{
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.25);
+  z-index: 90;
+  justify-content: center;
+  align-items: center;
+
+  &__body{
+ 
+    background-color: white;
+    width: 300px;
+    height: 200px;
+  }
+}

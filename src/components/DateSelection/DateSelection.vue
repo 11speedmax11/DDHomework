@@ -28,7 +28,7 @@ export default {
       default: "Дата...",
     },
     selectedDate: {
-      type: Date,
+      type: String,
       default: null,
     },
   },
@@ -45,12 +45,13 @@ export default {
     dateValue(){return this.selectedDate},
     handleDateSelected() {
       if (this.selectedDate != null) {
-        const dateString = `${this.selectedDate
+        let date = new Date(this.selectedDate);
+        const dateString = `${date
           .getDate()
           .toString()
-          .padStart(2, "0")}.${(this.selectedDate.getMonth() + 1)
+          .padStart(2, "0")}.${(date.getMonth() + 1)
           .toString()
-          .padStart(2, "0")}.${this.selectedDate.getFullYear()}`;
+          .padStart(2, "0")}.${date.getFullYear()}`;
         return dateString;
       }
       return false;

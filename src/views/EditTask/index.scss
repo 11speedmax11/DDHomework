@@ -1,0 +1,125 @@
+@import "@/scssVars.scss";
+
+.create-task{
+  padding: 24px;
+  height: calc(100vh - 150px);
+}
+
+.create-task__wrapper {
+  padding: 24px;
+  border: 1px solid $border-color-rgba;
+  height: calc(100% - 48px);
+}
+
+.create-task__header {
+  font-size: 40px;
+  font-weight: 600;
+  margin: 10px;
+  margin-top: 0;
+}
+
+.create-task__body {
+  height: calc(100vh - 487px);
+  padding: 32px 24px;
+}
+
+.create-task__field {
+  display: flex;
+  margin-bottom: 24px;
+}
+
+.create-task__title {
+  width: 120px;
+  color: $font-color-disabled;
+}
+
+.create-task__value {
+  width: 544px;
+  margin-left: 8px;
+}
+
+.create-task__value select, .create-task__value .create-task__project{
+  width: calc(100% - 2px);
+  margin: 0;
+  padding: 0;
+}
+
+.create-task__value textarea {
+  width: calc(100% - 22px);
+  height: 120px;
+  margin: 0;
+  padding: 10px;
+  resize: none;
+  border: 1px solid $border-color-rgba;
+  border-radius: 4px;
+  outline: none;
+}
+
+.create-task__value .input{
+  outline: none;
+}
+
+.create-task__line {
+  margin: 24px 0;
+  height: 1px;
+  width: 100%;
+  background: $border-color-rgba;
+}
+
+.create-task__buttons {
+  display: flex;
+  justify-content: end;
+  padding: 10px;
+}
+
+.create-task__buttons>* {
+  margin-left: 24px;
+}
+
+.create-task__create {
+  box-sizing: border-box;
+  align-items: center;
+  padding: 12px 16px;
+  height: 42px;
+  border: 0;
+  border-radius: 4px;
+  display: flex;
+  background: $background-color-primary;
+  color: $font-color-secondary;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.create-task__create:hover {
+  background: $background-color-primary-hover;
+}
+
+.create-task__create:active {
+  background: $background-color-primary-active;
+}
+
+.create-task__back {
+  box-sizing: border-box;
+  align-items: center;
+  padding: 12px 16px;
+  height: 42px;
+  border: 0;
+  border-radius: 4px;
+  display: flex;
+  background: $background-color-secondary;
+  transition: background-color 0.5s ease, color 0.5s ease;
+  border: 1px solid $border-color-rgba;
+}
+
+.create-task__back:hover {
+  background: $background-color-secondary-hover;
+  border: 1px solid $border-color-rgba-hover;
+}
+
+.create-task__back:active {
+  background: $background-color-primary-disabled;
+  border: 1px solid $border-color-active;
+}
+
+.create-task__star {
+  color: $font-color-delete;
+}

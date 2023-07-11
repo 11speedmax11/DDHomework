@@ -28,27 +28,29 @@
           @turnIcon="turnIcon"
         >
         </CustomSelect>
-        <CustomButton buttonStyle="secondary" classButton="project__add">
+        <CustomButton
+          buttonStyle="secondary"
+          classButton="project__add"
+          @click="addProjct"
+        >
           Добавить
         </CustomButton>
       </div>
       <CardsItem
-        v-for="item in paginatedItems"
+        v-for="item in projectList"
         :key="item._id"
         :item="item"
         :classImg="'card__img'"
       />
-      <div class="pagination" v-if="isPagination">
-        <CustomButton @click="goPreviousPage">Предыдущая</CustomButton>
-        <CustomButton
-          @click="goPage(item)"
-          v-for="item in numberPages"
-          :key="item"
-          >{{ item }}</CustomButton
-        >
-        <CustomButton @click="goNextPage">Следующая</CustomButton>
-      </div>
+      <PaginationItems
+        :total="196"
+        :currentPage="page"
+        @goPage="goPage"
+        @goNextPage="goNextPage"
+        @goPreviousPage="goPreviousPage"
+      />
     </div>
+
     <PlugCards :textPlug="'Не создан ни один проект'" v-else />
   </div>
 </template>
@@ -58,6 +60,8 @@ import PlugCards from "@/components/PlugCards/PlugCards.vue";
 import InputField from "@/components/InputField/InputField.vue";
 import CustomButton from "@/components/CustomButton/CustomButton.vue";
 import CustomSelect from "@/components/CustomSelect/CustomSelect.vue";
+import PaginationItems from "@/components/PaginationItems/PaginationItems.vue";
+
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -201,7 +205,6 @@ export default {
           code: "Выполнена",
         },
       ],
-      currentPage: 1,
       itemsPerPage: 10,
     };
   },
@@ -211,9 +214,10 @@ export default {
     InputField,
     CustomButton,
     CustomSelect,
+    PaginationItems,
   },
   computed: {
-    ...mapGetters("project", ["search", "sorting", "sortOrderValues"]),
+    ...mapGetters("project", ["search", "sorting", "sortOrderValues", "page"]),
     searchText() {
       return this.search;
     },
@@ -223,43 +227,46 @@ export default {
     sortOrderValue() {
       return this.sortOrderValues;
     },
-    paginatedItems() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.projectList.slice(startIndex, endIndex);
-    },
     isPagination() {
       return this.projectList.length > this.itemsPerPage;
     },
-    numberPages() {
-      return Math.ceil(this.projectList.length / this.itemsPerPage);
-    },
   },
   methods: {
-    ...mapActions("project", ["setSearch", "setOrder", "setSortOrderValues"]),
+    ...mapActions("project", [
+      "setSearch",
+      "setOrder",
+      "setSortOrderValues",
+      "setPage",
+    ]),
+    ...mapActions("app", ["setLoader", "setCurrentModal"]),
+    // ...mapActions("app", ["setLoader"]),
     setValueSearch(value) {
       this.setSearch(value);
     },
     sortOrder(value) {
-      console.log(value);
       this.setOrder(value);
     },
     turnIcon(value) {
       this.setSortOrderValues(value);
     },
     goPreviousPage() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-      }
+      this.goPage(this.page - 1);
     },
     goNextPage() {
-      const maxPage = Math.ceil(this.projectList.length / this.itemsPerPage);
-      if (this.currentPage < maxPage) {
-        this.currentPage++;
-      }
+      this.goPage(this.page + 1);
     },
     goPage(page) {
-      this.currentPage = page;
+      this.setPage(page);
+    },
+    addProjct() {
+      this.setCurrentModal({
+        isOpen: true,
+        componentName: "CreateProjectModal",
+        titleModal: "fdsaf",
+        action: (data) => {
+          console.log(data);
+        },
+      });
     },
   },
 };

@@ -13,7 +13,6 @@
         :selectedOption="monthOptions[this.currentMonth]"
         @input="updateCalendarMonth"
         v-model="currentMonthName"
-
       >
       </CustomSelect>
       <CustomSelect
@@ -21,7 +20,6 @@
         :options="yearRange"
         :selectedOption="currentYear.toString()"
         v-model="currentYear"
-
       >
       </CustomSelect>
       <CustomButton
@@ -70,7 +68,7 @@ export default {
     CustomSelect,
   },
   props: {
-    selectedDate: Date,
+    selectedDate: String,
   },
   data() {
     return {
@@ -92,7 +90,6 @@ export default {
         "Декабрь",
       ],
       dayNames: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
-      // selectedDate: this.dateValue,
     };
   },
   computed: {
@@ -161,7 +158,6 @@ export default {
   methods: {
     updateCalendarMonth() {
       this.currentMonth = this.monthOptions.indexOf(this.currentMonthName);
-
     },
     previousMonth() {
       if (this.currentMonth == 0) {
@@ -178,7 +174,6 @@ export default {
       } else {
         this.currentMonth++;
       }
-
     },
     isToday(day) {
       const today = new Date();
@@ -189,26 +184,27 @@ export default {
       );
     },
     isSelected(day) {
-      if(this.selectedDate != null){
-      return (
-        day.getDate() == this.selectedDate.getDate() &&
-        day.getMonth() == this.selectedDate.getMonth() &&
-        day.getFullYear() == this.selectedDate.getFullYear()
-      );
+      let data = new Date(this.selectedDate);
+      if (data != null) {
+        return (
+          day.getDate() == data.getDate() &&
+          day.getMonth() == data.getMonth() &&
+          day.getFullYear() == data.getFullYear()
+        );
       }
-      return false
+      return false;
     },
     selectDate(day) {
       if (
         day.getMonth() == this.currentMonth &&
         day.getFullYear() == this.currentYear
       ) {
-
-        this.$emit("dateSelected", new Date(
-          day.getFullYear(),
-          day.getMonth(),
-          day.getDate()
-        ));
+        this.$emit(
+          "dateSelected",
+          new Date(day.getFullYear(), day.getMonth(), day.getDate() + 1)
+            .toISOString()
+            .split("T")[0]
+        );
       }
     },
     isNowMonth(day) {

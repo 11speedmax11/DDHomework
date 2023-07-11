@@ -16,21 +16,24 @@
         <p>Статус</p>
         <CustomSelectMulti
           :options="statusList"
-          :selectedOption="this.filterValue.status"
+          :optionsName="statusName"
+          :selectedOption="filterValue.status"
           @optionSelected="statusSelected"
           placeholder="Выберите значение..."
         />
         <p>Автор</p>
         <CustomSelect
-          :options="authorList"
-          :selectedOption="this.filterValue.author"
+          :options="userList"
+          :selectedOption="filterValue.author"
+          keyName="_id"
           @input="authorSelected"
           placeholder="Выберите значение..."
         />
         <p>Исполнитель</p>
         <CustomSelect
-          :options="executorList"
+          :options="userList"
           :selectedOption="this.filterValue.executor"
+          keyName="_id"
           @input="executorSelected"
           placeholder="Выберите значение..."
         />
@@ -61,9 +64,11 @@ import CustomButton from "@/components/CustomButton/CustomButton.vue";
 import CustomSelectMulti from "@/components/CustomSelectMulti/CustomSelectMulti.vue";
 import CustomSelect from "@/components/CustomSelect/CustomSelect.vue";
 import DateSelection from "@/components/DateSelection/DateSelection.vue";
+import { statusName } from "@/const";
 
 export default {
   props: {
+    statusList: Array,
     placeholder: {
       type: String,
       default: "Дата...",
@@ -80,14 +85,15 @@ export default {
         };
       },
     },
-  },
+    userList: Array,
+  },  
   data() {
     return {
       isDropdownOpen: false,
       selectedDate: null,
-      statusList: ["Черновик", "В работе", "Завершена", "Тестирование", "Выполнена", "Закрыта", "Удалена", "Активен", "Не активен"],
       authorList: ["Галанов М.Э.", "Иванов М.Э."],
       executorList: ["Галанов М.Э.", "Иванов М.Э."],
+
 
       filterValue: {
         status: this.filter.status,
@@ -96,6 +102,7 @@ export default {
         dateStart: this.filter.dateStart,
         dateEnd: this.filter.dateEnd,
       },
+      statusName
     };
   },
   computed: {},

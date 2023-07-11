@@ -2,6 +2,7 @@
   <button
     :class="[`button--${this.buttonStyle}`, classButton]"
     @click="$emit('click')"
+    :disabled="isDisabled"
   >
     <div class="header__start-icon" v-if="startIcon">
       <SvgIcon
@@ -41,6 +42,10 @@ export default {
     },
     svgWidth: String,
     svgHeight: String,
+    isDisabled: {
+      type: Boolean,
+      default: false
+    }
   },
   components: {
     SvgIcon,

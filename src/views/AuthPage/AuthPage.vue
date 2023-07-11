@@ -7,11 +7,11 @@
       <div class="authorization__input">
         <div class="authorization__login">
           <p>Логин<span>*</span></p>
-          <InputField />
+          <InputField v-model="dataAuth.login" />
         </div>
         <div class="authorization__password">
           <p>Пароль<span>*</span></p>
-          <InputField />
+          <InputField v-model="dataAuth.password" />
         </div>
       </div>
       <div class="authorization__entry">
@@ -23,17 +23,29 @@
 <script>
 import CustomButton from "@/components/CustomButton/CustomButton.vue";
 import InputField from "@/components/InputField/InputField.vue";
+import requests from "@/requests";
 
 export default {
   components: {
     CustomButton,
     InputField,
   },
+  data() {
+    return {
+      dataAuth: {
+        login: null,
+        password: null,
+      },
+    };
+  },
   methods: {
     openTaskList() {
-      localStorage.setItem('isAuthorized', true)
-      this.$router.push(`TaskList`);
+      return requests.getUser(this.dataAuth).then((response) => {
+        localStorage.setItem("isAuthorized", true);
+        localStorage.setItem("tokenUser", response);
+      });
     },
+    searchTasks() {},
   },
 };
 </script> 

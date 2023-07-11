@@ -28,8 +28,8 @@
     <ul class="options" v-show="isDropdownOpen">
       <li
         v-for="option in options"
-        :key="option"
-        @click="selectOption(option)"
+        :key="option.key"
+        @click="selectOptions(option)"
         :class="{ search: isActive(option) }"
       >
         <div class="options__check">
@@ -41,7 +41,7 @@
           <SvgIcon :name="'check_active'" svgClass="options__svg" v-else />
         </div>
         <div class="options__value">
-          {{ option }}
+          {{ option.name }}
         </div>
       </li>
     </ul>
@@ -76,23 +76,23 @@ export default {
     toggleDropdown() {
       this.isDropdownOpen = !this.isDropdownOpen;
     },
-    selectOption(option) {
+    selectOptions(option) {
       const arrOption = [...this.selectedOption];
-      if (this.selectedOption.includes(option)) {
+      if (this.selectedOption.find((x) => x.key == option.key)) {
         this.$emit(
           "optionSelected",
-          arrOption.filter((x) => x != option)
+          arrOption.filter((x) => x.key != option.key).map((y) => y.key)
         );
       } else {
-        arrOption.push(option);
-        this.$emit("optionSelected", arrOption);
+        arrOption.push(option.key);
+        this.$emit("optionSelected", arrOption.map((y) => y));
       }
     },
     closeSelect() {
       this.isDropdownOpen = false;
     },
     isActive(option) {
-      return this.selectedOption.includes(option);
+      return this.selectedOption.includes(option.key);
     },
   },
 };

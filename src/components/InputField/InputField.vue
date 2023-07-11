@@ -2,9 +2,10 @@
   <div class="input-custom" :class="{ isSearch: isSearch }">
     <input
       class="input"
-      :value="valueNow"
+      :value="value"
       :placeholder="placeholder"
       @input="input($event)"
+      @change="input($event)"
     />
     <SvgIcon
       name="clear"
@@ -36,23 +37,23 @@ export default {
   data() {
     return {
       isFill: this.value && this.isClear,
-      valueNow: this.value,
+
     };
   },
 
   methods: {
     input($event) {
+      console.log($event.target.value)
       this.isFill = $event.target.value.length > 0 && this.isClear;
-      this.valueNow = $event.target.value;
       this.$emit("input", $event.target.value);
     },
     click() {
       this.isFill = false;
-      this.valueNow = "";
+      this.$emit("input", "");
       this.$emit("search", "");
     },
     search(){
-      this.$emit("search", this.valueNow);
+      this.$emit("search", this.value);
     }
   },
 };

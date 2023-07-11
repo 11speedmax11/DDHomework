@@ -2,7 +2,7 @@
   <div class="main">
     <div class="create-task">
       <div class="create-task__wrapper">
-        <header class="create-task__header">Создание задачи</header>
+        <header class="create-task__header">Редактирование задачи</header>
 
         <div class="create-task__line"></div>
 
@@ -80,7 +80,7 @@
             Отмена
           </CustomButton>
           <CustomButton classButton="create-task__create" @click="createTask">
-            Создать задачу
+            Сохранить изменения
           </CustomButton>
         </div>
       </div>
@@ -99,6 +99,9 @@ export default {
     InputField,
     CustomSelect,
   },
+  props: {
+    taskData: Object
+  },
   data() {
     return {
       task: {
@@ -116,6 +119,12 @@ export default {
   },
   methods: {
     start() {
+      if (this.taskData) {
+        this.task.title = this.taskData.name
+        this.task.description = this.taskData.description
+        this.selectedProject = this.taskData.projectId
+        this.selectedUser = this.taskData.executor
+      }
       requests
         .getProjectList({ page: 1, limit: 1000, filter: null, sort: null })
         .then((data) => {
@@ -134,7 +143,8 @@ export default {
     },
     createTask() {
       requests
-        .addTask({
+        .editTask({
+          _id: this.taskData._id,
           name: this.task.title,
           description: this.task.description,
           projectId: this.selectedProject,

@@ -3,6 +3,8 @@ import App from '@/App.vue'
 import vClickOutside from 'v-click-outside';
 import router from '@/router';
 import store from '@/store';
+
+
 Vue.use(vClickOutside);
 Vue.config.productionTip = false
 

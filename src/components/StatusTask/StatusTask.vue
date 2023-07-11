@@ -1,8 +1,9 @@
 <template>
-  <span class="card__status" :class="getColor()">{{ this.name }}</span>
+  <span class="card__status" :class="getColor()">{{ statusName[this.name] }}</span>
 </template>
 
 <script>
+import { statusName } from "@/const";
 export default {
   props: {
     name: String,
@@ -10,11 +11,12 @@ export default {
   data() {
     return {
       color: null,
+      statusName,
     };
   },
   methods: {
     getColor() {
-      switch (this.name) {
+      switch (statusName[this.name]) {
         case "Черновик":
         case "В работе":
         case "Тестирование":
@@ -22,12 +24,9 @@ export default {
         case "Завершена":
         case "Выполнена":
         case "Закрыта":
-        case "Активен":
           return "blue";
         case "Удалена":
           return "red";
-        case "Не активен":
-          return "gray";
       }
     },
   },

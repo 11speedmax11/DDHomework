@@ -30,7 +30,7 @@
           :key="item.title"
           :buttonStyle="item.buttonStyle"
           :classButton="item.classButton"
-          @click="click(item)"
+          @click="$emit(`${item.click}`)"
           >{{ item.title }}</CustomButton
         >
         <slot> </slot>
@@ -77,6 +77,9 @@ export default {
       this.isActive = false;
       this.$emit(item.click);
     },
+    edit(item) {
+      this.$emit(item.edit);
+    }
   },
 };
 </script>

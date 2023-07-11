@@ -76,6 +76,37 @@
           </div>
           <div class="task-card__activity activity">
             <div class="activity__text">Активность</div>
+            <div v-for="historyItem in history" :key="historyItem._id">
+              автор
+              {{ historyItem.author }}
+
+              изменили поле{{ historyItem.field }} на {{ historyItem.newValue }}
+            </div>
+            <div v-for="comment in commentsTree" :key="comment._id">
+              автор
+              {{ comment.author }}
+              <div v-if="!comment.isEdit">
+                коммент
+                {{ comment.text }}
+              </div>
+              <div v-else>
+                <textarea v-model="editCommentText"> </textarea>
+                <CustomButton @click="acceptEdit(comment._id)">
+                  edit
+                </CustomButton>
+              </div>
+
+              <CustomButton @click="deleteComment(comment._id)">
+                delete comment
+              </CustomButton>
+              <CustomButton @click="addComment(comment._id)">
+                add sub comment
+              </CustomButton>
+              <CustomButton @click="editComment(comment._id)">
+                edit comment comment
+              </CustomButton>
+            </div>
+            <CustomButton @click="addComment"> add comment </CustomButton>
           </div>
         </div>
         <div class="task-card__aside">
@@ -106,7 +137,7 @@ import CustomSelect from "@/components/CustomSelect/CustomSelect.vue";
 import DropDownButton from "@/components/DropDownButton/DropDownButton.vue";
 import StatusTask from "@/components/StatusTask/StatusTask.vue";
 import UserElement from "@/components/UserElement/UserElement.vue";
-
+import requests from "@/requests";
 export default {
   components: {
     CustomButton,
@@ -116,10 +147,76 @@ export default {
     StatusTask,
     UserElement,
   },
+  props: {
+    id: String,
+  },
+  data() {
+    return {
+      comments: [],
+      history: [],
+      editCommentText: null,
+    };
+  },
+  computed: {
+    commentsTree() {
+      return this.comments;
+    },
+  },
   methods: {
     openTaskList() {
       this.$router.push(`/TaskList`);
     },
+    getComments() {
+      requests.getComments(this.id).then((data) => {
+        this.comments = data;
+      });
+    },
+    editComment(id) {
+      let editCommentIndex = this.comments.findIndex((x) => x._id == id);
+      console.log(this.comments[editCommentIndex], editCommentIndex);
+      // this.comments[editCommentIndex].isEdit = !this.comments[editCommentIndex].isEdit
+      this.editCommentText = this.comments[editCommentIndex].text;
+      this.$set(
+        this.comments[editCommentIndex],
+        "isEdit",
+        !this.comments[editCommentIndex].isEdit
+      );
+    },
+
+    acceptEdit(id) {
+      let data = {
+        _id: id,
+        taskId: this.id,
+        text: this.editCommentText,
+      };
+      requests.editComment(data).then(() => {
+        this.getComments();
+      });
+    },
+    addComment(parentId) {
+      let data = {
+        taskId: this.id,
+        text: "Stringasfasf" + Math.random(1),
+        parentId: parentId || null,
+      };
+      requests.addComment(data).then(() => {
+        this.getComments();
+      });
+    },
+    deleteComment(id) {
+      requests.deleteComment(id).then(() => {
+        this.getComments();
+      });
+    },
+    getHistory() {
+      requests.getHistory(this.id).then((data) => {
+        this.history = data;
+      });
+    },
+  },
+  mounted() {
+    this.getComments();
+    this.getHistory();
   },
 };
 </script> 

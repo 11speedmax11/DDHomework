@@ -5,16 +5,21 @@
         <InputField
           @search="setValueSearch"
           placeholder="Поиск..."
-          :value="this.searchText"
+          v-model="searchText"
           :isClear="true"
           :isSearch="true"
         />
 
-        <FilterValues :filter="filterValue" @applyFilter="applyFilter" />
+        <FilterValues
+          :filter="filterValue"
+          @applyFilter="applyFilter"
+          :statusList="status"
+          :userList="userList"
+        />
         <CustomSelect
           class="task__select"
-          :options="['По названию', 'По автору', 'По статусу', 'По исполнителю', 'По дате создания', 'По дате обновления ']"
-          :selectedOption="sortingText"
+          :options="sortName"
+          :selectedOption="sorting"
           :isSearch="true"
           :isTurn="sortOrderValue"
           @input="sortOrder"
@@ -29,7 +34,20 @@
           Добавить
         </CustomButton>
       </div>
-      <CardsItem v-for="item in this.taskList" :key="item._id" :item="item" />
+      <CardsItem
+        v-for="item in this.taskList"
+        :key="item._id"
+        :item="item"
+        @delet="deletTask(item._id)"
+        @edit="editTask(item)"
+      />
+      <PaginationItems
+        :total="pages"
+        :currentPage="page"
+        @goPage="goPage"
+        @goNextPage="goNextPage"
+        @goPreviousPage="goPreviousPage"
+      />
     </div>
     <PlugCards :textPlug="'Не создана ни одна задача'" @click="click" v-else />
   </div>
@@ -41,8 +59,10 @@ import InputField from "@/components/InputField/InputField.vue";
 import CustomButton from "@/components/CustomButton/CustomButton.vue";
 import CustomSelect from "@/components/CustomSelect/CustomSelect.vue";
 import FilterValues from "@/components/FilterValues/FilterValues.vue";
-
+import PaginationItems from "@/components/PaginationItems/PaginationItems.vue";
 import { mapGetters, mapActions } from "vuex";
+import requests from "@/requests";
+import { sortName, statusName } from "@/const";
 
 export default {
   props: {},
@@ -53,94 +73,141 @@ export default {
     CustomButton,
     CustomSelect,
     FilterValues,
+    PaginationItems,
   },
   data() {
     return {
-      taskList: [
-        {
-          author: "Иванов И.И.",
-          authorEdited: null,
-          dateCreated: "1 час назад",
-          dateEdited: "Баранов В.В. изменил 1 минуту назад",
-          _id: "№11",
-          name: "задача",
-          code: null,
-        },
-        {
-          author: "Иванов И.И.",
-          authorEdited: null,
-          dateCreated: "10 часов назад",
-          dateEdited: "Баранов В.В. изменил 1 минуту назад",
-          _id: "id2",
-          name: "задача23",
-          code: null,
-        },
-        {
-          author: "пользователь",
-          authorEdited: null,
-          dateCreated: "1 час назад",
-          dateEdited: "Баранов В.В. изменил 1 минуту назад",
-          _id: "№13",
-          name: "задача",
-          code: null,
-        },
-        {
-          author: "пользователь",
-          authorEdited: null,
-          dateCreated: "12 минуту назад",
-          dateEdited: "Галанов В.В. изменил 12 минуту назад",
-          _id: "id4",
-          name: "задача23",
-          code: null,
-        },
-        {
-          author: "Галанов М.Э.",
-          authorEdited: null,
-          dateCreated: "3 часа назад",
-          dateEdited: "Баранов В.В. изменил 10 минуту назад",
-          _id: "id2222",
-          name: "задача23232",
-          code: null,
-        },
-      ],
+      taskList: null,
+      sortName,
+      status: null,
+      userList: [],
+      pages: 1,
+      searchText: null,
     };
   },
+  mounted() {
+    this.start();
+  },
   computed: {
-    ...mapGetters("task", ["filter", "search", "sorting", "sortOrderValues"]),
+    ...mapGetters("task", [
+      "filter",
+      "name",
+      "sorting",
+      "sortOrderValues",
+      "page",
+    ]),
     filterValue() {
       return this.filter;
     },
-    searchText() {
-      return this.search;
-    },
-    sortingText() {
-      return this.sorting;
-    },
     sortOrderValue() {
-      return this.sortOrderValues;
+      return this.sortOrderValues == "asc" ? true : false;
     },
   },
   methods: {
     ...mapActions("task", [
       "setFilter",
-      "setSearch",
+      "setName",
       "setOrder",
       "setSortOrderValues",
+      "setPage",
     ]),
+    ...mapActions("app", ["setLoading", "setCurrentModal", "setUserList"]),
+    start() {
+      this.searchText = this.name;
+      requests
+        .getStatus()
+        .then((status) => {
+          this.status = status.map((x) => {
+            return {
+              key: x,
+              name: statusName[x],
+            };
+          });
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.searchTasks();
+        });
+      requests
+        .getUserList({
+          page: 1,
+          limit: 100,
+          filter: null,
+          sort: "asc",
+        })
+        .then((userList) => {
+          this.userList = userList;
+          this.setUserList(userList);
+        });
+    },
+    searchTasks() {
+      this.setLoading(true);
+      let data = {
+        page: this.page,
+        limit: 10,
+        filter: this.filter,
+        sort: {
+          field: this.sorting,
+          type: this.sortOrderValues,
+        },
+      };
+      return requests
+        .getTasks(data)
+        .then((response) => {
+          this.taskList = response.tasks;
+          this.pages = response.total;
+        })
+        .finally(() => {
+          this.setLoading(false);
+        });
+    },
     click() {
       this.$router.push(`TaskList/CreateTask`);
     },
     setValueSearch(value) {
-      this.setSearch(value);
+      this.setName(value);
+      this.searchTasks();
     },
     sortOrder(value) {
       this.setOrder(value);
+      this.searchTasks();
     },
     applyFilter(value) {
       this.setFilter(value);
+      this.searchTasks();
     },
     turnIcon(value) {
-      this.setSortOrderValues(value);
+      this.setSortOrderValues(value ? "asc" : "desc");
+      this.searchTasks();
+    },
+    goPreviousPage() {
+      this.goPage(this.page - 1);
+    },
+    goNextPage() {
+      this.goPage(this.page + 1);
+    },
+    goPage(page) {
+      this.setPage(page);
+      this.searchTasks();
+    },
+    editTask(item) {
+      this.$router.push({
+        name: "EditTask",
+        params: {
+          taskData: item,
+        },
+      });
+    },
+    deletTask(id) {
+      this.setCurrentModal({
+        isOpen: true,
+        componentName: "DeleteTaskModal",
+        titleModal: "Удаление",
+        projectName: id,
+        action: (id) => {
+          requests.deleteTask(id);
+        },
+      });
     },
   },
 };

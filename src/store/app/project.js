@@ -4,6 +4,23 @@ export default {
     search: null,
     sorting: null,
     sortOrderValues: false,
+    page: 0,
+  },
+
+  getters: {
+
+    search(state) {
+      return state.search;
+    },
+    sorting(state) {
+      return state.sorting;
+    },
+    sortOrderValues(state) {
+      return state.sortOrderValues;
+    },
+    page(state) {
+      return state.page;
+    }
   },
 
   mutations: {
@@ -17,6 +34,9 @@ export default {
     updatesortOrderValues(state, payload) {
       state.sortOrderValues = payload;
     },
+    updatePage(state, payload) {
+      state.page = payload;
+    },
   },
   actions: {
 
@@ -29,17 +49,9 @@ export default {
     setSortOrderValues({ commit }, payload) {
       commit('updatesortOrderValues', payload);
     },
+    setPage({ commit }, payload) {
+      commit('updatePage', payload);
+    },
   },
-  getters: {
 
-    search(state) {
-      return state.search;
-    },
-    sorting(state) {
-      return state.sorting;
-    },
-    sortOrderValues(state) {
-      return state.sortOrderValues;
-    },
-  },
 }
