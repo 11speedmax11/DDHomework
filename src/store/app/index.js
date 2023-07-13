@@ -21,6 +21,7 @@ export default {
       return state.userList;
     },
 
+
   },
   mutations: {
 
@@ -54,6 +55,7 @@ export default {
     setUserList({ commit }, payload) {
       commit('updateUserList', payload);
     },
+
   },
 
 }

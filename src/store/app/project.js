@@ -2,9 +2,9 @@ export default {
   namespaced: true,
   state: {
     search: null,
-    sorting: null,
-    sortOrderValues: false,
-    page: 0,
+    sorting: 'name',
+    sortOrderValues: 'asc',
+    page: 1,
   },
 
   getters: {

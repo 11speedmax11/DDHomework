@@ -3,32 +3,40 @@
 .user-list {
   padding: 24px;
 
-}
+  &__search {
+    display: flex;
+    justify-content: space-between;
+    height: 42px;
+    gap: 24px;
 
-.user-list__search {
-  display: flex;
-  justify-content: space-between;
-  height: 42px;
-  gap: 24px;
+    .button {
+      padding: 9px;
+    }
 
-
-  .button {
-    padding: 9px;
+    .input-custom {
+      width: 100%;
+    }
   }
 
-  .input-custom {
-    width: 100%;
+  &__item {
+    border-bottom: 1px solid $border-color-active;
+    display: flex;
+    padding: 9px 16px 9px 0;
+    align-items: center;
+    justify-content: space-between;
   }
-}
 
-.user-list__item {
-  border-bottom: 1px solid $border-color-active;
-  display: flex;
-  padding: 9px 16px 9px 0px;
-  align-items: center;
-}
+  &__menu {
+    display: none;
+  }
 
-.user-list__search .isTurn svg {
-  transform: rotate(180deg);
-  transition: transform 0.3s ease;
+  &__item:hover &__menu {
+    display: block;
+  }
+
+
+  &__search .isTurn svg {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+  }
 }

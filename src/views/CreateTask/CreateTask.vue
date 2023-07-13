@@ -124,12 +124,12 @@ export default {
       requests
         .getUserList({
           page: 1,
-          limit: 100,
+          limit: 200,
           filter: null,
           sort: "asc",
         })
         .then((userList) => {
-          this.userList = userList;
+          this.userList = userList.users;
         });
     },
     createTask() {
@@ -140,9 +140,8 @@ export default {
           projectId: this.selectedProject,
           executor: this.selectedUser,
         })
-        .then((data) => {
-          console.log(data);
-        });
+        .then(() => {});
+      this.$router.go(-1);
     },
     cancel() {
       this.$router.go(-1);

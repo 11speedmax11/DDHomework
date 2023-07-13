@@ -32,5 +32,3 @@ export const statusName = {
   CLOSED: 'Закрыта',
   DELETED: 'Удалена',
 }
-
-

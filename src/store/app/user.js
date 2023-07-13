@@ -2,7 +2,20 @@ export default {
   namespaced: true,
   state: {
     search: null,
-    sortOrderValues: false,
+    sortOrderValues: "asc",
+    page: 1,
+  },
+  getters: {
+
+    search(state) {
+      return state.search;
+    },
+    sortOrderValues(state) {
+      return state.sortOrderValues;
+    },
+    page(state) {
+      return state.page;
+    },
   },
 
   mutations: {
@@ -13,6 +26,9 @@ export default {
     updatesortOrderValues(state, payload) {
       state.sortOrderValues = payload;
     },
+    updatePage(state, payload) {
+      state.page = payload;
+    },
   },
   actions: {
 
@@ -22,14 +38,8 @@ export default {
     setSortOrderValues({ commit }, payload) {
       commit('updatesortOrderValues', payload);
     },
-  },
-  getters: {
-
-    search(state) {
-      return state.search;
-    },
-    sortOrderValues(state) {
-      return state.sortOrderValues;
+    setPage({ commit }, payload) {
+      commit('updatePage', payload);
     },
   },
 }

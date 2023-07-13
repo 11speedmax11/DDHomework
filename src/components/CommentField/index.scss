@@ -1,0 +1,22 @@
+.comment-field {
+  width: 100%;
+  display: flex;
+  padding: 16px 16px 8px 0;
+  align-items: end;
+
+  textarea {
+    width: 100%;
+    padding: 10px;
+    resize: none;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    outline: none;
+  }
+
+  .button {
+    height: 42px;
+    width: 42px;
+    padding: 0;
+  }
+  
+}

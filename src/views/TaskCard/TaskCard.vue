@@ -10,7 +10,7 @@
           >Вернуться к списку задач</CustomButton
         >
       </div>
-      <div class="task-card__body">
+      <div class="task-card__body" v-if="task">
         <div class="task-card__main">
           <div class="task-card__header">
             <div class="task-card__project project">
@@ -42,71 +42,54 @@
                 </DropDownButton>
               </div>
             </div>
-            <div class="task-card__name">Название задачи</div>
+            <div class="task-card__name">{{ task.name }}</div>
             <div class="task-card__information">
               <div class="task-card__current-status">
-                <StatusTask :name="'Черновик'" />
+                <StatusTask :name="task.status" />
               </div>
               <div class="task-card__create-date">
-                Создана 17 сен 2022 в 13:55
+                Создана {{ dateCreated }}
               </div>
               <div class="task-card__author">
-                <UserElement :name="'Котов М.М.'" />
+                <UserElement :id="task.author" />
               </div>
             </div>
           </div>
           <div class="task-card__content">
             <div class="task-card__description description">
               <div class="description__text">
-                Описание задачи далеко-далеко за словесными горами в стране
-                гласных и согласных живут рыбные тексты. Вдали от всех живут они
-                в буквенных домах на берегу Семантика большого языкового океана.
-                Маленький ручеек Даль журчит по всей стране и обеспечивает ее
-                всеми необходимыми правилами.
+                {{ task.description }}
               </div>
-              <div class="description__information">
+              <div class="description__information" v-if="task.dateEdited">
                 <div class="description__date">
-                  Задача отредактирована 1 час назад
+                  Задача отредактирована {{ dateEdited }}
                 </div>
                 <div class="description__author">
-                  <UserElement :name="'Котов М.М.'" />
+                  <UserElement :id="task.authorEdited" />
                 </div>
               </div>
             </div>
           </div>
           <div class="task-card__activity activity">
             <div class="activity__text">Активность</div>
-            <div v-for="historyItem in history" :key="historyItem._id">
-              автор
-              {{ historyItem.author }}
-
-              изменили поле{{ historyItem.field }} на {{ historyItem.newValue }}
-            </div>
-            <div v-for="comment in commentsTree" :key="comment._id">
-              автор
-              {{ comment.author }}
-              <div v-if="!comment.isEdit">
-                коммент
-                {{ comment.text }}
+            <div v-for="activity in listAtivity" :key="activity">
+              <div class="activity__body" v-if="!activity.isComment">
+                <UserElement :id="activity.value.author" />
+                изменил(а) {{ activity.value.field }}
+                {{ getDate(activity.value.dateEdited) }}
               </div>
               <div v-else>
-                <textarea v-model="editCommentText"> </textarea>
-                <CustomButton @click="acceptEdit(comment._id)">
-                  edit
-                </CustomButton>
+                <CommentTree
+                  @deleteComment="deleteComment"
+                  @addComment="addComment($event)"
+                  @acceptEdit="acceptEdit"
+                  :comment="activity.value"
+                />
               </div>
-
-              <CustomButton @click="deleteComment(comment._id)">
-                delete comment
-              </CustomButton>
-              <CustomButton @click="addComment(comment._id)">
-                add sub comment
-              </CustomButton>
-              <CustomButton @click="editComment(comment._id)">
-                edit comment comment
-              </CustomButton>
             </div>
-            <CustomButton @click="addComment"> add comment </CustomButton>
+            <CommentField
+              @sendComment="addComment({ id: null, text: $event })"
+            />
           </div>
         </div>
         <div class="task-card__aside">
@@ -114,15 +97,20 @@
             <p class="executor__text">Исполнитель</p>
             <CustomSelect
               class="executor__name"
-              :options="['Галанов М.Э.', 'Иванов И.И.']"
-            >
-            </CustomSelect>
+              :options="userList"
+              :selectedOption="task.executor"
+              keyName="_id"
+              @input="executorSelected"
+              placeholder="Выберите значение..."
+            />
           </div>
           <div class="task-card__status status">
             <p class="status__text">Статус</p>
             <CustomSelect
               class="status__name"
-              :options="['Черновик', 'В работе']"
+              :options="statusList"
+              :selectedOption="task.status"
+              @input="statusChange"
             >
             </CustomSelect>
           </div>
@@ -137,15 +125,22 @@ import CustomSelect from "@/components/CustomSelect/CustomSelect.vue";
 import DropDownButton from "@/components/DropDownButton/DropDownButton.vue";
 import StatusTask from "@/components/StatusTask/StatusTask.vue";
 import UserElement from "@/components/UserElement/UserElement.vue";
+import CommentField from "@/components/CommentField/CommentField.vue";
+import CommentTree from "@/components/CommentTree/CommentTree.vue";
 import requests from "@/requests";
+import { statusName } from "@/const";
+import { mapActions } from "vuex";
+import _ from "lodash";
+
 export default {
   components: {
     CustomButton,
-    // InputField,
     CustomSelect,
     DropDownButton,
     StatusTask,
     UserElement,
+    CommentField,
+    CommentTree,
   },
   props: {
     id: String,
@@ -155,14 +150,107 @@ export default {
       comments: [],
       history: [],
       editCommentText: null,
+      task: null,
+      userList: null,
     };
   },
   computed: {
+    listAtivity() {
+      let arrAtivity = [
+        ...this.commentsTree.map((x) => {
+          return { value: x, isComment: true };
+        }),
+        ...this.history.map((x) => {
+          return { value: x, isComment: false };
+        }),
+      ];
+      arrAtivity.sort((a, b) => {
+        const dateA =
+          a.value.dateEdited !== null
+            ? new Date(a.value.dateEdited)
+            : new Date(a.value.dateCreated);
+        const dateB =
+          b.value.dateEdited !== null
+            ? new Date(b.value.dateEdited)
+            : new Date(b.value.dateCreated);
+        return dateA - dateB;
+      });
+      console.log(
+        arrAtivity.map((x) =>
+          x.value.dateEdited !== null
+            ? new Date(x.value.dateEdited)
+            : new Date(x.value.dateCreated)
+        )
+      );
+      return arrAtivity;
+    },
+    statusList() {
+      const statusKeys = Object.keys(statusName);
+      const currentStatus = this.task.status;
+      let arrKeys = [];
+      if (currentStatus == "DRAFT") {
+        arrKeys.push("DRAFT");
+        arrKeys.push("IN_PROCESS");
+      } else if (currentStatus == "IN_PROCESS") {
+        arrKeys.push("DRAFT");
+        arrKeys.push("IN_PROCESS");
+        arrKeys.push("COMPLETED");
+      } else if (currentStatus == "COMPLETED") {
+        arrKeys.push("IN_PROCESS");
+        arrKeys.push("COMPLETED");
+        arrKeys.push("TESTING");
+      } else if (currentStatus == "TESTING") {
+        arrKeys.push("IN_PROCESS");
+        arrKeys.push("TESTING");
+        arrKeys.push("TESTING_DONE");
+      } else if (currentStatus == "TESTING_DONE") {
+        arrKeys.push("IN_PROCESS");
+        arrKeys.push("TESTING_DONE");
+        arrKeys.push("CLOSED");
+      }
+      if (currentStatus == "CLOSED") {
+        arrKeys.push("CLOSED");
+        arrKeys.push("DRAFT");
+      }
+
+      return statusKeys
+        .filter((x) => arrKeys.includes(x))
+        .map((x) => {
+          return { name: statusName[x], key: x };
+        });
+    },
     commentsTree() {
-      return this.comments;
+      let arr = this.comments;
+      const map = {};
+      const roots = [];
+
+      arr.forEach((obj) => {
+        map[obj._id] = obj;
+        obj.children = [];
+      });
+      arr.forEach((obj) => {
+        const parentId = obj.parentId;
+        if (parentId === null) {
+          roots.push(obj);
+        } else {
+          const parent = map[parentId];
+          if (parent) {
+            parent.children.push(obj);
+          }
+        }
+      });
+
+      return roots;
+    },
+    dateCreated() {
+      return this.getDate(this.task.dateCreated);
+    },
+    dateEdited() {
+      return this.getDate(this.task.dateEdited);
     },
   },
   methods: {
+    ...mapActions("app", ["setUserList"]),
     openTaskList() {
       this.$router.push(`/TaskList`);
     },
@@ -173,8 +261,6 @@ export default {
     },
     editComment(id) {
       let editCommentIndex = this.comments.findIndex((x) => x._id == id);
-      console.log(this.comments[editCommentIndex], editCommentIndex);
-      // this.comments[editCommentIndex].isEdit = !this.comments[editCommentIndex].isEdit
       this.editCommentText = this.comments[editCommentIndex].text;
       this.$set(
         this.comments[editCommentIndex],
@@ -183,21 +269,22 @@ export default {
       );
     },
 
-    acceptEdit(id) {
+    acceptEdit({ id, text }) {
       let data = {
         _id: id,
         taskId: this.id,
-        text: this.editCommentText,
+        text: text,
       };
       requests.editComment(data).then(() => {
         this.getComments();
       });
     },
-    addComment(parentId) {
+    addComment({ id, text }) {
+      console.log(id, text);
       let data = {
         taskId: this.id,
-        text: "Stringasfasf" + Math.random(1),
-        parentId: parentId || null,
+        text: text,
+        parentId: id || null,
       };
       requests.addComment(data).then(() => {
         this.getComments();
@@ -213,10 +300,78 @@ export default {
         this.history = data;
       });
     },
+    statusChange(status) {
+      requests
+        .editTask({
+          _id: this.task._id,
+          status: status,
+        })
+        .then(() => {
+          this.getTask();
+          this.getHistory() 
+        });
+    },
+    executorSelected(executor) {
+      requests
+        .editTask({
+          _id: this.task._id,
+          executor: executor,
+        })
+        .then(() => {
+          this.getTask();
+        });
+    },
+    getDate(dateString) {
+      const months = [
+        "янв",
+        "фев",
+        "мар",
+        "апр",
+        "май",
+        "июн",
+        "июл",
+        "авг",
+        "сен",
+        "окт",
+        "ноя",
+        "дек",
+      ];
+
+      const date = new Date(dateString);
+      const day = date.getDate();
+      const month = months[date.getMonth()];
+      const year = date.getFullYear();
+      const hours = date.getHours();
+      const minutes = date.getMinutes();
+
+      return `${day} ${month} ${year} в ${hours}:${
+        minutes < 10 ? "0" + minutes : minutes
+      }`;
+    },
+    getTask() {
+      requests.getTask(this.id).then((data) => {
+        this.task = data;
+      });
+    },
+    getUsers() {
+      requests
+        .getUserList({
+          page: 1,
+          limit: 200,
+          filter: null,
+          sort: "asc",
+        })
+        .then((usersList) => {
+          this.userList = _.cloneDeep(usersList.users);
+          this.setUserList(_.cloneDeep(usersList.users));
+        });
+    },
   },
   mounted() {
+    this.getTask();
     this.getComments();
     this.getHistory();
+    this.getUsers();
   },
 };
 </script> 

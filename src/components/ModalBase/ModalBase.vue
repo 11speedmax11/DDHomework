@@ -19,13 +19,15 @@
 <script>
 import CreateProjectModal from "@/components/CreateProjectModal/CreateProjectModal.vue";
 import DeleteTaskModal from "@/components/DeleteTaskModal/DeleteTaskModal.vue";
+import EditPassModal from "@/components/EditPassModal/EditPassModal.vue";
 
 import { mapGetters, mapActions } from "vuex";
 export default {
   props: {},
   components: {
     CreateProjectModal,
-    DeleteTaskModal
+    DeleteTaskModal,
+    EditPassModal
   },
   computed: {
     ...mapGetters("app", ["currentModal"]),

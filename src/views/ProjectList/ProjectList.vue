@@ -9,19 +9,13 @@
           placeholder="Поиск..."
           :isClear="true"
           :isSearch="true"
-          :value="this.searchText"
+          v-model="searchText"
           @search="setValueSearch"
         />
         <CustomSelect
-          class="project__select"
-          :options="[
-            'По названию',
-            'По автору',
-            'По исполнителю',
-            'По дате создания',
-            'По дате обновления ',
-          ]"
-          :selectedOption="sortingText"
+          class="task__select"
+          :options="sortName"
+          :selectedOption="sorting"
           :isSearch="true"
           :isTurn="sortOrderValue"
           @input="sortOrder"
@@ -40,14 +34,16 @@
         v-for="item in projectList"
         :key="item._id"
         :item="item"
-        :classImg="'card__img'"
+        @edit="editProject(item)"
+        @delet="deleteProject(item._id)"
       />
       <PaginationItems
-        :total="196"
+        :total="pages"
         :currentPage="page"
         @goPage="goPage"
         @goNextPage="goNextPage"
         @goPreviousPage="goPreviousPage"
+        v-if="pages != 1"
       />
     </div>
 
@@ -61,151 +57,19 @@ import InputField from "@/components/InputField/InputField.vue";
 import CustomButton from "@/components/CustomButton/CustomButton.vue";
 import CustomSelect from "@/components/CustomSelect/CustomSelect.vue";
 import PaginationItems from "@/components/PaginationItems/PaginationItems.vue";
-
+import requests from "@/requests";
+import { sortName } from "@/const";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
   props: {},
   data() {
     return {
-      projectList: [
-        {
-          author: "Иванов И.И.",
-          authorEdited: null,
-          dateCreated: "1 час назад",
-          dateEdited: "Баранов В.В. изменил 1 минуту назад",
-          _id: "№1",
-          name: "проект",
-          code: "Черновик",
-        },
-        {
-          author: "Иванов И.И.",
-          authorEdited: null,
-          dateCreated: "1 час назад",
-          dateEdited: "Баранов В.В. изменил 1 минуту назад",
-          _id: "id2",
-          name: "name33333333",
-          code: "В работе",
-        },
-        {
-          author: "пользователь",
-          authorEdited: null,
-          dateCreated: "10 час назад",
-          dateEdited: "Баранов В.В. изменил 10 минуту назад",
-          _id: "№13",
-          name: "проект",
-          code: "Завершена",
-        },
-        {
-          author: "пользователь",
-          authorEdited: null,
-          dateCreated: "2 часа назад",
-          dateEdited: "Баранов В.В. изменил 1 минуту назад",
-          _id: "id4",
-          name: "name123",
-          code: "Тестирование",
-        },
-        {
-          author: "Галанов М.Э.",
-          authorEdited: null,
-          dateCreated: "3 часа назад",
-          dateEdited: "Баранов В.В. изменил 10 минуту назад",
-          _id: "id5",
-          name: "name225151",
-          code: "Выполнена",
-        },
-        {
-          author: "Иванов И.И.",
-          authorEdited: null,
-          dateCreated: "1 час назад",
-          dateEdited: "Баранов В.В. изменил 1 минуту назад",
-          _id: "№1",
-          name: "проект",
-          code: "Черновик",
-        },
-        {
-          author: "Иванов И.И.",
-          authorEdited: null,
-          dateCreated: "1 час назад",
-          dateEdited: "Баранов В.В. изменил 1 минуту назад",
-          _id: "id2",
-          name: "name33333333",
-          code: "В работе",
-        },
-        {
-          author: "пользователь",
-          authorEdited: null,
-          dateCreated: "10 час назад",
-          dateEdited: "Баранов В.В. изменил 10 минуту назад",
-          _id: "№13",
-          name: "проект",
-          code: "Завершена",
-        },
-        {
-          author: "пользователь",
-          authorEdited: null,
-          dateCreated: "2 часа назад",
-          dateEdited: "Баранов В.В. изменил 1 минуту назад",
-          _id: "id4",
-          name: "name123",
-          code: "Тестирование",
-        },
-        {
-          author: "Галанов М.Э.",
-          authorEdited: null,
-          dateCreated: "3 часа назад",
-          dateEdited: "Баранов В.В. изменил 10 минуту назад",
-          _id: "id5",
-          name: "name225151",
-          code: "Выполнена",
-        },
-        {
-          author: "Иванов И.И.",
-          authorEdited: null,
-          dateCreated: "1 час назад",
-          dateEdited: "Баранов В.В. изменил 1 минуту назад",
-          _id: "№1",
-          name: "проект",
-          code: "Черновик",
-        },
-        {
-          author: "Иванов И.И.",
-          authorEdited: null,
-          dateCreated: "1 час назад",
-          dateEdited: "Баранов В.В. изменил 1 минуту назад",
-          _id: "id2",
-          name: "name33333333",
-          code: "В работе",
-        },
-        {
-          author: "пользователь",
-          authorEdited: null,
-          dateCreated: "10 час назад",
-          dateEdited: "Баранов В.В. изменил 10 минуту назад",
-          _id: "№13",
-          name: "проект",
-          code: "Завершена",
-        },
-        {
-          author: "пользователь",
-          authorEdited: null,
-          dateCreated: "2 часа назад",
-          dateEdited: "Баранов В.В. изменил 1 минуту назад",
-          _id: "id4",
-          name: "name123",
-          code: "Тестирование",
-        },
-        {
-          author: "Галанов М.Э.",
-          authorEdited: null,
-          dateCreated: "3 часа назад",
-          dateEdited: "Баранов В.В. изменил 10 минуту назад",
-          _id: "id5",
-          name: "name225151",
-          code: "Выполнена",
-        },
-      ],
+      projectList: [],
       itemsPerPage: 10,
+      pages: 1,
+      searchText: null,
+      sortName,
     };
   },
   components: {
@@ -218,18 +82,15 @@ export default {
   },
   computed: {
     ...mapGetters("project", ["search", "sorting", "sortOrderValues", "page"]),
-    searchText() {
-      return this.search;
-    },
-    sortingText() {
-      return this.sorting;
-    },
-    sortOrderValue() {
-      return this.sortOrderValues;
-    },
     isPagination() {
       return this.projectList.length > this.itemsPerPage;
     },
+    sortOrderValue() {
+      return this.sortOrderValues == "asc" ? true : false;
+    },
+  },
+  mounted() {
+    this.searchProject();
   },
   methods: {
     ...mapActions("project", [
@@ -238,16 +99,43 @@ export default {
       "setSortOrderValues",
       "setPage",
     ]),
-    ...mapActions("app", ["setLoader", "setCurrentModal"]),
-    // ...mapActions("app", ["setLoader"]),
+    ...mapActions("app", ["setLoading", "setCurrentModal"]),
+    searchProject() {
+      this.setLoading(true);
+      let data = {
+        page: this.page,
+        limit: 10,
+        filter: {
+          name: this.search,
+        },
+        sort: {
+          field: this.sorting,
+          type: this.sortOrderValues,
+        },
+      };
+      return requests
+        .getProjectList(data)
+        .then((response) => {
+          this.projectList = response.projects;
+          this.pages = response.total;
+          this.searchText = this.search;
+        })
+        .finally(() => {
+          this.setLoading(false);
+        });
+    },
     setValueSearch(value) {
+      console.log(value);
       this.setSearch(value);
+      this.searchProject();
     },
     sortOrder(value) {
       this.setOrder(value);
+      this.searchProject();
     },
     turnIcon(value) {
-      this.setSortOrderValues(value);
+      this.setSortOrderValues(value ? "asc" : "desc");
+      this.searchProject();
     },
     goPreviousPage() {
       this.goPage(this.page - 1);
@@ -257,16 +145,34 @@ export default {
     },
     goPage(page) {
       this.setPage(page);
+      this.searchProject();
     },
     addProjct() {
       this.setCurrentModal({
         isOpen: true,
         componentName: "CreateProjectModal",
         titleModal: "fdsaf",
+
         action: (data) => {
-          console.log(data);
+          requests.addProject(data).then(() => this.searchProject());
         },
       });
+    },
+    editProject(item) {
+      this.setCurrentModal({
+        isOpen: true,
+        componentName: "CreateProjectModal",
+        titleModal: "fdsaf",
+        projectData: item,
+        action: (data) => {
+          requests
+            .editProject({ ...data, author: item.author, _id: item._id })
+            .then(() => this.searchProject());
+        },
+      });
+    },
+    deleteProject(id) {
+      requests.deleteProject(id).then(() => this.searchProject());
     },
   },
 };

@@ -29,13 +29,3 @@ body {
   min-height: calc(100vh - 100px);
 }
 
-.loader{
-  width: 100vw;
-  height: 100vh;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: #EE4222;
-  opacity: 0.5;
-  z-index: 99;
-}

@@ -2,12 +2,12 @@
   <div class="create-project-modal">
     <div class="create-project-modal__wrapper">
       <div class="authorization__login">
-        <p>Код<span>*</span></p>
-        <InputField v-model="formData.code" />
+        <p> Новый пароль<span>*</span></p>
+        <InputField v-model="pass" />
       </div>
       <div class="authorization__password">
         <p>Название<span>*</span></p>
-        <InputField v-model="formData.name" />
+        <InputField  />
       </div>
     </div>
     <div class="create-project-modal__footer">
@@ -30,24 +30,17 @@ export default {
     InputField,
   },
   mounted() {
-    if (this.currentModal.projectData) {
-      this.formData.code = this.currentModal.projectData.code
-      this.formData.name = this.currentModal.projectData.name
-    }
   },
   computed: {},
   data() {
     return {
-      formData: {
-        code: null,
-        name: null,
-      },
+      pass: null
     };
   },
 
   methods: {
     accept() {
-      this.$emit("acceptAction", this.formData);
+      this.$emit("acceptAction", this.pass);
     },
     cancle(){
       this.$emit("cancle")

@@ -17,11 +17,13 @@
 
           <div class="card__body">
             <p class="card__content">
-              <span class="card__number">{{ item._id }}</span
-              >{{ userName }} создал {{ timeCreat }}
+              <span class="card__number">{{ item.code || item.number }}</span
+              >{{ userName(item.author) }} создал {{ timeCreat }}
               <StatusTask :name="item.status" v-if="item.status" />
             </p>
-            <p class="card__chang">{{ timeEdit }}</p>
+            <p class="card__chang" v-if="item.dateEdited">
+              {{ userName(item.executor) }} изменил {{ timeEdit }}
+            </p>
           </div>
         </div>
         <div class="card__menu">
@@ -56,21 +58,22 @@
 import DropDownButton from "@/components/DropDownButton/DropDownButton.vue";
 import StatusTask from "@/components/StatusTask/StatusTask.vue";
 import { mapGetters } from "vuex";
+import _ from "lodash";
 
 export default {
   name: "CardsItem",
   props: {
     item: Object,
     classImg: String,
+    isTask: Boolean,
   },
   components: {
     DropDownButton,
     StatusTask,
   },
   computed: {
-    userName() {
-      return this.getUserName(this.item.author);
-    },
+    ...mapGetters("app", ["userList"]),
+
     timeCreat() {
       return this.getDate(this.item.dateCreated);
     },
@@ -79,29 +82,37 @@ export default {
     },
   },
   methods: {
-    ...mapGetters("app", ["userList"]),
     openCard(id) {
-      this.$router.push({
-        path:`TaskList/${id}`,
-        params: {
-          taskData: this.item,
-        },
-      });
-    },
-    getUserName(id) {
-      let parts = this.userList()
-        .find((x) => (x._id = id))
-        .name.split(" ");
-      let lastName = parts[0];
-      let firstName = parts[1].charAt(0).toUpperCase() + ".";
-      let patronymic = "";
-
-      if (parts.length > 2) {
-        patronymic = parts[2].charAt(0).toUpperCase() + ".";
+      if (this.isTask) {
+        this.$router.push({
+          path: `TaskList/${id}`,
+          params: {
+            taskData: this.item,
+          },
+        });
       }
-
-      return lastName + " " + firstName + patronymic;
     },
+
+    userName(userObj) {
+      let user = _.cloneDeep(this.userList || []).find((x) => x._id == userObj);
+      if (user) {
+        let parts = (user.name || "").split(" ");
+        let lastName = parts[0];
+        let firstName = "";
+        if (parts.length > 1) {
+          firstName = parts[1].charAt(0).toUpperCase() + ".";
+        }
+
+        let patronymic = "";
+
+        if (parts.length > 2) {
+          patronymic = parts[2].charAt(0).toUpperCase() + ".";
+        }
+        return lastName + " " + firstName + patronymic;
+      }
+      return "";
+    },
+
     getDate(dateString) {
       const months = [
         "янв",

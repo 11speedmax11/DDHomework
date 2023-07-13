@@ -14,25 +14,26 @@
       <div class="profile__body">
         <div class="profile__header">
           <div class="profile__title">
-            <div class="profile__name">Котов Семен Васильевич</div>
-            <div class="profile__status">Активен</div>
+            <div class="profile__name">{{currentUser.name || ""}}</div>
+            <div class="profile__status">{{currentUser.status || ""}}</div>
           </div>
           <div class="profile__dropdownmenu">
             <DropDownButton
               :classButton="'card__icon'"
               icon="dots"
               xClass="card__svg"
+              @editPass="editPass"
               :buttonsArr="[
                 {
                   buttonStyle: 'dropDown',
                   classButton: 'profile__edit',
-                  click: '',
+                  click: editProfile,
                   title: 'Редактировать',
                 },
                 {
                   buttonStyle: 'dropDown',
                   classButton: 'profile__password',
-                  click: '',
+                  click: 'editPass',
                   title: 'Изменить пароль',
                 },
                 {
@@ -48,38 +49,7 @@
         <div class="profile__about">
           <div class="profile__myself">О себе:</div>
           <div class="profile__text">
-            Далеко-далеко за словесными горами в стране гласных и согласных
-            живут рыбные тексты. Вдали от всех живут они в буквенных домах на
-            берегу Семантика большого языкового океана. Маленький ручеек Даль
-            журчит по всей стране и обеспечивает ее всеми необходимыми
-            правилами. Эта парадигматическая страна, в которой жаренные члены
-            предложения залетают прямо в рот. Даже всемогущая пунктуация не
-            имеет власти над рыбными текстами, ведущими безорфографичный образ
-            жизни. Однажды одна маленькая строчка рыбного текста по имени Lorem
-            ipsum решила выйти в большой мир грамматики. Великий Оксмокс
-            предупреждал ее о злых запятых, диких знаках вопроса и коварных
-            точках с запятой, но текст не дал сбить себя с толку. Он собрал семь
-            своих заглавных букв, подпоясал инициал за пояс и пустился в дорогу.
-            Взобравшись на первую вершину курсивных гор, бросил он последний
-            взгляд назад, на силуэт своего родного города Буквоград, на
-            заголовок деревни Алфавит и на подзаголовок своего переулка Строчка.
-            Грустный риторический вопрос скатился по его щеке и он продолжил
-            свой путь. По дороге встретил текст рукопись. Она предупредила его:
-            «В моей стране все переписывается по несколько раз. Единственное,
-            что от меня осталось, это приставка «и». Возвращайся ты лучше в свою
-            безопасную страну». Не послушавшись рукописи, наш текст продолжил
-            свой путь. Вскоре ему повстречался коварный составитель рекламных
-            текстов, напоивший его языком и речью и заманивший в свое агенство,
-            которое использовало его снова и снова в своих проектах. И если его
-            не переписали, то живет он там до сих пор. Далеко-далеко за
-            словесными горами в стране гласных и согласных живут рыбные тексты.
-            Вдали от всех живут они в буквенных домах на берегу Семантика
-            большого языкового океана. Маленький ручеек Даль журчит по всей
-            стране и обеспечивает ее всеми необходимыми правилами. Эта
-            парадигматическая страна, в которой жаренные члены предложения
-            залетают прямо в рот. Даже всемогущая пунктуация не имеет власти над
-            рыбными текстами, ведущими безорфографичный образ жизни. Однажды
-            одна маленькая строчка р.
+            {{currentUser.description || ""}}
           </div>
         </div>
       </div>
@@ -88,12 +58,46 @@
 </template>
 <script>
 import DropDownButton from "@/components/DropDownButton/DropDownButton.vue";
-
+import requests from "@/requests";
+import {  mapActions } from "vuex";
 export default {
   name: "UserProfile",
   components: {
     DropDownButton,
   },
+  data() {
+    return {
+      currentUser: {}
+    }
+  },
+  methods: {
+    ...mapActions("app", ["setCurrentModal"]),
+    getCurrentUser() {
+      requests.getCurrentUser()
+      .then((user) => {
+        this.currentUser = user
+      })
+    },
+    editProfile() {
+
+    },
+    editPass() {
+      this.setCurrentModal({
+        isOpen: true,
+        componentName: "EditPassModal",
+        titleModal: "fdsaf",
+        action: (pass) => {
+          requests.editPass({
+            _id: this.currentUser._id,
+            password: pass
+          })
+        },
+      });
+    }
+  },
+  mounted() {
+    this.getCurrentUser()
+  }
 };
 </script>
 

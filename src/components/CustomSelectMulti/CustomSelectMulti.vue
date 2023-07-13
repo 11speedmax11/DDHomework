@@ -8,10 +8,10 @@
       <div class="selected-option" @click="toggleDropdown">
         <div
           class="selected-text"
-          :class="{ placeholder: !selectedOption.length }"
+          :class="{ placeholder: !(selectedOption || []).length }"
         >
-          <span v-if="selectedOption.length">Выбрано: </span>
-          {{ selectedOption.length || placeholder }}
+          <span v-if="(selectedOption || []).length">Выбрано: </span>
+          {{ (selectedOption || []).length || placeholder }}
         </div>
         <div class="custom-select__svg">
           <SvgIcon :name="'vector'" svgClass="svg__select" />
@@ -77,8 +77,8 @@ export default {
       this.isDropdownOpen = !this.isDropdownOpen;
     },
     selectOptions(option) {
-      const arrOption = [...this.selectedOption];
-      if (this.selectedOption.find((x) => x.key == option.key)) {
+      const arrOption = [...(this.selectedOption || [])];
+      if (arrOption.find((x) => x.key == option.key)) {
         this.$emit(
           "optionSelected",
           arrOption.filter((x) => x.key != option.key).map((y) => y.key)
@@ -92,7 +92,7 @@ export default {
       this.isDropdownOpen = false;
     },
     isActive(option) {
-      return this.selectedOption.includes(option.key);
+      return (this.selectedOption || []).includes(option.key);
     },
   },
 };

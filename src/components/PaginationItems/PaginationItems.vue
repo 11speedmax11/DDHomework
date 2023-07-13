@@ -62,12 +62,11 @@ export default {
           pagesToShow = 1;
         } else {
           pagesToShow = Math.max(5 - currentPage, 4 + currentPage - lastPage);
-          console.log(pagesToShow);
+        
         }
         const startPage = currentPage - pagesToShow;
         const endPage = currentPage + pagesToShow;
 
-        console.log(currentPage);
 
         displayedPages.push(1);
 

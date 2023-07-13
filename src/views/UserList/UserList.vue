@@ -6,22 +6,55 @@
           placeholder="Поиск..."
           :isClear="true"
           :isSearch="true"
-          :value="this.searchText"
+          v-model="searchText"
           @search="setValueSearch"
         />
-        <CustomButton :class="{ isTurn: sortOrderValue}"
+        <CustomButton
+          :class="{ isTurn: sortOrderValues == 'asc' }"
           xClass="svg__sort"
           icon="sort-up"
           buttonStyle="secondary"
           @click="turnIcon"
         />
-        <CustomButton buttonStyle="secondary" classButton="user-list__add">
+        <CustomButton classButton="user-list__add" @click="addUser">
           Добавить
         </CustomButton>
       </div>
-      <div class="user-list__item" v-for="user in this.listUsers" :key="user">
-        <UserElement :name="user" />
+      <div class="user-list__item" v-for="user in userList" :key="user._id">
+        <UserElement :id="user._id" />
+        <div class="user-list__menu">
+          <DropDownButton
+            :classButton="'card__icon'"
+            icon="dots"
+            xClass="card__svg"
+            @edit="$emit('edit')"
+            @delete="$emit('delet')"
+            :buttonsArr="[
+              {
+                buttonStyle: 'dropDown',
+                classButton: 'card__edit',
+                click: 'edit',
+                title: 'Редактировать',
+              },
+              {
+                buttonStyle: 'dropDown',
+                classButton: 'card__delete',
+                click: 'delete',
+                title: 'Удалить',
+              },
+            ]"
+          >
+          </DropDownButton>
+        </div>
       </div>
+      <PaginationItems
+        :total="pages"
+        :currentPage="page"
+        @goPage="goPage"
+        @goNextPage="goNextPage"
+        @goPreviousPage="goPreviousPage"
+        v-if="pages != 1"
+      />
     </div>
   </div>
 </template>
@@ -29,42 +62,83 @@
 import InputField from "@/components/InputField/InputField.vue";
 import CustomButton from "@/components/CustomButton/CustomButton.vue";
 import UserElement from "@/components/UserElement/UserElement.vue";
+import PaginationItems from "@/components/PaginationItems/PaginationItems.vue";
+import DropDownButton from "@/components/DropDownButton/DropDownButton.vue";
 import { mapGetters, mapActions } from "vuex";
+import requests from "@/requests";
+import _ from "lodash";
 
 export default {
   components: {
     UserElement,
     InputField,
     CustomButton,
+    PaginationItems,
+    DropDownButton,
   },
   data() {
     return {
-      listUsers: [
-        "Галанов М.Э.",
-        "Иванов М.Э.",
-        "Сидоров М.Э.",
-        "Лавров М.Э.",
-        "Петров М.Э.",
-        "Галанов С.Э.",
-      ],
+      userList: [],
+      pages: 1,
+      searchText: null,
     };
   },
+  mounted() {
+    this.start();
+  },
   computed: {
-    ...mapGetters("user", ["search", "sortOrderValues"]),
-    searchText() {
-      return this.search;
-    },
+    ...mapGetters("user", ["search", "sortOrderValues", "page"]),
+
     sortOrderValue() {
       return this.sortOrderValues;
     },
   },
   methods: {
-    ...mapActions("user", ["setSearch", "setSortOrderValues"]),
+    ...mapActions("user", ["setSearch", "setSortOrderValues", "setPage"]),
+    ...mapActions("app", ["setLoading", "setUserList"]),
     setValueSearch(value) {
       this.setSearch(value);
+      this.getUserList();
     },
     turnIcon() {
-      this.setSortOrderValues(!this.sortOrderValue);
+      this.setSortOrderValues(this.sortOrderValues == "desc" ? "asc" : "desc");
+      this.getUserList();
+    },
+    start() {
+      this.getUserList();
+    },
+    getUserList() {
+      this.setLoading(true);
+      requests
+        .getUserList({
+          page: this.page,
+          limit: 10,
+          filter: {
+            name: this.search,
+          },
+          sort: this.sortOrderValues,
+        })
+        .then((data) => {
+          this.pages = data.total;
+          this.userList = _.cloneDeep(data.users);
+          this.setUserList(_.cloneDeep(data.users));
+        })
+        .finally(() => {
+          this.setLoading(false);
+        });
+    },
+    goPreviousPage() {
+      this.goPage(this.page - 1);
+    },
+    goNextPage() {
+      this.goPage(this.page + 1);
+    },
+    goPage(page) {
+      this.setPage(page);
+      this.getUserList();
+    },
+    addUser() {
+      this.$router.push(`/CreateUser`);
     },
   },
 };

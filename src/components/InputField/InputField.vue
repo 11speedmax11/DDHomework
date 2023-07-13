@@ -5,6 +5,7 @@
       :value="value"
       :placeholder="placeholder"
       @input="input($event)"
+      :type="typeInput"
       @change="input($event)"
     />
     <SvgIcon
@@ -23,6 +24,7 @@
 import SvgIcon from "@/components/SvgIcon/SvgIcon.vue";
 export default {
   props: {
+    typeInput: String,
     value: {
       type: String,
       default: "",
@@ -43,7 +45,7 @@ export default {
 
   methods: {
     input($event) {
-      console.log($event.target.value)
+     
       this.isFill = $event.target.value.length > 0 && this.isClear;
       this.$emit("input", $event.target.value);
     },

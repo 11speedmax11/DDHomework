@@ -1,0 +1,22 @@
+.comment__edit {
+  display: flex;
+}
+
+.send {
+  width: 42px;
+  height: 42px;
+  padding: 0;
+}
+
+.comment__body {
+  display: flex;
+  align-items: center;
+}
+
+.comment {
+  padding: 8px 0 16px;
+  margin-top:  8px;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 4px;
+}

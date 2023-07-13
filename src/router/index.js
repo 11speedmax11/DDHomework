@@ -13,6 +13,7 @@ import NotFound from "@/views/NotFound/NotFound.vue";
 import AuthPage from "@/views/AuthPage/AuthPage.vue";
 import CreateTask from "@/views/CreateTask/CreateTask.vue";
 import EditTask from "@/views/EditTask/EditTask.vue";
+import CreateUser from "@/views/CreateUser/CreateUser.vue";
 import NavigationMenu from "@/components/NavigationMenu/NavigationMenu.vue";
 
 const routes = [
@@ -30,6 +31,7 @@ const routes = [
           }
         }
       },
+      { path: 'CreateUser', name: 'CreateUser', component: CreateUser },
       { path: 'TaskList/CreateTask', name: 'CreateTask', component: CreateTask },
       { path: 'TaskList/EditTask', name: 'EditTask', component: EditTask, props: true},
       { path: 'TaskList/:id', name: 'TaskCard', component: TaskCard, props: true  },

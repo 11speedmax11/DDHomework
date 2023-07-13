@@ -35,9 +35,11 @@
         </CustomButton>
       </div>
       <CardsItem
-        v-for="item in this.taskList"
+        v-for="item in taskList"
         :key="item._id"
         :item="item"
+        isTask
+        :classImg="'card__img'"
         @delet="deletTask(item._id)"
         @edit="editTask(item)"
       />
@@ -47,6 +49,7 @@
         @goPage="goPage"
         @goNextPage="goNextPage"
         @goPreviousPage="goPreviousPage"
+        v-if="pages != 1"
       />
     </div>
     <PlugCards :textPlug="'Не создана ни одна задача'" @click="click" v-else />
@@ -63,6 +66,7 @@ import PaginationItems from "@/components/PaginationItems/PaginationItems.vue";
 import { mapGetters, mapActions } from "vuex";
 import requests from "@/requests";
 import { sortName, statusName } from "@/const";
+import _ from "lodash";
 
 export default {
   props: {},
@@ -131,13 +135,13 @@ export default {
       requests
         .getUserList({
           page: 1,
-          limit: 100,
+          limit: 200,
           filter: null,
           sort: "asc",
         })
-        .then((userList) => {
-          this.userList = userList;
-          this.setUserList(userList);
+        .then((usersList) => {
+          this.userList = _.cloneDeep(usersList.users);
+          this.setUserList(_.cloneDeep(usersList.users));
         });
     },
     searchTasks() {
@@ -205,7 +209,7 @@ export default {
         titleModal: "Удаление",
         projectName: id,
         action: (id) => {
-          requests.deleteTask(id);
+          requests.deleteTask(id).then(() => this.searchTasks());
         },
       });
     },
