@@ -21,7 +21,7 @@ const routes = [
     path: '/', name: 'NavigationMenu', component: NavigationMenu, children: [
       { path: 'ProjectList', name: 'ProjectList', component: ProjectList },
       { path: 'TaskList', name: 'TaskList', component: TaskList },
-      { path: 'UserProfile', name: 'UserProfile', component: UserProfile },
+      { path: 'UserProfile/:id', name: 'UserProfile', component: UserProfile, props: true },
       {
         path: 'UserList', name: 'UserList', component: UserList, beforeEnter: (to, from, next) => {
           if (localStorage.getItem('isAuthorized') == null || localStorage.getItem('isAuthorized') == "false") {
@@ -31,10 +31,10 @@ const routes = [
           }
         }
       },
-      { path: 'CreateUser', name: 'CreateUser', component: CreateUser },
+      { path: 'CreateUser', name: 'CreateUser', component: CreateUser, props: true },
       { path: 'TaskList/CreateTask', name: 'CreateTask', component: CreateTask },
-      { path: 'TaskList/EditTask', name: 'EditTask', component: EditTask, props: true},
-      { path: 'TaskList/:id', name: 'TaskCard', component: TaskCard, props: true  },
+      { path: 'TaskList/EditTask', name: 'EditTask', component: EditTask, props: true },
+      { path: 'TaskList/:id', name: 'TaskCard', component: TaskCard, props: true },
     ]
   },
   { path: '/AuthPage', name: 'AuthPage', component: AuthPage },

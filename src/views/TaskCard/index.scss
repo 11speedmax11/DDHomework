@@ -1,134 +1,140 @@
 @import "@/scssVars.scss";
 
-.task-card {
-  padding: 24px;
-  height: calc(100vh - 148px);
-}
+.main {
+  .task-card {
+    padding: 24px;
+    height: calc(100vh - 148px);
 
-.task-card__back {
-  margin-bottom: 24px;
-}
+    &__back {
+      margin-bottom: 24px;
 
-.task-card__back .button {
-  display: flex;
-  height: 42px;
-  align-items: center;
-  padding-left: 8px;
+      .button {
+        display: flex;
+        height: 42px;
+        align-items: center;
+        padding-left: 8px;
 
-  .header__start-icon{
-    padding-top: 8px;
-    transform: rotate(90deg);
+        .SvgStart {
+          padding-top: 8px;
+          transform: rotate(90deg);
+        }
+      }
+    }
+
+    &__body {
+      border: 1px solid $border-color-rgba;
+      display: flex;
+    }
+
+    .custom-select{
+      width: 100%;
+    }
+
+    .project {
+      height: 42px;
+      display: flex;
+      justify-content: space-between;
+
+      &__information {
+        display: flex;
+      }
+
+      &__code {
+        margin-left: 16px;
+      }
+
+      &__menu {
+        .project__icon {
+          height: 42px;
+          width: 42px;
+          padding: 0;
+        }
+
+        .project__delete {
+          color: $font-color-delete;
+        }
+      }
+    }
+
+    &__name {
+      margin: 16px 0;
+    }
+
+    &__information {
+      display: flex;
+    }
+
+    &__current-status {
+      display: flex;
+      align-items: center;
+    }
+    &__create-date {
+      margin: 0 8px;
+      display: flex;
+      align-items: center;
+    }
+    &__current-status .card__status {
+      margin: 0;
+    }
+
+    &__header {
+      padding: 24px;
+      border-bottom: 1px solid $border-color-rgba;
+    }
+
+    &__aside {
+      padding: 24px;
+      width: 252px;
+      border-left: 1px solid $border-color-rgba;
+    }
+
+    &__main {
+      width: calc(100% - 300px);
+    }
+
+    &__description {
+      padding: 24px;
+
+      &__text {
+        margin-bottom: 16px;
+      }
+
+      &__author {
+        padding: 8px 16px;
+      }
+    }
+
+    &__activity {
+      padding: 0;
+      padding-top: 8px;
+
+      &__body {
+        display: flex;
+        align-items: center;
+      }
+
+      &__comment {
+        padding: 10px;
+        border: 1px solid $font-color-disabled;
+        border-radius: 4px;
+      }
+
+      &__title {
+        align-items: center;
+        display: flex;
+      }
+    }
+
+    &__time-input {
+      display: flex;
+
+      .button,
+      .header__icon {
+        padding: 0;
+        color: $font-color-secondary;
+        width: 42px;
+        height: 42px;
+      }
+    }
   }
-}
-
-.task-card__body {
-  border: 1px solid $border-color-rgba;
-  display: flex;
-}
-
-.task-card__project {
-  height: 42px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.project__information {
-  display: flex;
-}
-
-.project__code {
-  margin-left: 16px;
-}
-
-.task-card__name {
-  margin: 16px 0;
-}
-
-.task-card__information {
-  display: flex;
-}
-
-.task-card__current-status,
-.description__date {
-  display: flex;
-  align-items: center;
-}
-
-.task-card__current-status .card__status {
-  margin: 0;
-}
-
-.task-card__create-date {
-  display: flex;
-  margin: 0 16px;
-  align-items: center;
-}
-
-.description__information {
-  display: flex;
-}
-
-.task-card__header {
-  padding: 24px;
-  border-bottom: 1px solid $border-color-rgba;
-}
-
-.task-card__aside {
-  padding: 24px;
-  width: 252px;
-  border-left: 1px solid $border-color-rgba;
-}
-
-.task-card__main {
-  width: calc(100% - 300px);
-}
-
-.task-card__description {
-  padding: 24px;
-}
-
-.description__text {
-  margin-bottom: 16px;
-}
-
-.description__author {
-  padding: 8px 16px;
-}
-
-.task-card__aside .custom-select {
-  width: 100%;
-  padding: 0;
-}
-
-.project__icon {
-  height: 42px;
-  width: 42px;
-  padding: 0;
-}
-
-.project__delete {
-  color: $font-color-delete;
-}
-
-.task-card__activity{
-  
-  padding: 0;
-  padding-top: 8px;
-}
-
-.activity__body{
-  display: flex;
-  align-items: center;
-}
-
-.activity__comment{
-  
-  padding: 10px;
-  border: 1px solid black;
-  border-radius:  4px;
-}
-
-.activity__title{
-  align-items: center;
-  display: flex;
 }

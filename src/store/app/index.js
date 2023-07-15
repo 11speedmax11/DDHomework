@@ -6,9 +6,11 @@ export default {
       isOpen: false,
       componentName: null,
       titleModal: null,
+      nameButton: null,
       action: null,
     },
     userList: null,
+    currentUser: null,
   },
   getters: {
     loading(state) {
@@ -20,7 +22,9 @@ export default {
     userList(state) {
       return state.userList;
     },
-
+    currentUser(state) {
+      return state.currentUser;
+    },
 
   },
   mutations: {
@@ -33,6 +37,9 @@ export default {
     },
     updateUserList(state, payload) {
       state.userList = payload;
+    },
+    updateCurrentUser(state, payload) {
+      state.currentUser = payload;
     },
 
   },
@@ -54,6 +61,9 @@ export default {
     },
     setUserList({ commit }, payload) {
       commit('updateUserList', payload);
+    },
+    setCurrentUser({ commit }, payload) {
+      commit('updateCurrentUser', payload);
     },
 
   },

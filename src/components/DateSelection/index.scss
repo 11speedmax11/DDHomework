@@ -1,44 +1,47 @@
+@import "@/scssVars.scss";
+
 .date {
   position: relative;
-}
 
-.date__wrapper {
-  display: flex;
-  border-radius: 4px;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  justify-content: space-between;
-  padding: 10px 8px 10px 12px;
-  height: 22px;
-}
 
-.date__picture {
-  color: #8E8E8E;
-  margin-left: 8px;
-  display: flex;
-  align-items: center;
-}
+  &__wrapper {
+    display: flex;
+    border-radius: 4px;
+    border: 1px solid $border-color-rgba;
+    justify-content: space-between;
+    padding: 10px 8px 10px 12px;
+    height: 22px;
+  }
 
-.date__value {
-  width: 100%;
-  display: flex;
-  align-items: center;
-}
+  &__picture {
+    color: $font-color-disabled;
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+  }
 
-.date__value.placeholder {
-  color: #D9D9D9;
-}
+  &__value {
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
 
-.date__wrapper:hover {
-  border: 1px solid rgba(18, 19, 22, 0.50);
-}
+  &__value.placeholder {
+    color: $font-color-disabled;
+  }
 
-.date__wrapper:active,
-.date__wrapper.active {
-  border: 1px solid #1C1C1C;
-}
+  &__wrapper:hover {
+    border: 1px solid $border-color-rgba-hover;
+  }
 
-.date__selection {
-  position: absolute;
-  top: 46px;
-  left: 0;
+  &__wrapper:active,
+  &__wrapper.active {
+    border: 1px solid $border-color-active;
+  }
+
+  &__selection {
+    position: absolute;
+    top: 46px;
+    left: 0;
+  }
 }

@@ -16,7 +16,9 @@
             <div class="task-card__project project">
               <div class="project__information">
                 <p>Код проекта</p>
-                <p class="project__code">#12341</p>
+                <p class="project__code">
+                  {{ code }}
+                </p>
               </div>
 
               <div class="project__menu">
@@ -72,7 +74,7 @@
           </div>
           <div class="task-card__activity activity">
             <div class="activity__text">Активность</div>
-            <div v-for="activity in listAtivity" :key="activity">
+            <div v-for="activity in listAtivity" :key="activity.value._id">
               <div class="activity__body" v-if="!activity.isComment">
                 <UserElement :id="activity.value.author" />
                 изменил(а) {{ activity.value.field }}
@@ -114,6 +116,19 @@
             >
             </CustomSelect>
           </div>
+          <div class="task-card__time">
+            <p class="task-card__time-text">Затрачено</p>
+            <p class="task-card__time-value">{{ getStringTime(task.time) }}</p>
+            <div class="task-card__time-input">
+              <InputField v-model="time" />
+              <CustomButton
+                @click="addTime"
+                icon="done"
+                svgHeight="42px"
+                svgWidth="42px"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -127,7 +142,8 @@ import StatusTask from "@/components/StatusTask/StatusTask.vue";
 import UserElement from "@/components/UserElement/UserElement.vue";
 import CommentField from "@/components/CommentField/CommentField.vue";
 import CommentTree from "@/components/CommentTree/CommentTree.vue";
-import requests from "@/requests";
+import InputField from "@/components/InputField/InputField.vue";
+import { requests } from "@/requests";
 import { statusName } from "@/const";
 import { mapActions } from "vuex";
 import _ from "lodash";
@@ -141,6 +157,7 @@ export default {
     UserElement,
     CommentField,
     CommentTree,
+    InputField,
   },
   props: {
     id: String,
@@ -152,6 +169,8 @@ export default {
       editCommentText: null,
       task: null,
       userList: null,
+      time: null,
+      code: null,
     };
   },
   computed: {
@@ -175,13 +194,6 @@ export default {
             : new Date(b.value.dateCreated);
         return dateA - dateB;
       });
-      console.log(
-        arrAtivity.map((x) =>
-          x.value.dateEdited !== null
-            ? new Date(x.value.dateEdited)
-            : new Date(x.value.dateCreated)
-        )
-      );
       return arrAtivity;
     },
     statusList() {
@@ -248,7 +260,7 @@ export default {
     dateEdited() {
       return this.getDate(this.task.dateEdited);
     },
-  },
+    },
   methods: {
     ...mapActions("app", ["setUserList"]),
     openTaskList() {
@@ -308,7 +320,7 @@ export default {
         })
         .then(() => {
           this.getTask();
-          this.getHistory() 
+          this.getHistory();
         });
     },
     executorSelected(executor) {
@@ -351,7 +363,9 @@ export default {
     getTask() {
       requests.getTask(this.id).then((data) => {
         this.task = data;
+        this.getProjectName()
       });
+      
     },
     getUsers() {
       requests
@@ -365,6 +379,74 @@ export default {
           this.userList = _.cloneDeep(usersList.users);
           this.setUserList(_.cloneDeep(usersList.users));
         });
+    },
+    getStringTime(time) {
+      const units = [
+        { label: "mo", seconds: 30 * 24 * 60 * 60 },
+        { label: "w", seconds: 7 * 24 * 60 * 60 },
+        { label: "d", seconds: 24 * 60 * 60 },
+        { label: "h", seconds: 60 * 60 },
+        { label: "m", seconds: 60 },
+        { label: "s", seconds: 1 },
+      ];
+
+      let timeString = "";
+
+      for (const unit of units) {
+        const value = Math.floor(time / unit.seconds);
+        time %= unit.seconds;
+
+        if (value > 0) {
+          timeString += `${value}${unit.label} `;
+        }
+      }
+
+      return timeString.trim();
+    },
+    getSecond(time) {
+      const components = time.trim().split(" ");
+
+      const multipliers = {
+        y: 365 * 24 * 60 * 60,
+        mo: 30 * 24 * 60 * 60,
+        w: 7 * 24 * 60 * 60,
+        d: 24 * 60 * 60,
+        h: 60 * 60,
+        m: 60,
+        s: 1,
+      };
+
+      let totalSeconds = 0;
+
+      for (const component of components) {
+        const value = parseInt(component);
+        const unit = component.replace(/[0-9]/g, "");
+
+        if (
+          !isNaN(value) &&
+          Object.prototype.hasOwnProperty.call(multipliers, unit)
+        ) {
+          totalSeconds += value * multipliers[unit];
+        } else {
+          return 0;
+        }
+      }
+
+      return totalSeconds;
+    },
+    addTime() {
+      requests
+        .addTime({ taskId: this.task._id, time: this.getSecond(this.time) })
+        .then((data) => {
+          console.log(data);
+        });
+    },
+
+    getProjectName() {
+      requests.getProjectById(this.task.projectId).then((data) => {
+        console.log(data)
+        this.code = data.code;
+      });
     },
   },
   mounted() {

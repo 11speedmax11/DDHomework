@@ -16,7 +16,7 @@
       <span v-if="label"> {{ label }}</span>
       <img
         :class="imgClass"
-        src="@/assets/images/profilPicture.png"
+        :src="avatarImg"
         width="24px"
         height="24px"
         v-if="imgClass"
@@ -30,7 +30,7 @@
           :key="item.title"
           :buttonStyle="item.buttonStyle"
           :classButton="item.classButton"
-          @click="$emit(`${item.click}`)"
+          @click="clickItemMenu(item.click)"
           >{{ item.title }}</CustomButton
         >
         <slot> </slot>
@@ -55,6 +55,7 @@ export default {
     icon: String,
     imgClass: String,
     classButton: String,
+    avatarImg: String,
     xClass: String,
     svgWidth: String,
     svgHeight: String,
@@ -70,6 +71,10 @@ export default {
     toggle() {
       this.isActive = !this.isActive;
     },
+    clickItemMenu(eventButton) {
+      this.closeMenu();
+      this.$emit(`${eventButton}`);
+    },
     closeMenu() {
       this.isActive = false;
     },
@@ -79,7 +84,7 @@ export default {
     },
     edit(item) {
       this.$emit(item.edit);
-    }
+    },
   },
 };
 </script>

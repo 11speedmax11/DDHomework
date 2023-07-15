@@ -5,7 +5,7 @@
       <div class="modal__wrapper">
         <component
           :is="currentModal.componentName"
-          :currentModal="currentModal"
+          :currentModal="currentModal"        
           @acceptAction="acceptAction"
           @cancle="cancle"
         >
@@ -39,6 +39,7 @@ export default {
   methods: {
     ...mapActions("app", ["closeCurrentModal"]),
     acceptAction(data) {
+
       this.currentModal.action(data);
       this.closeCurrentModal();
     },

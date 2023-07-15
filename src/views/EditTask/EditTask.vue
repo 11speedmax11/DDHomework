@@ -91,7 +91,7 @@
 import CustomButton from "@/components/CustomButton/CustomButton.vue";
 import InputField from "@/components/InputField/InputField.vue";
 import CustomSelect from "@/components/CustomSelect/CustomSelect.vue";
-import requests from "@/requests";
+import { requests } from "@/requests";
 
 export default {
   components: {
@@ -150,8 +150,8 @@ export default {
           projectId: this.selectedProject,
           executor: this.selectedUser,
         })
-        .then((data) => {
-          console.log(data);
+        .finally(() => {
+      this.$router.push({ name: "TaskList" });
         });
     },
     cancel() {

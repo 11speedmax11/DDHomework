@@ -35,7 +35,7 @@
         :key="item._id"
         :item="item"
         @edit="editProject(item)"
-        @delet="deleteProject(item._id)"
+        @delet="deleteProject(item)"
       />
       <PaginationItems
         :total="pages"
@@ -57,7 +57,7 @@ import InputField from "@/components/InputField/InputField.vue";
 import CustomButton from "@/components/CustomButton/CustomButton.vue";
 import CustomSelect from "@/components/CustomSelect/CustomSelect.vue";
 import PaginationItems from "@/components/PaginationItems/PaginationItems.vue";
-import requests from "@/requests";
+import { requests } from "@/requests";
 import { sortName } from "@/const";
 import { mapGetters, mapActions } from "vuex";
 
@@ -125,15 +125,17 @@ export default {
         });
     },
     setValueSearch(value) {
-      console.log(value);
+      this.setPage(1);
       this.setSearch(value);
       this.searchProject();
     },
     sortOrder(value) {
       this.setOrder(value);
       this.searchProject();
+      this.setPage(1);
     },
     turnIcon(value) {
+      this.setPage(1);
       this.setSortOrderValues(value ? "asc" : "desc");
       this.searchProject();
     },
@@ -151,8 +153,8 @@ export default {
       this.setCurrentModal({
         isOpen: true,
         componentName: "CreateProjectModal",
-        titleModal: "fdsaf",
-
+        titleModal: "Создание проекта",
+        nameButton: "Создать проект",
         action: (data) => {
           requests.addProject(data).then(() => this.searchProject());
         },
@@ -162,7 +164,8 @@ export default {
       this.setCurrentModal({
         isOpen: true,
         componentName: "CreateProjectModal",
-        titleModal: "fdsaf",
+        titleModal: "Редактирование проекта",
+        nameButton: "Сохранить",
         projectData: item,
         action: (data) => {
           requests
@@ -171,8 +174,18 @@ export default {
         },
       });
     },
-    deleteProject(id) {
-      requests.deleteProject(id).then(() => this.searchProject());
+    deleteProject(item) {
+      this.setCurrentModal({
+        isOpen: true,
+        componentName: "DeleteTaskModal",
+        titleModal: "Удаление",
+        projectName: item,
+        nameButton: "Да",
+        action: (item) => {
+          requests.deleteProject(item._id).then(() => this.searchProject());
+        },
+      });
+      // requests.deleteProject(id).then(() => this.searchProject());
     },
   },
 };

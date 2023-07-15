@@ -1,11 +1,16 @@
 const urlPart = "http://45.12.239.156:8081/api/";
+const urlPartBase = "http://45.12.239.156:8081/";
 let headers = {
   'Authorization': `Bearer ${localStorage.getItem('tokenUser')}`,
   'Content-Type': 'application/json'
 }
 import axios from 'axios';
 
-const requests = {
+export const  updateHeaders = () => {
+  headers['Authorization'] = `Bearer ${localStorage.getItem('tokenUser')}`;
+}
+
+export const requests = {
   getTasks: (data) => {
     const url = urlPart + `tasks/search`;
     return axios({
@@ -34,6 +39,40 @@ const requests = {
     })
       .then(({ data }) => {
         return data.token
+      })
+      .catch(error => {
+        console.error('Возникла проблема:', error);
+      });
+  },
+  getCurrentUser: () => {
+    const url = urlPart + `users/current`;
+    return axios({
+      method: 'get',
+      url: url,
+      headers: headers
+    })
+      .then(({ data }) => {
+        return data
+      })
+      .catch(error => {
+        console.error('Возникла проблема:', error);
+      });
+  },
+
+  getAvatar(picture) {
+    return urlPartBase + (picture || "09a5dbef-32ff-43df-b3f9-01855899ee74.jpg")
+  },
+
+  deleteUser: (data) => {
+    const url = urlPart + `users/status`;
+    return axios({
+      method: 'put',
+      url: url,
+      headers: headers,
+      data: data
+    })
+      .then(({ data }) => {
+        return data
       })
       .catch(error => {
         console.error('Возникла проблема:', error);
@@ -89,6 +128,24 @@ const requests = {
       });
   },
 
+  addPhoto: (data) => {
+    const url = urlPart + `users/picture`;
+    return axios({
+      method: 'put',
+      url: url,
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('tokenUser')}`,
+      },
+      data: data
+    })
+      .then(({ data }) => {
+        return data
+      })
+      .catch(error => {
+        console.error('Возникла проблема:', error);
+      });
+  },
+
   getStatus: () => {
     const url = urlPart + `statuses`;
     return axios({
@@ -110,20 +167,6 @@ const requests = {
       url: url,
       headers: headers,
       data: data,
-    })
-      .then(({ data }) => {
-        return data
-      })
-      .catch(error => {
-        console.error('Возникла проблема:', error);
-      });
-  },
-  getCurrentUser: () => {
-    const url = urlPart + `/users/current`;
-    return axios({
-      method: 'get',
-      url: url,
-      headers: headers,
     })
       .then(({ data }) => {
         return data
@@ -209,7 +252,7 @@ const requests = {
       });
   },
   deleteProject: (id) => {
-    const url = urlPart + `/projects/${id}`;
+    const url = urlPart + `projects/${id}`;
     return axios({
       method: 'delete',
       url: url,
@@ -229,6 +272,21 @@ const requests = {
       url: url,
       headers: headers,
       data: data,
+    })
+      .then(({ data }) => {
+        return data
+      })
+      .catch(error => {
+        console.error('Возникла проблема:', error);
+      });
+  },
+
+  getProjectById: (id) => {
+    const url = urlPart + `projects/${id}`;
+    return axios({
+      method: 'get',
+      url: url,
+      headers: headers,
     })
       .then(({ data }) => {
         return data
@@ -267,7 +325,7 @@ const requests = {
       });
   },
   getHistory: (id) => {
-    const url = urlPart + `/hystory/${id}`;
+    const url = urlPart + `hystory/${id}`;
     return axios({
       method: 'get',
       url: url,
@@ -295,7 +353,7 @@ const requests = {
       });
   },
   addComment: (data) => {
-    const url = urlPart + `/comments`;
+    const url = urlPart + `comments`;
     return axios({
       method: 'post',
       url: url,
@@ -310,7 +368,7 @@ const requests = {
       });
   },
   editComment: (data) => {
-    const url = urlPart + `/comments`;
+    const url = urlPart + `comments`;
     return axios({
       method: 'put',
       url: url,
@@ -325,7 +383,7 @@ const requests = {
       });
   },
   deleteComment: (id) => {
-    const url = urlPart + `/comments/${id}`;
+    const url = urlPart + `comments/${id}`;
     return axios({
       method: 'delete',
       url: url,
@@ -338,6 +396,20 @@ const requests = {
         console.error('Возникла проблема:', error);
       });
   },
+  addTime: (data) => {
+    const url = urlPart + `times`;
+    return axios({
+      method: 'put',
+      url: url,
+      headers: headers,
+      data
+    })
+      .then(({ data }) => {
+        return data
+      })
+      .catch(error => {
+        console.error('Возникла проблема:', error);
+      });
+  },
 }
 
-export default requests

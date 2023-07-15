@@ -23,8 +23,8 @@
 <script>
 import CustomButton from "@/components/CustomButton/CustomButton.vue";
 import InputField from "@/components/InputField/InputField.vue";
-import requests from "@/requests";
-
+import {requests, updateHeaders} from "@/requests";
+import { mapActions } from "vuex";
 export default {
   components: {
     CustomButton,
@@ -39,10 +39,16 @@ export default {
     };
   },
   methods: {
+    ...mapActions("app", ["setCurrentUser"]),
     openTaskList() {
-      return requests.getUser(this.dataAuth).then((response) => {
+      requests.getUser(this.dataAuth).then((response) => {
         localStorage.setItem("isAuthorized", true);
         localStorage.setItem("tokenUser", response);
+        updateHeaders();
+        requests.getCurrentUser().then((data) => {
+          this.setCurrentUser(data);
+          this.$router.push(`TaskList`);
+        });
       });
     },
     searchTasks() {},

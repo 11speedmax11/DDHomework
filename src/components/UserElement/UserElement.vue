@@ -1,35 +1,25 @@
 <template>
-  <div class="user">
-    <img
-      :class="imgClass"
-      src="@/assets/images/profilPicture.png"
-      width="24px"
-      height="24px"
-    />
-    <p class="uset__name">{{ getName }}</p>
+  <div class="user" @click="$emit('click')">
+    <img :class="imgClass" :src="getAvatarImg()" width="24px" height="24px" />
+    <p class="user__name">{{ getName }}</p>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import _ from "lodash";
+import { requests } from "@/requests";
 export default {
   props: {
     id: String,
     imgClass: String,
   },
+
   computed: {
     ...mapGetters("app", ["userList"]),
-    currentUser() {
-      let user = _.cloneDeep(this.userList).find((x) => x._id == this.id);
-      if (user) {
-        return user;
-      } else {
-        return user;
-      }
-    },
+
     getName() {
-      let parts = this.currentUser.name.split(" ");
+      let parts = this.currentUser().name.split(" ");
       let lastName = parts[0];
       let firstName = "";
       if (parts.length > 1) {
@@ -43,6 +33,29 @@ export default {
       }
 
       return lastName + " " + firstName + patronymic;
+    },
+  },
+  methods: {
+    currentUser() {
+      let user = _.cloneDeep(this.userList).find((x) => x._id == this.id);
+      if (user) {
+        return user;
+      } else {
+        requests
+          .getUserList({
+            page: 1,
+            limit: 1,
+            filter: { _id: this.id },
+            sort: "asc",
+          })
+          .then((userList) => {
+            return userList.users[0];
+          });
+        return "Удален";
+      }
+    },
+    getAvatarImg() {
+      return requests.getAvatar(this.currentUser().picture);
     },
   },
 };

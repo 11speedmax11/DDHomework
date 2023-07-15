@@ -28,9 +28,10 @@
         :class="{ active: isActive('UserProfile') }"
         :imgClass="'header__img'"
         :classButton="'header__button'"
+        :avatarImg="getAvatarImg()"
         icon="vector"
         xClass="header__svg"
-        @openProfile="selectTab('UserProfile')"
+        @openProfile="openProfile"
         @openAuthorization="openAuthorization"
         :buttonsArr="[
           {
@@ -56,14 +57,17 @@
 <script>
 import CustomButton from "@/components/CustomButton/CustomButton.vue";
 import DropDownButton from "@/components/DropDownButton/DropDownButton.vue";
-
+import { mapGetters } from "vuex";
+import { requests } from "@/requests";
 export default {
   name: "NavigationMenu",
   components: {
     CustomButton,
     DropDownButton,
   },
-  computed: {},
+  computed: {
+    ...mapGetters("app", ["currentUser"]),
+  },
   methods: {
     selectTab(tab) {
       this.$emit("tabSelected", tab);
@@ -74,7 +78,14 @@ export default {
       this.$router.push(`/AuthPage`);
     },
     isActive(routerString) {
-      return this.$route.path.split('/')[1] == `${routerString}`
+      return this.$route.path.split("/")[1] == `${routerString}`;
+    },
+    openProfile() {
+      let path = `UserProfile/${this.currentUser._id}`;
+      this.selectTab(path);
+    },
+    getAvatarImg() {
+        return requests.getAvatar((this.currentUser || {}).picture);
     },
   },
 };

@@ -1,9 +1,7 @@
 .pagination {
-
   padding: 20px;
 
-  .pagination__pages {
-
+  &__pages {
     display: flex;
     gap: 8px;
 

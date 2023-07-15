@@ -1,15 +1,16 @@
-.not-found{
+.not-found {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100vh;
   width: 100vw;
-}
-.not-found__wrapper {
-  text-align: center;
-}
 
-.not-found__wrapper p {
-  text-align: center;
-  font-size: 28px;
+  &__wrapper {
+    text-align: center;
+  }
+
+  &__wrapper p {
+    text-align: center;
+    font-size: 28px;
+  }
 }

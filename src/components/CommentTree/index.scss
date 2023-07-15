@@ -1,6 +1,4 @@
-.comment__edit {
-  display: flex;
-}
+@import "@/scssVars.scss";
 
 .send {
   width: 42px;
@@ -8,15 +6,31 @@
   padding: 0;
 }
 
-.comment__body {
-  display: flex;
-  align-items: center;
-}
-
 .comment {
-  padding: 8px 0 16px;
-  margin-top:  8px;
-  padding: 10px;
-  border: 1px solid black;
+  margin: 0 16px;
+  margin-top: 8px;
+  padding: 8px 16px;
+  border: 1px solid $border-color-rgba;
   border-radius: 4px;
+
+  &__edit {
+    display: flex;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__body {
+    display: block;
+    align-items: center;
+  }
+
+  &__text {
+    margin-left: 16px;
+    display: flex;
+    justify-content: space-between
+  }
 }

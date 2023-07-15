@@ -10,17 +10,28 @@
 import ModalBase from "@/components/ModalBase/ModalBase.vue";
 import PreloaderCircle from "@/components/PreloaderCircle/PreloaderCircle.vue";
 import { mapGetters, mapActions } from "vuex";
+import { requests } from "@/requests";
+
 export default {
   components: {
     ModalBase,
     PreloaderCircle,
   },
-  mounted() {},
+  mounted() {
+    if (localStorage.getItem("tokenUser")) {
+      requests.getCurrentUser().then((data) => {
+        this.setCurrentUser(data);
+        // this.$router.push("TaskList");
+      });
+    } else {
+      this.$router.push("AuthPage");
+    }
+  },
   computed: {
     ...mapGetters("app", ["loading", "currentModal"]),
   },
   methods: {
-    ...mapActions("app", ["setCurrentModal"]),
+    ...mapActions("app", ["setCurrentModal", "setCurrentUser"]),
   },
 };
 </script>

@@ -13,20 +13,20 @@ input {
   border-radius: 4px;
   display: flex;
   align-items: center;
+
+  svg {
+    margin-left: 8px;
+  }
+
+  .svgClear {
+    color: $border-color-rgba;
+  }
+
+  .svgSearch {
+    color: $font-color-disabled;
+  }
 }
 
 .isSearch {
   padding: 10px 8px 10px 12px;
-}
-
-.input-custom svg {
-  margin-left: 8px;
-}
-
-.input-custom .svgClear {
-  color: $border-color-rgba;
-}
-
-.input-custom .svgSearch {
-  color: $font-color-disabled;
 }

@@ -21,14 +21,14 @@
         </CustomButton>
       </div>
       <div class="user-list__item" v-for="user in userList" :key="user._id">
-        <UserElement :id="user._id" />
-        <div class="user-list__menu">
+        <UserElement :id="user._id" @click="openProfile(user._id)" />
+        <div class="user-list__menu" v-if="isAdmin">
           <DropDownButton
             :classButton="'card__icon'"
             icon="dots"
             xClass="card__svg"
-            @edit="$emit('edit')"
-            @delete="$emit('delet')"
+            @edit="editUser(user)"
+            @delete="deleteUser(user)"
             :buttonsArr="[
               {
                 buttonStyle: 'dropDown',
@@ -65,7 +65,7 @@ import UserElement from "@/components/UserElement/UserElement.vue";
 import PaginationItems from "@/components/PaginationItems/PaginationItems.vue";
 import DropDownButton from "@/components/DropDownButton/DropDownButton.vue";
 import { mapGetters, mapActions } from "vuex";
-import requests from "@/requests";
+import { requests } from "@/requests";
 import _ from "lodash";
 
 export default {
@@ -88,19 +88,29 @@ export default {
   },
   computed: {
     ...mapGetters("user", ["search", "sortOrderValues", "page"]),
-
+    ...mapGetters("app", ["currentUser"]),
     sortOrderValue() {
       return this.sortOrderValues;
+    },
+    isAdmin() {
+      if (this.currentUser.roles.includes("ADMIN")) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
   methods: {
     ...mapActions("user", ["setSearch", "setSortOrderValues", "setPage"]),
     ...mapActions("app", ["setLoading", "setUserList"]),
+
     setValueSearch(value) {
+      this.setPage(1);
       this.setSearch(value);
       this.getUserList();
     },
     turnIcon() {
+      this.setPage(1);
       this.setSortOrderValues(this.sortOrderValues == "desc" ? "asc" : "desc");
       this.getUserList();
     },
@@ -139,6 +149,25 @@ export default {
     },
     addUser() {
       this.$router.push(`/CreateUser`);
+    },
+    editUser(user) {
+      this.$router.push({
+        name: "CreateUser",
+        params: {
+          isEdit: true,
+          user: user,
+        },
+      });
+    },
+    deleteUser(user) {
+      requests.deleteUser({
+        _id: user._id,
+        status: "DELETED",
+      });
+    },
+    openProfile(id) {
+      let path = `/UserProfile/${id}`;
+      this.$router.push(`${path}`);
     },
   },
 };

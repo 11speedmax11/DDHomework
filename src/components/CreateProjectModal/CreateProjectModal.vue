@@ -6,13 +6,13 @@
         <InputField v-model="formData.code" />
       </div>
       <div class="authorization__password">
-        <p>Название<span>*</span></p>
+        <p>Название <span>*</span></p>
         <InputField v-model="formData.name" />
       </div>
     </div>
     <div class="create-project-modal__footer">
       <CustomButton buttonStyle="secondary" @click="cancle">отмена</CustomButton>
-      <CustomButton @click="accept">{{ nameButton }}</CustomButton>
+      <CustomButton @click="accept">{{ currentModal.nameButton }}</CustomButton>
     </div>
   </div>
 </template>

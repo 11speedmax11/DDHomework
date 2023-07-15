@@ -1,126 +1,128 @@
 @import "@/scssVars.scss";
 
-.create-user{
+.create-user {
   padding: 24px;
   height: calc(100vh - 150px);
-}
 
-.create-user__wrapper {
-  padding: 24px;
-  border: 1px solid $border-color-rgba;
-  height: calc(100% - 48px);
-}
+  &__wrapper {
+    padding: 24px;
+    border: 1px solid $border-color-rgba;
+    height: calc(100% - 48px);
+  }
 
-.create-user__header {
-  font-size: 40px;
-  font-weight: 600;
-  margin: 10px;
-  margin-top: 0;
-}
+  &__header {
+    font-size: 40px;
+    font-weight: 600;
+    margin: 10px;
+    margin-top: 0;
+  }
 
-.create-user__body {
-  display: flex;
-  height: calc(100vh - 487px);
-  padding: 32px 24px;
-}
+  &__body {
+    display: flex;
+    height: calc(100vh - 487px);
+    padding: 32px 24px;
+  }
 
-.create-user__field {
-  display: flex;
-  margin-bottom: 24px;
-}
+  &__field {
+    display: flex;
+    margin-bottom: 24px;
+  }
 
-.create-user__title {
-  width: 120px;
-  color: $font-color-disabled;
-}
+  &__title {
+    width: 120px;
+    color: $font-color-disabled;
+  }
 
-.create-user__value {
-  width: 544px;
-  margin-left: 8px;
-}
+  &__value {
+    width: 544px;
+    margin-left: 8px;
 
-.create-user__value select, .create-user__value .create-user__project{
-  width: calc(100% - 2px);
-  margin: 0;
-  padding: 0;
-}
+    select,
+    .create-user__project {
+      width: calc(100% - 2px);
+      margin: 0;
+      padding: 0;
+    }
 
-.create-user__value textarea {
-  width: calc(100% - 22px);
-  height: 120px;
-  margin: 0;
-  padding: 10px;
-  resize: none;
-  border: 1px solid $border-color-rgba;
-  border-radius: 4px;
-  outline: none;
-}
+    textarea {
+      width: calc(100% - 22px);
+      height: 120px;
+      margin: 0;
+      padding: 10px;
+      resize: none;
+      border: 1px solid $border-color-rgba;
+      border-radius: 4px;
+      outline: none;
+    }
 
-.create-user__value .input{
-  outline: none;
-}
+    .input {
+      outline: none;
+    }
 
-.create-user__line {
-  margin: 24px 0;
-  height: 1px;
-  width: 100%;
-  background: $border-color-rgba;
-}
+  }
 
-.create-user__buttons {
-  display: flex;
-  justify-content: end;
-  padding: 10px;
-}
+  &__line {
+    margin: 24px 0;
+    height: 1px;
+    width: 100%;
+    background: $border-color-rgba;
+  }
 
-.create-user__buttons>* {
-  margin-left: 24px;
-}
+  &__buttons {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
 
-.create-user__create {
-  box-sizing: border-box;
-  align-items: center;
-  padding: 12px 16px;
-  height: 42px;
-  border: 0;
-  border-radius: 4px;
-  display: flex;
-  background: $background-color-primary;
-  color: $font-color-secondary;
-  transition: background-color 0.5s ease, color 0.5s ease;
-}
+    >* {
+      margin-left: 24px;
+    }
 
-.create-user__create:hover {
-  background: $background-color-primary-hover;
-}
+    &>.create-user__create {
+      box-sizing: border-box;
+      align-items: center;
+      padding: 12px 16px;
+      height: 42px;
+      border: 0;
+      border-radius: 4px;
+      display: flex;
+      background: $background-color-primary;
+      color: $font-color-secondary;
+      transition: background-color 0.5s ease, color 0.5s ease;
 
-.create-user__create:active {
-  background: $background-color-primary-active;
-}
+      &:hover {
+        background: $background-color-primary-hover;
+      }
 
-.create-user__back {
-  box-sizing: border-box;
-  align-items: center;
-  padding: 12px 16px;
-  height: 42px;
-  border: 0;
-  border-radius: 4px;
-  display: flex;
-  background: $background-color-secondary;
-  transition: background-color 0.5s ease, color 0.5s ease;
-  border: 1px solid $border-color-rgba;
-}
+      &:active {
+        background: $background-color-primary-active;
+      }
+    }
 
-.create-user__back:hover {
-  background: $background-color-secondary-hover;
-  border: 1px solid $border-color-rgba-hover;
-}
+    &>.create-user__back {
+      box-sizing: border-box;
+      align-items: center;
+      padding: 12px 16px;
+      height: 42px;
+      border: 0;
+      border-radius: 4px;
+      display: flex;
+      background: $background-color-secondary;
+      transition: background-color 0.5s ease, color 0.5s ease;
+      border: 1px solid $border-color-rgba;
 
-.create-user__back:active {
-  background: $background-color-primary-disabled;
-  border: 1px solid $border-color-active;
-}
+      &:hover {
+        background: $background-color-secondary-hover;
+        border: 1px solid $border-color-rgba-hover;
+      }
 
-.create-user__star {
-  color: $font-color-delete;
+      &:active {
+        background: $background-color-primary-disabled;
+        border: 1px solid $border-color-active;
+      }
+    }
+  }
+
+  &__star {
+    color: $font-color-delete;
+  }
 }

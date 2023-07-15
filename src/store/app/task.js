@@ -10,7 +10,7 @@ export default {
       dateStart: null,
       dateEnd: null
     },
-    sort:{
+    sort: {
       sorting: 'name',
       sortOrderValues: 'asc',
     },
@@ -52,7 +52,7 @@ export default {
       state.page = payload;
     },
   },
-  
+
   actions: {
     setFilter({ commit }, payload) {
       commit('updateFilter', payload);
@@ -68,6 +68,12 @@ export default {
     },
     setPage({ commit }, payload) {
       commit('updatePage', payload);
+    },
+    setUserTasks({ commit }, payload) {
+      commit('updatePage', 1);
+      commit('updatesortOrderValues', "asc");
+      commit('updateOrder', "name");
+      commit('updateFilter', payload);
     },
   },
 }

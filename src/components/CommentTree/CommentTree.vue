@@ -1,13 +1,27 @@
 <template>
-    <div class="comment">
-      <div class="comment__body">
+  <div class="comment">
+    <div class="comment__body">
+      <div class="comment__header">
         <UserElement :id="comment.author" />
+        <div class="comment__date">
+          {{
+            comment.dateEdited
+              ? dateEdited(comment.dateEdited)
+              : dateCreated(comment.dateCreated)
+          }}
+        </div>
+      </div>
+      <div class="comment__text">
         <div v-if="!isEdit">
           {{ comment.text }}
         </div>
         <div class="comment__edit" v-else>
           <textarea v-model="editCommentText"> </textarea>
-          <CustomButton @click="changeEdit" icon="send" class="send"></CustomButton>
+          <CustomButton
+            @click="changeEdit"
+            icon="send"
+            class="send"
+          ></CustomButton>
         </div>
         <DropDownButton
           :classButton="'card__icon'"
@@ -32,18 +46,19 @@
         >
         </DropDownButton>
       </div>
-      <CommentTree
-        v-for="comment in childrenComments"
-        :key="comment._id"
-        :comment="comment"
-        isChild
-        @deleteComment="deleteComment"
-        @acceptEdit="acceptEdit"
-      />
-      <div class="activity__answer" v-if="!isChild">
-        <CommentField @sendComment="addComment(comment._id, $event)"/>
-      </div>
     </div>
+    <CommentTree
+      v-for="comment in childrenComments"
+      :key="comment._id"
+      :comment="comment"
+      isChild
+      @deleteComment="deleteComment"
+      @acceptEdit="acceptEdit"
+    />
+    <div class="activity__answer" v-if="!isChild">
+      <CommentField @sendComment="addComment(comment._id, $event)" />
+    </div>
+  </div>
 </template> 
 <script>
 import CustomButton from "@/components/CustomButton/CustomButton.vue";
@@ -80,28 +95,28 @@ export default {
     childrenComments() {
       return this.comment.children.length ? this.comment.children : [];
     },
-    dateCreated() {
-      return this.getDate(this.task.dateCreated);
-    },
-    dateEdited() {
-      return this.getDate(this.task.dateEdited);
-    },
   },
   methods: {
+    dateCreated(date) {
+      return this.getDate(date);
+    },
+    dateEdited(date) {
+      return this.getDate(date);
+    },
     editComment() {
-      this.editCommentText = this.comment.text
+      this.editCommentText = this.comment.text;
       this.isEdit = !this.isEdit;
     },
-    changeEdit(){
+    changeEdit() {
       this.isEdit = !this.isEdit;
-      this.acceptEdit({id: this.comment._id, text: this.editCommentText})
+      this.acceptEdit({ id: this.comment._id, text: this.editCommentText });
     },
     acceptEdit(obj) {
-      console.log(obj)
+      console.log(obj);
       this.$emit("acceptEdit", obj);
     },
     addComment(id, text) {
-      this.$emit("addComment", {id, text});
+      this.$emit("addComment", { id, text });
     },
     deleteComment(id) {
       this.$emit("deleteComment", id);

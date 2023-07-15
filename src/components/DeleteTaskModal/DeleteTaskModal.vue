@@ -1,13 +1,13 @@
 <template>
   <div class="create-project-modal">
     <div class="create-project-modal__wrapper">
-      Вы уверены что хотите удалить проект «{{currentModal.projectName}}»?
+      Вы уверены что хотите удалить {{currentModal.projectName.projectId? "задачу": "проект"}} «{{currentModal.projectName.name}}»?
     </div>
     <div class="create-project-modal__footer">
       <CustomButton buttonStyle="secondary" @click="cancle"
         >отмена</CustomButton
       >
-      <CustomButton @click="accept">{{ nameButton }}</CustomButton>
+      <CustomButton @click="accept">{{ currentModal.nameButton }}</CustomButton>
     </div>
   </div>
 </template>
@@ -16,10 +16,10 @@
 import CustomButton from "@/components/CustomButton/CustomButton.vue";
 export default {
   props: {
-    nameButton: String,
     currentModal: Object
   },
   components: {
+
     CustomButton,
   },
   computed: {},

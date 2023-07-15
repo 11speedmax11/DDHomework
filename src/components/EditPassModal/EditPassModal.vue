@@ -12,7 +12,7 @@
     </div>
     <div class="create-project-modal__footer">
       <CustomButton buttonStyle="secondary" @click="cancle">отмена</CustomButton>
-      <CustomButton @click="accept">{{ nameButton }}</CustomButton>
+      <CustomButton @click="accept">{{ currentModal.nameButton }}</CustomButton>
     </div>
   </div>
 </template>

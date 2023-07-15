@@ -40,7 +40,7 @@
         :item="item"
         isTask
         :classImg="'card__img'"
-        @delet="deletTask(item._id)"
+        @delet="deletTask(item)"
         @edit="editTask(item)"
       />
       <PaginationItems
@@ -64,7 +64,7 @@ import CustomSelect from "@/components/CustomSelect/CustomSelect.vue";
 import FilterValues from "@/components/FilterValues/FilterValues.vue";
 import PaginationItems from "@/components/PaginationItems/PaginationItems.vue";
 import { mapGetters, mapActions } from "vuex";
-import requests from "@/requests";
+import { requests } from "@/requests";
 import { sortName, statusName } from "@/const";
 import _ from "lodash";
 
@@ -169,18 +169,24 @@ export default {
       this.$router.push(`TaskList/CreateTask`);
     },
     setValueSearch(value) {
+      this.setPage(1);
       this.setName(value);
       this.searchTasks();
     },
     sortOrder(value) {
+      this.setPage(1);
       this.setOrder(value);
       this.searchTasks();
     },
     applyFilter(value) {
-      this.setFilter(value);
+      this.setPage(1);
+      let valueFilter = value;
+      valueFilter.name = this.searchText;
+      this.setFilter(valueFilter);
       this.searchTasks();
     },
     turnIcon(value) {
+      this.setPage(1);
       this.setSortOrderValues(value ? "asc" : "desc");
       this.searchTasks();
     },
@@ -202,14 +208,15 @@ export default {
         },
       });
     },
-    deletTask(id) {
+    deletTask(item) {
       this.setCurrentModal({
         isOpen: true,
         componentName: "DeleteTaskModal",
         titleModal: "Удаление",
-        projectName: id,
-        action: (id) => {
-          requests.deleteTask(id).then(() => this.searchTasks());
+        projectName: item,
+        nameButton: "Да",
+        action: (item) => {
+          requests.deleteTask(item._id).then(() => this.searchTasks());
         },
       });
     },

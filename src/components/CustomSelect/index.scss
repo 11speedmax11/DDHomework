@@ -3,14 +3,34 @@
 .custom-select {
   position: relative;
   display: inline-block;
+
+  .svg {
+    color: $font-color-disabled;
+  }
+
+  ul {
+    overflow-y: auto;
+    height: 300px;
+    display: block;
+    z-index: 3;
+  }
+
+  &__wrapper {
+    display: flex;
+  }
+
+  &__wrapper.turn .button svg {
+    transform: rotate(180deg);
+  }
 }
 
-.custom-select__wrapper {
-  display: flex;
-}
+.custom-select.active .selected-option {
+  border: 1px solid $border-color-active;
+  z-index: 2;
 
-.custom-select__wrapper.turn .button svg{
-  transform: rotate(180deg);
+  svg {
+    transform: rotate(180deg);
+  }
 }
 
 .selected-option {
@@ -25,7 +45,7 @@
   border: 1px solid $border-color-rgba;
   border-radius: 4px;
 
-  .custom-select__svg{
+  .custom-select__svg {
     margin-left: 8px;
     display: flex;
     justify-content: center;
@@ -43,70 +63,53 @@
   margin-bottom: 0;
   display: none;
   box-shadow: 0px 0px 4px 0px $border-shadow-color-rgba;
-}
 
-.options li {
-  padding: 8px 16px;
-  cursor: pointer;
-  list-style: none;
-}
+  li {
+    padding: 8px 16px;
+    cursor: pointer;
+    list-style: none;
 
-.options li:hover {
-  background-color: $background-color-secondary-hover;
-}
+    &:hover {
+      background-color: $background-color-secondary-hover;
+    }
 
-.options li:active {
-  background-color: $background-color-primary-disabled;
-}
+    &:active {
+      background-color: $background-color-primary-disabled;
+    }
 
-.options li:first-child {
-  margin-top: 8px;
-}
+    &:first-child {
+      margin-top: 8px;
+    }
 
-.options li:last-child {
-  margin-bottom: 8px;
-}
+    &:last-child {
+      margin-bottom: 8px;
+    }
+  }
 
-.custom-select svg {
-  color: $font-color-disabled;
-}
-
-.custom-select.active .selected-option {
-  border: 1px solid $border-color-active;
-  z-index: 2;
-}
-
-.custom-select.active .selected-option svg {
-  transform: rotate(180deg);
-}
-
-.custom-select ul {
-  display: block;
-  z-index: 3;
 }
 
 .selected-text.placeholder {
   color: $font-color-disabled;
 }
 
-.search .selected-option {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  width: 171px;
-}
-
-.search .button--secondary {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  margin-left: -1px;
-}
-
-.search .button{
-  padding: 9px;
-  height: 24px;
-}
 
 .search {
   height: 42px;
-}
 
+  .button {
+    padding: 9px;
+    height: 24px;
+  }
+
+  .button--secondary {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-left: -1px;
+  }
+
+  .selected-option {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    width: 171px;
+  }
+}

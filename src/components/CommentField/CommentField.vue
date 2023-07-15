@@ -32,6 +32,7 @@ export default {
   methods: {
     sendComment(){
       this.$emit("sendComment", this.text)
+      this.text = ""
     }
   }
 };

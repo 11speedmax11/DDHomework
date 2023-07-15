@@ -52,7 +52,7 @@
       </div>
       <div class="filter__buttons">
         <CustomButton @click="clearFields" buttonStyle="secondary"
-          >Отмена</CustomButton
+          >Отчистить</CustomButton
         >
         <CustomButton @click="ApplyFilter">Применить</CustomButton>
       </div>
@@ -125,8 +125,9 @@ export default {
       this.filterValue.executor = null;
       this.filterValue.dateStart = null;
       this.filterValue.dateEnd = null;
-      let filterCopy = { ...this.filterValue };
-      this.$emit("applyFilter", filterCopy);
+
+      this.$emit("applyFilter", {});
+      
     },
     statusSelected(arr) {
       this.filterValue.status = [...arr];

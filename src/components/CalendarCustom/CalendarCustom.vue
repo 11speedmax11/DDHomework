@@ -10,7 +10,8 @@
       <CustomSelect
         xClass="calendar__month"
         :options="monthOptions"
-        :selectedOption="monthOptions[this.currentMonth]"
+        :selectedOption="monthOptions[this.currentMonth].name"
+        keyName="name"
         @input="updateCalendarMonth"
         v-model="currentMonthName"
       >
@@ -76,18 +77,18 @@ export default {
       currentYear: new Date().getFullYear(),
       currentMonth: new Date().getMonth(),
       monthOptions: [
-        "Январь",
-        "Февраль",
-        "Март",
-        "Апрель",
-        "Май",
-        "Июнь",
-        "Июль",
-        "Август",
-        "Сентябрь",
-        "Октябрь",
-        "Ноябрь",
-        "Декабрь",
+        { name: "Январь" },
+        { name: "Февраль" },
+        { name: "Март" },
+        { name: "Апрель" },
+        { name: "Май" },
+        { name: "Июнь" },
+        { name: "Июль" },
+        { name: "Август" },
+        { name: "Сентябрь" },
+        { name: "Октябрь" },
+        { name: "Ноябрь" },
+        { name: "Декабрь" },
       ],
       dayNames: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
     };
@@ -98,7 +99,7 @@ export default {
       const range = [];
 
       for (let i = currentYear - 10; i <= currentYear + 9; i++) {
-        range.push(i);
+        range.push({ key: i, name: i });
       }
       return range;
     },

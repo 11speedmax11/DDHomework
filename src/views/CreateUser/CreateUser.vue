@@ -2,7 +2,11 @@
   <div class="main">
     <div class="create-user">
       <div class="create-user__wrapper">
-        <header class="create-user__header">Создание профиля сотрудника</header>
+        <header class="create-user__header">
+          {{
+            isEdit ? "Редактирование профиля" : "Создание профиля сотрудника"
+          }}
+        </header>
 
         <div class="create-user__line"></div>
         <div class="create-user__body">
@@ -29,11 +33,13 @@
                 <InputField
                   v-model="login"
                   :placeholder="'Введите логин'"
+                  v-if="!isEdit"
                 ></InputField>
+                <p v-else>{{ user.login }}</p>
               </div>
             </div>
 
-            <div class="create-user__field">
+            <div class="create-user__field" v-if="!isEdit">
               <div class="create-user__title">
                 <div class="">
                   Пароль <span class="create-user__star">*</span>
@@ -67,11 +73,12 @@
                 </div>
               </div>
               <div class="create-user__value">
-                <InputField
-                  v-model="photo"
-                  :placeholder="'Введите пароль'"
-                  typeInput="file"
-                ></InputField>
+                <input
+                  type="file"
+                  ref="fileInput"
+                  @change="handleFileUpload"
+                  v-show="true"
+                />
               </div>
             </div>
           </section>
@@ -106,8 +113,8 @@
           >
             Отмена
           </CustomButton>
-          <CustomButton classButton="create-user__create" @click="createUser">
-            Создать профиль
+          <CustomButton classButton="create-user__create" @click="processUser">
+            {{ isEdit ? "Сохранить изменения" : "Создать профиль" }}
           </CustomButton>
         </div>
       </div>
@@ -118,7 +125,7 @@
 import CustomButton from "@/components/CustomButton/CustomButton.vue";
 import InputField from "@/components/InputField/InputField.vue";
 import ValueSwitch from "@/components/ValueSwitch/ValueSwitch.vue";
-import requests from "@/requests";
+import { requests } from "@/requests";
 
 export default {
   components: {
@@ -126,20 +133,43 @@ export default {
     InputField,
     ValueSwitch,
   },
+  props: {
+    isEdit: Boolean,
+    user: Object,
+  },
   data() {
     return {
       name: "",
       login: "",
       password: "",
-      about: null,
+      about: "",
       photo: null,
       selectedRole: "USER",
       isActive: true,
     };
   },
   mounted() {
+    if (this.isEdit) {
+      this.name = this.user.name;
+      this.about = this.user.description;
+    }
   },
   methods: {
+
+    handleFileUpload(event) {
+      this.photo = event.target.files[0];
+    },
+
+    processUser(){
+      if(this.isEdit){
+          this.editUser(this.user);
+          this.addPhoto(this.user);
+          this.$router.go(-1)
+      }else{
+        this.createUser()
+        this.$router.push({name: "UserList"})
+      }
+    },
 
     createUser() {
       requests
@@ -149,25 +179,35 @@ export default {
           password: this.password,
         })
         .then((data) => {
-          console.log(data)
-          requests
-            .editUser({
-              _id: data._id,
-              name: this.name,
-              description: this.about,
-              roles: this.selectedRole,
-            })
-            .then((data) => {
-              console.log(data);
-            });
+          this.editUser(data);
+          this.addPhoto(data);
         });
     },
+
+    editUser(data) {
+      requests.editUser({
+        _id: data._id,
+        name: this.name,
+        description: this.about,
+        roles: this.selectedRole,
+      });
+    },
+
+    addPhoto(data) {
+      const formData = new FormData();
+      formData.append("picture", this.photo);
+      formData.append("_id", data._id);
+      requests.addPhoto(formData);
+    },
+
     cancel() {
       this.$router.go(-1);
     },
+
     switched() {
       this.isActive = !this.isActive;
     },
+
   },
 };
 </script>
