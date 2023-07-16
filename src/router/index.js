@@ -18,7 +18,15 @@ import NavigationMenu from "@/components/NavigationMenu/NavigationMenu.vue";
 
 const routes = [
   {
-    path: '/', name: 'NavigationMenu', component: NavigationMenu, children: [
+    path: '/', name: 'NavigationMenu', component: NavigationMenu,
+    beforeEnter: (to, from, next) => {
+      if (localStorage.getItem('isAuthorized') == null || localStorage.getItem('isAuthorized') == "false") {
+        next({ path: '/AuthPage', name: 'AuthPage', component: AuthPage });
+      } else {
+        next();
+      }
+    },
+    children: [
       { path: 'ProjectList', name: 'ProjectList', component: ProjectList },
       { path: 'TaskList', name: 'TaskList', component: TaskList },
       { path: 'UserProfile/:id', name: 'UserProfile', component: UserProfile, props: true },

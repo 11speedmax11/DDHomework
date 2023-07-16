@@ -13,9 +13,12 @@
                 Название <span class="create-task__star">*</span>
               </div>
             </div>
-            <div class="create-task__value">
+            <div
+              class="create-task__value"
+              :class="{ 'create-task__erorre-field': errorLoginMess }"
+            >
               <InputField
-                v-model="task.title"
+                @input="titleChange"
                 :placeholder="'Введите текст...'"
               ></InputField>
             </div>
@@ -26,21 +29,22 @@
               <div class="">Описание</div>
             </div>
             <div class="create-task__value">
-              <textarea
+              <TextArea
                 class="create-task__textarea"
+                placeholder="Введите текст..."
                 v-model="task.description"
-                :placeholder="'Введите текст...'"
-              ></textarea>
+              />
             </div>
           </div>
 
           <div class="create-task__field">
             <div class="create-task__title">
-              <div class="">
-                Проект <span class="create-task__star">*</span>
-              </div>
+              <div>Проект <span class="create-task__star">*</span></div>
             </div>
-            <div class="create-task__value">
+            <div
+              class="create-task__value"
+              :class="{ 'create-task__erorre-field': errorLoginMess }"
+            >
               <CustomSelect
                 class="create-task__project"
                 :options="listProject"
@@ -91,6 +95,7 @@
 import CustomButton from "@/components/CustomButton/CustomButton.vue";
 import InputField from "@/components/InputField/InputField.vue";
 import CustomSelect from "@/components/CustomSelect/CustomSelect.vue";
+import TextArea from "@/components/TextArea/TextArea.vue";
 import { requests } from "@/requests";
 
 export default {
@@ -98,6 +103,7 @@ export default {
     CustomButton,
     InputField,
     CustomSelect,
+    TextArea,
   },
   data() {
     return {
@@ -109,6 +115,7 @@ export default {
       selectedProject: null,
       userList: null,
       selectedUser: null,
+      errorLoginMess: null,
     };
   },
   mounted() {
@@ -133,24 +140,33 @@ export default {
         });
     },
     createTask() {
-      requests
-        .addTask({
-          name: this.task.title,
-          description: this.task.description,
-          projectId: this.selectedProject,
-          executor: this.selectedUser,
-        })
-        .then(() => {});
-      this.$router.go(-1);
+      if (!this.login || !this.password) {
+        this.errorLoginMess = "Поля обязательны для заполнения";
+      } else {
+        requests
+          .addTask({
+            name: this.task.title,
+            description: this.task.description,
+            projectId: this.selectedProject,
+            executor: this.selectedUser,
+          })
+          .then(() => {});
+        this.$router.go(-1);
+      }
     },
     cancel() {
       this.$router.go(-1);
     },
     setProject(value) {
+      this.errorLoginMess = null;
       this.selectedProject = value;
     },
     setUser(value) {
       this.selectedUser = value;
+    },
+    titleChange(value) {
+      this.errorLoginMess = null;
+      this.task.title = value;
     },
   },
 };

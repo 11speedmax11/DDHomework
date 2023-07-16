@@ -17,11 +17,12 @@ export default {
     ModalBase,
     PreloaderCircle,
   },
+
   mounted() {
-    if (localStorage.getItem("tokenUser")) {
-      requests.getCurrentUser().then((data) => {
+    if (this.tokenUser) {
+      requests.getCurrentUser()
+      .then((data) => {
         this.setCurrentUser(data);
-        // this.$router.push("TaskList");
       });
     } else {
       this.$router.push("AuthPage");
@@ -29,6 +30,9 @@ export default {
   },
   computed: {
     ...mapGetters("app", ["loading", "currentModal"]),
+    tokenUser() {
+      return localStorage.getItem("tokenUser")
+    }
   },
   methods: {
     ...mapActions("app", ["setCurrentModal", "setCurrentUser"]),

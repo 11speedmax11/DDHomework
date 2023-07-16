@@ -1,45 +1,49 @@
+
+const mutations = {
+  UPDATE_SEARCH: 'UPDATE_SEARCH',
+  UPDATE_SORT_ORDER: 'UPDATE_SORT_ORDER',
+  UPDATE_PAGE: 'UPDATE_PAGE',
+};
+
+
 export default {
   namespaced: true,
   state: {
     search: null,
-    sortOrderValues: "asc",
+    sortOrder: 'asc',
     page: 1,
   },
   getters: {
-
     search(state) {
       return state.search;
     },
-    sortOrderValues(state) {
-      return state.sortOrderValues;
+    sortOrder(state) {
+      return state.sortOrder;
     },
     page(state) {
       return state.page;
     },
   },
-
   mutations: {
-
-    updateSearch(state, payload) {
+    [mutations.UPDATE_SEARCH](state, payload) {
       state.search = payload;
     },
-    updatesortOrderValues(state, payload) {
-      state.sortOrderValues = payload;
+    [mutations.UPDATE_SORT_ORDER](state, payload) {
+      state.sortOrder = payload;
     },
-    updatePage(state, payload) {
+    [mutations.UPDATE_PAGE](state, payload) {
       state.page = payload;
     },
   },
   actions: {
-
     setSearch({ commit }, payload) {
-      commit('updateSearch', payload);
+      commit(mutations.UPDATE_SEARCH, payload);
     },
-    setSortOrderValues({ commit }, payload) {
-      commit('updatesortOrderValues', payload);
+    setSortOrder({ commit }, payload) {
+      commit(mutations.UPDATE_SORT_ORDER, payload);
     },
     setPage({ commit }, payload) {
-      commit('updatePage', payload);
+      commit(mutations.UPDATE_PAGE, payload);
     },
   },
 }

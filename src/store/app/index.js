@@ -1,3 +1,10 @@
+
+const mutations = {
+  UPDATE_LOADING: 'UPDATE_LOADING',
+  UPDATE_CURRENT_MODAL: 'UPDATE_CURRENT_MODAL',
+  UPDATE_USER_LIST: 'UPDATE_USER_LIST',
+  UPDATE_CURRENT_USER: 'UPDATE_CURRENT_USER',
+};
 export default {
   namespaced: true,
   state: {
@@ -9,7 +16,7 @@ export default {
       nameButton: null,
       action: null,
     },
-    userList: null,
+    userList: [],
     currentUser: null,
   },
   getters: {
@@ -25,34 +32,31 @@ export default {
     currentUser(state) {
       return state.currentUser;
     },
-
   },
   mutations: {
 
-    updateLoading(state, payload) {
+    [mutations.UPDATE_LOADING](state, payload) {
       state.loading = payload;
     },
-    updateCurrentModal(state, payload) {
+    [mutations.UPDATE_CURRENT_MODAL](state, payload) {
       state.currentModal = payload;
     },
-    updateUserList(state, payload) {
+    [mutations.UPDATE_USER_LIST](state, payload) {
       state.userList = payload;
     },
-    updateCurrentUser(state, payload) {
+    [mutations.UPDATE_CURRENT_USER](state, payload) {
       state.currentUser = payload;
     },
-
   },
   actions: {
-
     setLoading({ commit }, payload) {
-      commit('updateLoading', payload);
+      commit(mutations.UPDATE_LOADING, payload);
     },
     setCurrentModal({ commit }, payload) {
-      commit('updateCurrentModal', payload);
+      commit(mutations.UPDATE_CURRENT_MODAL, payload);
     },
     closeCurrentModal({ commit }) {
-      commit('updateCurrentModal', {
+      commit(mutations.UPDATE_CURRENT_MODAL, {
         isOpen: false,
         componentName: null,
         titleModal: null,
@@ -60,12 +64,10 @@ export default {
       });
     },
     setUserList({ commit }, payload) {
-      commit('updateUserList', payload);
+      commit(mutations.UPDATE_USER_LIST, payload);
     },
     setCurrentUser({ commit }, payload) {
-      commit('updateCurrentUser', payload);
+      commit(mutations.UPDATE_CURRENT_USER, payload);
     },
-
   },
-
-}
+};

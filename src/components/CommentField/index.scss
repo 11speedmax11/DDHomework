@@ -5,6 +5,10 @@
   padding: 16px 16px 8px 0;
   align-items: end;
 
+
+  &__text{
+    width: 100%;
+  }
   textarea {
     width: 100%;
     padding: 10px;
@@ -15,6 +19,7 @@
   }
 
   .button {
+    margin-left: 40px;
     height: 42px;
     width: 42px;
     padding: 0;

@@ -1,6 +1,9 @@
 <template>
   <div class="main">
-    <div class="user-list">
+    <div
+      class="user-list"
+      v-if="(userList && userList.length != 0) || search != null"
+    >
       <div class="user-list__search">
         <InputField
           placeholder="Поиск..."
@@ -10,58 +13,69 @@
           @search="setValueSearch"
         />
         <CustomButton
-          :class="{ isTurn: sortOrderValues == 'asc' }"
+          :class="{ isTurn: sortOrder == 'asc' }"
           xClass="svg__sort"
           icon="sort-up"
           buttonStyle="secondary"
           @click="turnIcon"
         />
-        <CustomButton classButton="user-list__add" @click="addUser">
+        <CustomButton
+          classButton="user-list__add"
+          @click="addUser"
+          v-if="isAdmin"
+        >
           Добавить
         </CustomButton>
       </div>
-      <div class="user-list__item" v-for="user in userList" :key="user._id">
-        <UserElement :id="user._id" @click="openProfile(user._id)" />
-        <div class="user-list__menu" v-if="isAdmin">
-          <DropDownButton
-            :classButton="'card__icon'"
-            icon="dots"
-            xClass="card__svg"
-            @edit="editUser(user)"
-            @delete="deleteUser(user)"
-            :buttonsArr="[
-              {
-                buttonStyle: 'dropDown',
-                classButton: 'card__edit',
-                click: 'edit',
-                title: 'Редактировать',
-              },
-              {
-                buttonStyle: 'dropDown',
-                classButton: 'card__delete',
-                click: 'delete',
-                title: 'Удалить',
-              },
-            ]"
-          >
-          </DropDownButton>
+      <div v-if="this.userList && this.userList.length != 0">
+        <div class="user-list__item" v-for="user in userList" :key="user._id">
+          <UserElement :id="user._id" @click="openProfile(user._id)" />
+          <div class="user-list__menu" v-if="isCurrentUser(user._id)">
+            <DropDownButton
+              :classButton="'card__icon'"
+              icon="dots"
+              xClass="card__svg"
+              @edit="editUser(user)"
+              @delete="deleteUser(user)"
+              :buttonsArr="[
+                {
+                  buttonStyle: 'dropDown',
+                  classButton: 'card__edit',
+                  click: 'edit',
+                  title: 'Редактировать',
+                },
+                {
+                  buttonStyle: 'dropDown',
+                  classButton: 'card__delete',
+                  click: 'delete',
+                  title: 'Удалить',
+                },
+              ]"
+            >
+            </DropDownButton>
+          </div>
         </div>
+        <PaginationItems
+          :total="pages"
+          :currentPage="page"
+          @goPage="goPage"
+          @goNextPage="goNextPage"
+          @goPreviousPage="goPreviousPage"
+          v-if="pages != 1"
+        />
       </div>
-      <PaginationItems
-        :total="pages"
-        :currentPage="page"
-        @goPage="goPage"
-        @goNextPage="goNextPage"
-        @goPreviousPage="goPreviousPage"
-        v-if="pages != 1"
-      />
+      <div class="user-list__plug" v-else>
+        <p>Ни один пользователь не соответствует результатам поиска</p>
+      </div>
     </div>
+    <PlugCards textPlug="Нет ни одного пользователя" @click="addUser" v-else />
   </div>
 </template>
 <script>
 import InputField from "@/components/InputField/InputField.vue";
 import CustomButton from "@/components/CustomButton/CustomButton.vue";
 import UserElement from "@/components/UserElement/UserElement.vue";
+import PlugCards from "@/components/PlugCards/PlugCards.vue";
 import PaginationItems from "@/components/PaginationItems/PaginationItems.vue";
 import DropDownButton from "@/components/DropDownButton/DropDownButton.vue";
 import { mapGetters, mapActions } from "vuex";
@@ -75,6 +89,7 @@ export default {
     CustomButton,
     PaginationItems,
     DropDownButton,
+    PlugCards,
   },
   data() {
     return {
@@ -87,10 +102,10 @@ export default {
     this.start();
   },
   computed: {
-    ...mapGetters("user", ["search", "sortOrderValues", "page"]),
+    ...mapGetters("user", ["search", "sortOrder", "page"]),
     ...mapGetters("app", ["currentUser"]),
     sortOrderValue() {
-      return this.sortOrderValues;
+      return this.sortOrder;
     },
     isAdmin() {
       if (this.currentUser.roles.includes("ADMIN")) {
@@ -101,7 +116,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions("user", ["setSearch", "setSortOrderValues", "setPage"]),
+    ...mapActions("user", ["setSearch", "setSortOrder", "setPage"]),
     ...mapActions("app", ["setLoading", "setUserList"]),
 
     setValueSearch(value) {
@@ -111,7 +126,7 @@ export default {
     },
     turnIcon() {
       this.setPage(1);
-      this.setSortOrderValues(this.sortOrderValues == "desc" ? "asc" : "desc");
+      this.setSortOrder(this.sortOrder == "desc" ? "asc" : "desc");
       this.getUserList();
     },
     start() {
@@ -126,7 +141,7 @@ export default {
           filter: {
             name: this.search,
           },
-          sort: this.sortOrderValues,
+          sort: this.sortOrder,
         })
         .then((data) => {
           this.pages = data.total;
@@ -168,6 +183,13 @@ export default {
     openProfile(id) {
       let path = `/UserProfile/${id}`;
       this.$router.push(`${path}`);
+    },
+    isCurrentUser(id) {
+      if (id == this.currentUser._id || this.isAdmin) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
 };

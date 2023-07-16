@@ -1,6 +1,6 @@
 <template>
   <div class="comment-field">
-    <textarea class="comment-field__text" v-model="text"></textarea>
+    <TextArea class="comment-field__text" v-model="text" />
     <CustomButton
       class="comment-field__button"
       @click="sendComment()"
@@ -11,30 +11,32 @@
 </template> 
 <script>
 import CustomButton from "@/components/CustomButton/CustomButton.vue";
+import TextArea from "@/components/TextArea/TextArea.vue";
 export default {
   components: {
     CustomButton,
+    TextArea,
   },
-  props:{
+  props: {
     commentText: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
   data() {
-    return{
-      text: ""
-    }
+    return {
+      text: "",
+    };
   },
-  mounted(){
-    this.text = this.commentText
+  mounted() {
+    this.text = this.commentText;
   },
   methods: {
-    sendComment(){
-      this.$emit("sendComment", this.text)
-      this.text = ""
-    }
-  }
+    sendComment() {
+      this.$emit("sendComment", this.text);
+      this.text = "";
+    },
+  },
 };
 </script> 
  

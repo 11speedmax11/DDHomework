@@ -78,14 +78,17 @@ export default {
     },
     selectOptions(option) {
       const arrOption = [...(this.selectedOption || [])];
-      if (arrOption.find((x) => x.key == option.key)) {
+      if (arrOption.find((x) => x == option.key)) {
         this.$emit(
           "optionSelected",
-          arrOption.filter((x) => x.key != option.key).map((y) => y.key)
+          arrOption.filter((x) => x != option.key).map((y) => y)
         );
       } else {
         arrOption.push(option.key);
-        this.$emit("optionSelected", arrOption.map((y) => y));
+        this.$emit(
+          "optionSelected",
+          arrOption.map((y) => y)
+        );
       }
     },
     closeSelect() {

@@ -19,6 +19,7 @@
   }
 
   &__item {
+    height: 60px;
     border-bottom: 1px solid $border-color-active;
     display: flex;
     padding: 9px 16px 9px 0;
@@ -38,5 +39,14 @@
   &__search .isTurn svg {
     transform: rotate(180deg);
     transition: transform 0.3s ease;
+  }
+  &__plug{
+    height: calc(100vh - 216px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid $border-color-rgba;
+    border-radius: 4px;
+    margin-top: 24px;
   }
 }

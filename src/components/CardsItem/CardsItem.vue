@@ -26,7 +26,7 @@
             </p>
           </div>
         </div>
-        <div class="card__menu">
+        <div class="card__menu" v-if="isAuthor">
           <DropDownButton
             :classButton="'card__icon'"
             icon="dots"
@@ -72,13 +72,19 @@ export default {
     StatusTask,
   },
   computed: {
-    ...mapGetters("app", ["userList"]),
+    ...mapGetters("app", ["userList", "currentUser"]),
 
     timeCreat() {
       return this.getDate(this.item.dateCreated);
     },
     timeEdit() {
       return this.getDate(this.item.dateEdited);
+    },
+    isAuthor() {
+      return (
+        this.item.author == this.currentUser._id ||
+        this.currentUser.roles.includes("ADMIN")
+      );
     },
   },
   methods: {

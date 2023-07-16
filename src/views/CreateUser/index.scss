@@ -7,7 +7,13 @@
   &__wrapper {
     padding: 24px;
     border: 1px solid $border-color-rgba;
-    height: calc(100% - 48px);
+    min-height: calc(100% - 48px);
+  }
+
+  &__erorre-field {
+    .input-custom {
+      border: 1px solid $font-color-delete;
+    }
   }
 
   &__header {
@@ -19,8 +25,9 @@
 
   &__body {
     display: flex;
-    height: calc(100vh - 487px);
+    min-height: calc(100vh - 487px);
     padding: 32px 24px;
+    gap: 16px;
   }
 
   &__field {
@@ -42,17 +49,6 @@
       width: calc(100% - 2px);
       margin: 0;
       padding: 0;
-    }
-
-    textarea {
-      width: calc(100% - 22px);
-      height: 120px;
-      margin: 0;
-      padding: 10px;
-      resize: none;
-      border: 1px solid $border-color-rgba;
-      border-radius: 4px;
-      outline: none;
     }
 
     .input {

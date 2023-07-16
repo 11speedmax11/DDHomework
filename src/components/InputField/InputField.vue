@@ -4,9 +4,9 @@
       class="input"
       :value="value"
       :placeholder="placeholder"
-      @input="input($event)"
+      @input="input($event.target.value)"
       :type="typeInput"
-      @change="input($event)"
+      @change="input($event.target.value)"
     />
     <SvgIcon
       name="clear"
@@ -16,19 +16,22 @@
       v-if="isFill"
       @click="click"
     />
-    <SvgIcon @click="search" name="search" svgClass="svgSearch" v-if="isSearch" />
+    <SvgIcon
+      @click="search"
+      name="search"
+      svgClass="svgSearch"
+      v-if="isSearch"
+    />
   </div>
 </template>
 
 <script>
 import SvgIcon from "@/components/SvgIcon/SvgIcon.vue";
+import VModelMixin from '@/mixin/VModelMixin.js';
 export default {
+  mixins: [VModelMixin],
   props: {
     typeInput: String,
-    value: {
-      type: String,
-      default: "",
-    },
     placeholder: String,
     isClear: Boolean,
     isSearch: Boolean,
@@ -36,27 +39,19 @@ export default {
   components: {
     SvgIcon,
   },
-  data() {
-    return {
-      isFill: this.value && this.isClear,
-
-    };
-  },
-
-  methods: {
-    input($event) {
-     
-      this.isFill = $event.target.value.length > 0 && this.isClear;
-      this.$emit("input", $event.target.value);
+  computed: {
+    isFill() {
+      return this.value && this.isClear;
     },
+  },
+  methods: {
     click() {
-      this.isFill = false;
       this.$emit("input", "");
       this.$emit("search", "");
     },
-    search(){
+    search() {
       this.$emit("search", this.value);
-    }
+    },
   },
 };
 </script>

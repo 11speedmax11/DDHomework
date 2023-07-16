@@ -1,4 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap");
+@font-face {
+  font-family: "Open Sans", sans-serif;
+  src: url("@/assets/fonts/OpenSans-Italic-VariableFont_wdth.ttf") format("ttf"),
+    url("@/assets/fonts/OpenSans-VariableFont_wdth.ttf") format("ttf");
+  font-weight: 600;
+  font-style: normal;
+}
+
+$font-family-primary: "Open Sans", sans-serif;
 
 $background-color-primary: #1F75CB;
 $background-color-primary-hover: #1068BF;
@@ -22,10 +30,10 @@ $border-shadow-color-rgba: rgba(0, 0, 0, 0.25);
 
 body {
   margin: 0;
+  font-family: $font-family-primary;
 }
 
-.main{
+.main {
   min-width: 1024px;
   min-height: calc(100vh - 100px);
 }
-

@@ -2,7 +2,7 @@
   <div class="main">
     <div
       class="project"
-      v-if="this.projectList && this.projectList.length != 0"
+      v-if="(projectList && projectList.length != 0) || search != null"
     >
       <div class="project__search">
         <InputField
@@ -15,7 +15,7 @@
         <CustomSelect
           class="task__select"
           :options="sortName"
-          :selectedOption="sorting"
+          :selectedOption="sortField"
           :isSearch="true"
           :isTurn="sortOrderValue"
           @input="sortOrder"
@@ -30,24 +30,32 @@
           Добавить
         </CustomButton>
       </div>
-      <CardsItem
-        v-for="item in projectList"
-        :key="item._id"
-        :item="item"
-        @edit="editProject(item)"
-        @delet="deleteProject(item)"
-      />
-      <PaginationItems
-        :total="pages"
-        :currentPage="page"
-        @goPage="goPage"
-        @goNextPage="goNextPage"
-        @goPreviousPage="goPreviousPage"
-        v-if="pages != 1"
-      />
+      <div v-if="this.projectList && this.projectList.length != 0">
+        <CardsItem
+          v-for="item in projectList"
+          :key="item._id"
+          :item="item"
+          @edit="editProject(item)"
+          @delet="deleteProject(item)"
+        />
+        <PaginationItems
+          :total="pages"
+          :currentPage="page"
+          @goPage="goPage"
+          @goNextPage="goNextPage"
+          @goPreviousPage="goPreviousPage"
+          v-if="pages != 1"
+        />
+      </div>
+      <div class="project__plug" v-else>
+        <p>Ни один проект не соответствует результатам поиска</p>
+      </div>
     </div>
-
-    <PlugCards :textPlug="'Не создан ни один проект'" v-else />
+    <PlugCards
+      :textPlug="'Не создан ни один проект'"
+      @click="addProjct"
+      v-else
+    />
   </div>
 </template>
 <script>
@@ -81,12 +89,12 @@ export default {
     PaginationItems,
   },
   computed: {
-    ...mapGetters("project", ["search", "sorting", "sortOrderValues", "page"]),
+    ...mapGetters("project", ["search", "sortField", "sortOrder", "page"]),
     isPagination() {
       return this.projectList.length > this.itemsPerPage;
     },
     sortOrderValue() {
-      return this.sortOrderValues == "asc" ? true : false;
+      return this.sortOrder == "asc" ? true : false;
     },
   },
   mounted() {
@@ -95,8 +103,8 @@ export default {
   methods: {
     ...mapActions("project", [
       "setSearch",
-      "setOrder",
-      "setSortOrderValues",
+      "setSortField",
+      "setSortOrder",
       "setPage",
     ]),
     ...mapActions("app", ["setLoading", "setCurrentModal"]),
@@ -109,8 +117,8 @@ export default {
           name: this.search,
         },
         sort: {
-          field: this.sorting,
-          type: this.sortOrderValues,
+          field: this.sortField,
+          type: this.sortOrder,
         },
       };
       return requests
@@ -130,13 +138,13 @@ export default {
       this.searchProject();
     },
     sortOrder(value) {
-      this.setOrder(value);
+      this.setSortField(value);
       this.searchProject();
       this.setPage(1);
     },
     turnIcon(value) {
       this.setPage(1);
-      this.setSortOrderValues(value ? "asc" : "desc");
+      this.setSortOrder(value ? "asc" : "desc");
       this.searchProject();
     },
     goPreviousPage() {
@@ -185,7 +193,6 @@ export default {
           requests.deleteProject(item._id).then(() => this.searchProject());
         },
       });
-      // requests.deleteProject(id).then(() => this.searchProject());
     },
   },
 };

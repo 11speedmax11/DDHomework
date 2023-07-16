@@ -16,7 +16,7 @@
           {{ comment.text }}
         </div>
         <div class="comment__edit" v-else>
-          <textarea v-model="editCommentText"> </textarea>
+          <TextArea v-model="editCommentText" />
           <CustomButton
             @click="changeEdit"
             icon="send"
@@ -66,6 +66,7 @@ import DropDownButton from "@/components/DropDownButton/DropDownButton.vue";
 import UserElement from "@/components/UserElement/UserElement.vue";
 import CommentField from "@/components/CommentField/CommentField.vue";
 import CommentTree from "@/components/CommentTree/CommentTree.vue";
+import TextArea from "@/components/TextArea/TextArea.vue";
 export default {
   name: "CommentTree",
   components: {
@@ -74,6 +75,7 @@ export default {
     UserElement,
     CommentField,
     CommentTree,
+    TextArea,
   },
   props: {
     comment: {
@@ -112,7 +114,6 @@ export default {
       this.acceptEdit({ id: this.comment._id, text: this.editCommentText });
     },
     acceptEdit(obj) {
-      console.log(obj);
       this.$emit("acceptEdit", obj);
     },
     addComment(id, text) {

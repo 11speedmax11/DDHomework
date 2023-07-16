@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <div class="task__list" v-if="this.taskList && this.taskList.length != 0">
+    <div class="task__list" v-if="isEmpty || this.taskList && this.taskList.length != 0">
       <div class="task__search">
         <InputField
           @search="setValueSearch"
@@ -19,7 +19,7 @@
         <CustomSelect
           class="task__select"
           :options="sortName"
-          :selectedOption="sorting"
+          :selectedOption="sortField"
           :isSearch="true"
           :isTurn="sortOrderValue"
           @input="sortOrder"
@@ -34,23 +34,28 @@
           Добавить
         </CustomButton>
       </div>
-      <CardsItem
-        v-for="item in taskList"
-        :key="item._id"
-        :item="item"
-        isTask
-        :classImg="'card__img'"
-        @delet="deletTask(item)"
-        @edit="editTask(item)"
-      />
-      <PaginationItems
-        :total="pages"
-        :currentPage="page"
-        @goPage="goPage"
-        @goNextPage="goNextPage"
-        @goPreviousPage="goPreviousPage"
-        v-if="pages != 1"
-      />
+      <div v-if="!isEmpty">
+        <CardsItem
+          v-for="item in taskList"
+          :key="item._id"
+          :item="item"
+          isTask
+          :classImg="'card__img'"
+          @delet="deletTask(item)"
+          @edit="editTask(item)"
+        />
+        <PaginationItems
+          :total="pages"
+          :currentPage="page"
+          @goPage="goPage"
+          @goNextPage="goNextPage"
+          @goPreviousPage="goPreviousPage"
+          v-if="pages != 1"
+        />
+      </div>
+      <div class="task__plug" v-else>
+        <p>Ни одна задача не соответствует результатам поиска/фильтрации</p>
+      </div>
     </div>
     <PlugCards :textPlug="'Не создана ни одна задача'" @click="click" v-else />
   </div>
@@ -96,23 +101,30 @@ export default {
     ...mapGetters("task", [
       "filter",
       "name",
-      "sorting",
-      "sortOrderValues",
+      "sortField",
+      "sortOrder",
       "page",
     ]),
     filterValue() {
       return this.filter;
     },
     sortOrderValue() {
-      return this.sortOrderValues == "asc" ? true : false;
+      return this.sortOrder == "asc" ? true : false;
+    },
+    isEmpty() {
+      if (this.taskList && this.taskList.length == 0 && !this.isEmptyFilter()) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
   methods: {
     ...mapActions("task", [
       "setFilter",
       "setName",
-      "setOrder",
-      "setSortOrderValues",
+      "setSortField",
+      "setSortOrder",
       "setPage",
     ]),
     ...mapActions("app", ["setLoading", "setCurrentModal", "setUserList"]),
@@ -144,6 +156,14 @@ export default {
           this.setUserList(_.cloneDeep(usersList.users));
         });
     },
+    isEmptyFilter() {
+      for (let key in this.filter) {
+        if (this.filter[key] !== null) {
+          return false;
+        }
+      }
+      return true;
+    },
     searchTasks() {
       this.setLoading(true);
       let data = {
@@ -151,8 +171,8 @@ export default {
         limit: 10,
         filter: this.filter,
         sort: {
-          field: this.sorting,
-          type: this.sortOrderValues,
+          field: this.sortField,
+          type: this.sortOrder,
         },
       };
       return requests
@@ -175,7 +195,7 @@ export default {
     },
     sortOrder(value) {
       this.setPage(1);
-      this.setOrder(value);
+      this.setSortField(value);
       this.searchTasks();
     },
     applyFilter(value) {
@@ -187,7 +207,7 @@ export default {
     },
     turnIcon(value) {
       this.setPage(1);
-      this.setSortOrderValues(value ? "asc" : "desc");
+      this.setSortOrder(value ? "asc" : "desc");
       this.searchTasks();
     },
     goPreviousPage() {

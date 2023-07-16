@@ -1,3 +1,12 @@
+const mutations = {
+  UPDATE_FILTER: 'UPDATE_FILTER',
+  UPDATE_NAME: 'UPDATE_NAME',
+  UPDATE_SORT_FIELD: 'UPDATE_SORT_FIELD',
+  UPDATE_SORT_ORDER: 'UPDATE_SORT_ORDER',
+  UPDATE_PAGE: 'UPDATE_PAGE',
+};
+
+
 export default {
   namespaced: true,
   state: {
@@ -11,69 +20,56 @@ export default {
       dateEnd: null
     },
     sort: {
-      sorting: 'name',
-      sortOrderValues: 'asc',
+      sortField: 'name',
+      sortOrder: 'asc',
     },
     page: 1,
   },
-
   getters: {
-    filter(state) {
-      return state.filter;
-    },
-    name(state) {
-      return state.filter.name;
-    },
-    sorting(state) {
-      return state.sort.sorting;
-    },
-    sortOrderValues(state) {
-      return state.sort.sortOrderValues;
-    },
-    page(state) {
-      return state.page;
-    }
+    filter: state => state.filter,
+    name: state => state.filter.name,
+    sortField: state => state.sort.sortField,
+    sortOrder: state => state.sort.sortOrder,
+    page: state => state.page,
   },
-
   mutations: {
-    updateFilter(state, payload) {
+    [mutations.UPDATE_FILTER](state, payload) {
       state.filter = payload;
     },
-    updateName(state, payload) {
+    [mutations.UPDATE_NAME](state, payload) {
       state.filter.name = payload;
     },
-    updateOrder(state, payload) {
-      state.sort.sorting = payload;
+    [mutations.UPDATE_SORT_FIELD](state, payload) {
+      state.sort.sortField = payload;
     },
-    updatesortOrderValues(state, payload) {
-      state.sort.sortOrderValues = payload;
+    [mutations.UPDATE_SORT_ORDER](state, payload) {
+      state.sort.sortOrder = payload;
     },
-    updatePage(state, payload) {
+    [mutations.UPDATE_PAGE](state, payload) {
       state.page = payload;
     },
   },
-
   actions: {
     setFilter({ commit }, payload) {
-      commit('updateFilter', payload);
+      commit(mutations.UPDATE_FILTER, payload);
     },
     setName({ commit }, payload) {
-      commit('updateName', payload);
+      commit(mutations.UPDATE_NAME, payload);
     },
-    setOrder({ commit }, payload) {
-      commit('updateOrder', payload);
+    setSortField({ commit }, payload) {
+      commit(mutations.UPDATE_SORT_FIELD, payload);
     },
-    setSortOrderValues({ commit }, payload) {
-      commit('updatesortOrderValues', payload);
+    setSortOrder({ commit }, payload) {
+      commit(mutations.UPDATE_SORT_ORDER, payload);
     },
     setPage({ commit }, payload) {
-      commit('updatePage', payload);
+      commit(mutations.UPDATE_PAGE, payload);
     },
     setUserTasks({ commit }, payload) {
-      commit('updatePage', 1);
-      commit('updatesortOrderValues', "asc");
-      commit('updateOrder', "name");
-      commit('updateFilter', payload);
+      commit(mutations.UPDATE_PAGE, 1);
+      commit(mutations.UPDATE_SORT_ORDER, 'asc');
+      commit(mutations.UPDATE_SORT_FIELD, 'name');
+      commit(mutations.UPDATE_FILTER, payload);
     },
   },
-}
+};

@@ -26,17 +26,19 @@
                   :classButton="'project__icon'"
                   icon="dots"
                   xClass="project__svg"
+                  @delet="deletTask(task)"
+                  @edit="editTask(task)"
                   :buttonsArr="[
                     {
                       buttonStyle: 'dropDown',
                       classButton: 'card__edit',
-                      click: '',
+                      click: 'edit',
                       title: 'Редактировать',
                     },
                     {
                       buttonStyle: 'dropDown',
                       classButton: 'card__delete',
-                      click: '',
+                      click: 'delet',
                       title: 'Удалить',
                     },
                   ]"
@@ -104,6 +106,7 @@
               keyName="_id"
               @input="executorSelected"
               placeholder="Выберите значение..."
+              :disabled="!isAuthor"
             />
           </div>
           <div class="task-card__status status">
@@ -113,13 +116,14 @@
               :options="statusList"
               :selectedOption="task.status"
               @input="statusChange"
+              :disabled="!isAuthor"
             >
             </CustomSelect>
           </div>
           <div class="task-card__time">
             <p class="task-card__time-text">Затрачено</p>
             <p class="task-card__time-value">{{ getStringTime(task.time) }}</p>
-            <div class="task-card__time-input">
+            <div class="task-card__time-input" v-if="isAuthor">
               <InputField v-model="time" />
               <CustomButton
                 @click="addTime"
@@ -145,7 +149,7 @@ import CommentTree from "@/components/CommentTree/CommentTree.vue";
 import InputField from "@/components/InputField/InputField.vue";
 import { requests } from "@/requests";
 import { statusName } from "@/const";
-import { mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import _ from "lodash";
 
 export default {
@@ -174,6 +178,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters("app", ["currentUser"]),
     listAtivity() {
       let arrAtivity = [
         ...this.commentsTree.map((x) => {
@@ -195,6 +200,13 @@ export default {
         return dateA - dateB;
       });
       return arrAtivity;
+    },
+
+    isAuthor() {
+      return (
+        this.task.author == this.currentUser._id ||
+        this.currentUser.roles.includes("ADMIN")
+      );
     },
     statusList() {
       const statusKeys = Object.keys(statusName);
@@ -260,9 +272,9 @@ export default {
     dateEdited() {
       return this.getDate(this.task.dateEdited);
     },
-    },
+  },
   methods: {
-    ...mapActions("app", ["setUserList"]),
+    ...mapActions("app", ["setLoading", "setCurrentModal", "setUserList"]),
     openTaskList() {
       this.$router.push(`/TaskList`);
     },
@@ -292,7 +304,6 @@ export default {
       });
     },
     addComment({ id, text }) {
-      console.log(id, text);
       let data = {
         taskId: this.id,
         text: text,
@@ -363,9 +374,8 @@ export default {
     getTask() {
       requests.getTask(this.id).then((data) => {
         this.task = data;
-        this.getProjectName()
+        this.getProjectName();
       });
-      
     },
     getUsers() {
       requests
@@ -400,11 +410,13 @@ export default {
           timeString += `${value}${unit.label} `;
         }
       }
-
+      if (timeString == "") {
+        return "0s";
+      }
       return timeString.trim();
     },
     getSecond(time) {
-      const components = time.trim().split(" ");
+      const components = time.trim().split(/\s+/);
 
       const multipliers = {
         y: 365 * 24 * 60 * 60,
@@ -437,15 +449,37 @@ export default {
     addTime() {
       requests
         .addTime({ taskId: this.task._id, time: this.getSecond(this.time) })
-        .then((data) => {
-          console.log(data);
+        .then(() => {
+          this.time = null;
+          this.getTask();
         });
     },
 
     getProjectName() {
       requests.getProjectById(this.task.projectId).then((data) => {
-        console.log(data)
-        this.code = data.code;
+        this.code = (data || {}).code || "Проект удален";
+      });
+    },
+    editTask(item) {
+      this.$router.push({
+        name: "EditTask",
+        params: {
+          taskData: item,
+        },
+      });
+    },
+    deletTask(item) {
+      this.setCurrentModal({
+        isOpen: true,
+        componentName: "DeleteTaskModal",
+        titleModal: "Удаление",
+        projectName: item,
+        nameButton: "Да",
+        action: (item) => {
+          requests
+            .deleteTask(item._id)
+            .then(() => this.$router.push({ name: "TaskList" }));
+        },
       });
     },
   },

@@ -7,14 +7,22 @@
   justify-content: center;
   align-items: center;
   background: $background-color-secondary-hover;
-
+  &__erorre {
+    color: $font-color-delete;
+    &-field .input-custom {
+      border: 1px solid $font-color-delete;
+      & input {
+        color: $font-color-delete;
+      }
+    }
+  }
   &__wrapper {
     border-radius: 4px;
     background: $background-color-secondary;
     box-shadow: 0px 4px 4px 0px $border-shadow-color-rgba;
     display: flex;
     width: 300px;
-    height: 400px;
+    min-height: 400px;
     flex-direction: column;
     align-items: center;
     flex-shrink: 0;

@@ -5,13 +5,22 @@
         <p>Вход</p>
       </div>
       <div class="authorization__input">
-        <div class="authorization__login">
+        <span v-if="errorLoginMess" class="authorization__erorre">{{
+          errorLoginMess
+        }}</span>
+        <div
+          class="authorization__login"
+          :class="{ 'authorization__erorre-field': errorLoginMess }"
+        >
           <p>Логин<span>*</span></p>
-          <InputField v-model="dataAuth.login" />
+          <InputField :value="login" @input="loginChange" />
         </div>
-        <div class="authorization__password">
+        <div
+          class="authorization__password"
+          :class="{ 'authorization__erorre-field': errorLoginMess }"
+        >
           <p>Пароль<span>*</span></p>
-          <InputField v-model="dataAuth.password" />
+          <InputField :value="password" @input="passwordChange" />
         </div>
       </div>
       <div class="authorization__entry">
@@ -23,7 +32,7 @@
 <script>
 import CustomButton from "@/components/CustomButton/CustomButton.vue";
 import InputField from "@/components/InputField/InputField.vue";
-import {requests, updateHeaders} from "@/requests";
+import { requests, updateHeaders } from "@/requests";
 import { mapActions } from "vuex";
 export default {
   components: {
@@ -32,24 +41,43 @@ export default {
   },
   data() {
     return {
-      dataAuth: {
-        login: null,
-        password: null,
-      },
+      login: null,
+      password: null,
+
+      errorLoginMess: null,
     };
   },
   methods: {
     ...mapActions("app", ["setCurrentUser"]),
+    passwordChange(val) {
+      this.password = val;
+      this.errorLoginMess = null;
+    },
+    loginChange(val) {
+      this.login = val;
+      this.errorLoginMess = null;
+    },
     openTaskList() {
-      requests.getUser(this.dataAuth).then((response) => {
-        localStorage.setItem("isAuthorized", true);
-        localStorage.setItem("tokenUser", response);
-        updateHeaders();
-        requests.getCurrentUser().then((data) => {
-          this.setCurrentUser(data);
-          this.$router.push(`TaskList`);
-        });
-      });
+      if (!this.login || !this.password) {
+        this.errorLoginMess = "Поля обязательны для заполнения";
+      } else {
+        requests
+          .getUser({ login: this.login, password: this.password })
+          .then((response) => {
+            localStorage.setItem("isAuthorized", true);
+            localStorage.setItem("tokenUser", response.token);
+            updateHeaders();
+
+            if (response.token) {
+              requests.getCurrentUser().then((data) => {
+                this.setCurrentUser(data);
+                this.$router.push(`TaskList`);
+              });
+            } else {
+              this.errorLoginMess = response;
+            }
+          });
+      }
     },
     searchTasks() {},
   },

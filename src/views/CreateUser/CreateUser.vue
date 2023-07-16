@@ -15,7 +15,10 @@
               <div class="create-user__title">
                 <div class="">ФИО <span class="create-user__star">*</span></div>
               </div>
-              <div class="create-user__value">
+              <div
+                class="create-user__value"
+                :class="{ 'create-user__erorre-field': errorLoginMess }"
+              >
                 <InputField
                   v-model="name"
                   :placeholder="'Введите ФИО'"
@@ -29,7 +32,10 @@
                   Логин <span class="create-user__star">*</span>
                 </div>
               </div>
-              <div class="create-user__value">
+              <div
+                class="create-user__value"
+                :class="{ 'create-user__erorre-field': errorLoginMess }"
+              >
                 <InputField
                   v-model="login"
                   :placeholder="'Введите логин'"
@@ -45,7 +51,10 @@
                   Пароль <span class="create-user__star">*</span>
                 </div>
               </div>
-              <div class="create-user__value">
+              <div
+                class="create-user__value"
+                :class="{ 'create-user__erorre-field': errorLoginMess }"
+              >
                 <InputField
                   v-model="password"
                   :placeholder="'Введите пароль'"
@@ -53,32 +62,25 @@
               </div>
             </div>
 
-            <div class="create-task__field">
-              <div class="create-task__title">
+            <div class="create-user__field">
+              <div class="create-user__title">
                 <div class="">О себе</div>
               </div>
-              <div class="create-task__value">
-                <textarea
-                  class="create-task__textarea"
+              <div class="create-user__value">
+                <TextArea
+                  class="create-user__textarea"
+                  placeholder="Введите текст"
                   v-model="about"
-                  :placeholder="'Введите текст'"
-                ></textarea>
+                />
               </div>
             </div>
 
             <div class="create-user__field">
               <div class="create-user__title">
-                <div class="">
-                  Фото <span class="create-user__star">*</span>
-                </div>
+                <div class="">Фото</div>
               </div>
               <div class="create-user__value">
-                <input
-                  type="file"
-                  ref="fileInput"
-                  @change="handleFileUpload"
-                  v-show="true"
-                />
+                <CustomPhoto @selectedPhoto="handleFileUpload" />
               </div>
             </div>
           </section>
@@ -125,6 +127,8 @@
 import CustomButton from "@/components/CustomButton/CustomButton.vue";
 import InputField from "@/components/InputField/InputField.vue";
 import ValueSwitch from "@/components/ValueSwitch/ValueSwitch.vue";
+import TextArea from "@/components/TextArea/TextArea.vue";
+import CustomPhoto from "@/components/CustomPhoto/CustomPhoto.vue";
 import { requests } from "@/requests";
 
 export default {
@@ -132,6 +136,8 @@ export default {
     CustomButton,
     InputField,
     ValueSwitch,
+    TextArea,
+    CustomPhoto,
   },
   props: {
     isEdit: Boolean,
@@ -146,6 +152,7 @@ export default {
       photo: null,
       selectedRole: "USER",
       isActive: true,
+      errorLoginMess: null,
     };
   },
   mounted() {
@@ -155,19 +162,22 @@ export default {
     }
   },
   methods: {
-
     handleFileUpload(event) {
-      this.photo = event.target.files[0];
+      this.photo = event;
     },
 
-    processUser(){
-      if(this.isEdit){
+    processUser() {
+      if (this.name && this.login && this.password) {
+        if (this.isEdit) {
           this.editUser(this.user);
           this.addPhoto(this.user);
-          this.$router.go(-1)
-      }else{
-        this.createUser()
-        this.$router.push({name: "UserList"})
+          this.$router.go(-1);
+        } else {
+          this.createUser();
+          this.$router.push({ name: "UserList" });
+        }
+      } else {
+        this.errorLoginMess = "Поля обязательны для заполнения";
       }
     },
 
@@ -207,7 +217,6 @@ export default {
     switched() {
       this.isActive = !this.isActive;
     },
-
   },
 };
 </script>

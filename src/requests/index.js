@@ -38,10 +38,10 @@ export const requests = {
       }
     })
       .then(({ data }) => {
-        return data.token
+        return data
       })
-      .catch(error => {
-        console.error('Возникла проблема:', error);
+      .catch(( data ) => {
+        return data && data.response && data.response.data && data.response.data.message || 'Ошибка авторизации'
       });
   },
   getCurrentUser: () => {
@@ -303,8 +303,7 @@ export const requests = {
       url: url,
       headers: headers,
     })
-      .then(({ data }) => {
-        return console.log(data)
+      .then(() => {
       })
       .catch(error => {
         console.error('Возникла проблема:', error);

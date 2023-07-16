@@ -57,7 +57,7 @@
 <script>
 import CustomButton from "@/components/CustomButton/CustomButton.vue";
 import DropDownButton from "@/components/DropDownButton/DropDownButton.vue";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import { requests } from "@/requests";
 export default {
   name: "NavigationMenu",
@@ -69,12 +69,15 @@ export default {
     ...mapGetters("app", ["currentUser"]),
   },
   methods: {
+    ...mapActions("app", ["setCurrentUser"]),
     selectTab(tab) {
       this.$emit("tabSelected", tab);
       this.$router.push(`/${tab}`);
     },
     openAuthorization() {
       localStorage.setItem("isAuthorized", false);
+      localStorage.setItem("tokenUser", null);
+      this.setCurrentUser(null);
       this.$router.push(`/AuthPage`);
     },
     isActive(routerString) {
@@ -85,7 +88,7 @@ export default {
       this.selectTab(path);
     },
     getAvatarImg() {
-        return requests.getAvatar((this.currentUser || {}).picture);
+      return requests.getAvatar((this.currentUser || {}).picture);
     },
   },
 };

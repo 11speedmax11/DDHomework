@@ -19,7 +19,7 @@ export default {
     ...mapGetters("app", ["userList"]),
 
     getName() {
-      let parts = this.currentUser().name.split(" ");
+      let parts = (this.currentUser().name || "Удален").split(" ");
       let lastName = parts[0];
       let firstName = "";
       if (parts.length > 1) {

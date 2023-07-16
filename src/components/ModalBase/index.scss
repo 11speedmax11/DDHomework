@@ -14,20 +14,20 @@
 
   &__body{
  
-    background-color: white;
+    background-color: $background-color-secondary;
     width: 640px;
   }
   &__title{
     padding: 16px;
     font-size: 24px;
-    border-bottom: 1px solid $font-color-disabled;
+    border-bottom: 1px solid $border-color-rgba;
   }
 }
 
 .create-project-modal{
   &__wrapper{
     padding: 16px;
-    border-bottom: 1px solid $font-color-disabled;
+    border-bottom: 1px solid $border-color-rgba;
   }
   &__footer{
     padding: 16px;

@@ -9,7 +9,10 @@
       :class="[{ search: isSearch }, { turn: isTurn }]"
     >
       <div class="selected-option" @click="toggleDropdown">
-        <div class="selected-text" :class="{ placeholder: !selectedOptionValue  }">
+        <div
+          class="selected-text"
+          :class="{ placeholder: !selectedOptionValue }"
+        >
           {{ (selectedOptionValue && selectedOptionValue.name) || placeholder }}
         </div>
         <div class="custom-select__svg">
@@ -55,9 +58,9 @@ export default {
     options: Array,
     placeholder: String,
     isSearch: Boolean,
-    keyName:{
+    keyName: {
       type: String,
-      default: 'key'
+      default: "key",
     },
     selectedOption: {
       type: String,
@@ -67,15 +70,20 @@ export default {
       type: Boolean,
       default: false,
     },
+    disabled: Boolean,
   },
   computed: {
     selectedOptionValue() {
-     return (this.options || []).find((x) => x[this.keyName] == this.selectedOption);
+      return (this.options || []).find(
+        (x) => x[this.keyName] == this.selectedOption
+      );
     },
   },
   methods: {
     toggleDropdown() {
-      this.isDropdownOpen = !this.isDropdownOpen;
+      if (!this.disabled) {
+        this.isDropdownOpen = !this.isDropdownOpen;
+      }
     },
     selectOption(option) {
       this.isDropdownOpen = false;

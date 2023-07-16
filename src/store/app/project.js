@@ -1,57 +1,50 @@
+const mutations = {
+  UPDATE_SEARCH: 'UPDATE_SEARCH',
+  UPDATE_SORT_FIELD: 'UPDATE_SORT_FIELD',
+  UPDATE_SORT_ORDER: 'UPDATE_SORT_ORDER',
+  UPDATE_PAGE: 'UPDATE_PAGE',
+};
+
 export default {
   namespaced: true,
   state: {
     search: null,
-    sorting: 'name',
-    sortOrderValues: 'asc',
+    sortField: 'name',
+    sortOrder: 'asc',
     page: 1,
   },
-
   getters: {
-
-    search(state) {
-      return state.search;
-    },
-    sorting(state) {
-      return state.sorting;
-    },
-    sortOrderValues(state) {
-      return state.sortOrderValues;
-    },
-    page(state) {
-      return state.page;
-    }
+    search: state => state.search,
+    sortField: state => state.sortField,
+    sortOrder: state => state.sortOrder,
+    page: state => state.page,
   },
-
   mutations: {
-
-    updateSearch(state, payload) {
+    [mutations.UPDATE_SEARCH](state, payload) {
       state.search = payload;
     },
-    updateOrder(state, payload) {
-      state.sorting = payload;
+    [mutations.UPDATE_SORT_FIELD](state, payload) {
+      state.sortField = payload;
     },
-    updatesortOrderValues(state, payload) {
-      state.sortOrderValues = payload;
+    [mutations.UPDATE_SORT_ORDER](state, payload) {
+      state.sortOrder = payload;
     },
-    updatePage(state, payload) {
+    [mutations.UPDATE_PAGE](state, payload) {
       state.page = payload;
     },
   },
   actions: {
-
     setSearch({ commit }, payload) {
-      commit('updateSearch', payload);
+      commit(mutations.UPDATE_SEARCH, payload);
     },
-    setOrder({ commit }, payload) {
-      commit('updateOrder', payload);
+    setSortField({ commit }, payload) {
+      commit(mutations.UPDATE_SORT_FIELD, payload);
     },
-    setSortOrderValues({ commit }, payload) {
-      commit('updatesortOrderValues', payload);
+    setSortOrder({ commit }, payload) {
+      commit(mutations.UPDATE_SORT_ORDER, payload);
     },
     setPage({ commit }, payload) {
-      commit('updatePage', payload);
+      commit(mutations.UPDATE_PAGE, payload);
     },
   },
-
-}
+};
